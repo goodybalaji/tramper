@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Tramper" default="IzPack-install-FreeTTS">
+	<property name="izPackDir" value="C:\Program Files\IzPack"/>
+	
+	<target name="javadoc">
+		<javadoc access="package" 
+				author="true" 
+				destdir="javadoc" 
+				doctitle="Tramper Javadoc" 
+				nodeprecated="false" 
+				nodeprecatedlist="false" 
+				noindex="false" 
+				nonavbar="false" 
+				notree="false" 
+				packagenames="org.tramper,org.tramper.action,org.tramper.ui,org.tramper.aui,org.tramper.doc,org.tramper.loader,org.tramper.gui,org.tramper.gui.viewer,org.tramper.browser,org.tramper.player,org.tramper.speech,org.tramper.parser,org.tramper.parser.css,org.tramper.recorder" 
+				source="1.5" 
+				sourcepath="sources" 
+				splitindex="true" 
+				use="true" 
+				version="true">
+			<classpath>
+				<fileset dir="lib">
+					<include name="*.jar"/>
+				</fileset>
+				<fileset dir="lib/windows">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</javadoc>
+	</target>
+	
+	<taskdef name="izpack" classpath="${izPackDir}/lib/compiler.jar" classname="com.izforge.izpack.ant.IzPackTask"/>
+	
+	<target name="IzPack-install-FreeTTS">
+		<jar destfile="installer/Tramper.jar" manifest="installer/MANIFEST.MF">
+			<fileset dir="classes">
+				<exclude name="speech.properties"/>
+			</fileset>
+		</jar>
+		<signjar jar="installer/Tramper.jar" alias="peveuve" storepass="wyoming" />
+		<izpack input="installer/IZPack-install-FreeTTS.xml"
+		    output="installer/Tramper-install-FreeTTS.jar"
+		    installerType="standard"
+		    basedir="."
+		    izPackDir="${izPackDir}/"/>
+	</target>
+
+	<target name="IzPack-install-TalkingJava">
+		<jar destfile="installer/Tramper.jar" manifest="installer/MANIFEST.MF">
+			<fileset dir="classes">
+				<exclude name="speech.properties"/>
+			</fileset>
+		</jar>
+		<signjar jar="installer/Tramper.jar" alias="peveuve" storepass="wyoming" />
+		<izpack input="installer/IZPack-install-TalkingJava.xml"
+		    output="installer/Tramper-install-TalkingJava.jar"
+		    installerType="standard"
+		    basedir="."
+		    izPackDir="${izPackDir}/"/>
+	</target>
+</project>

@@ -1,0 +1,22 @@
+#JSGF V1.0 ISO-8859-1 en;
+
+grammar org.tramper.recorder.grammars.commands;
+
+//import <org.tramper.recorder.grammars.>;
+
+/**
+ * Basic commands.
+ * @author Paul-Emile
+ */
+
+public <file> = open file+ {open};
+public <exit> = (exit | quit | bye) {quit};
+public <general> = favorites {favorites} | history {history} | about {about};
+public <research> = [yahoo news | yahoo search | google news | google search | M S N news | M S N search | youtube | flickr | ebay | amazon | wikipedia];
+public <read> = (play {play} | stop {stop} | pause {pause} | resume {resume} | next {next} | previous {previous} );
+public <display> = ((english | french) language) | ((appearance | look and feel) (Windows | Nimrod | Substance | Quaqua | A03 | nimbus));
+public <favorites> = add to+ favorites {addFavorite} | remove from+ favorites {removeFavorite};
+public <synthesizer> = (english | french | german | spanish | american) (engine | synthesizer);
+public <panel> = speech+ synthesizer {openSynthesizer} | speech+ recognizer {openRecognizer} | display {openDisplay};
+public <history> = back history {backHistory} | forward history {forwardHistory};
+public <render> = all {renderAll};
