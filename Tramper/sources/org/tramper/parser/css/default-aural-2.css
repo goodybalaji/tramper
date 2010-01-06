@@ -1,0 +1,26 @@
+
+A {
+	cue-before: url(ding.wav);
+	cue-after: none;
+	pause-before: 0s;
+	pause-after: 0s;
+	pitch: medium;/* medium male : 120Hz; medium female : 210Hz; */
+	pitch-range: 50;/* 0 : monotone; 100 : animée */
+	speack: normal;
+	speech-rate: medium;/* medium : 180 - 200 mots/min */
+	voice-family: kevin16;/* name, gender (male, female, neutral), age (child, teenager, younger adult, middle adult, older adult, neutral) */
+	volume: medium;/* 0 : bas; 100 : haut ; 50 : medium */
+}
+
+H1,H2,H3,H4,H5,H6 {
+	cue-before: none;
+	cue-after: none;
+	pause-before: 0s;
+	pause-after: 0s;
+	pitch: medium;
+	pitch-range: 50;
+	speack: normal;
+	speech-rate: medium;
+	voice-family: kevin16;
+	volume: medium;
+}
