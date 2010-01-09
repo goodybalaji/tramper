@@ -24,8 +24,8 @@ public class Tramper {
      * @param args
      */
     public static void main(String[] args) {
-        if (JavaSystem.isJava5OrMore() == false) {
-            System.err.println("You must launch this software with Java 1.5 or higher");
+        if (JavaSystem.isJava6OrMore() == false) {
+            System.err.println("You must launch this software with Java 1.6 or higher");
             System.exit(1);
         }
 
