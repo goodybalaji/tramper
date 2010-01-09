@@ -61,7 +61,7 @@
         <pack name="Audio browser" required="yes">
             <description>The audio media browser</description>            <file src="sources/speech.properties" targetdir="$USER_HOME"/>
             <file src="soundbank.gm" targetdir="$INSTALL_PATH"/>
-            <file src="GUIConfig.properties" targetdir="$INSTALL_PATH"/>
+            <file src="GUIConfig.properties" targetdir="$INSTALL_PATH"/>            <file os="windows" src="shortPathNameFormat.vbs" targetdir="$INSTALL_PATH"/>
             <file src="installer/Readme.txt" targetdir="$INSTALL_PATH"/>
             <file src="installer/Licence.txt" targetdir="$INSTALL_PATH"/>
             <file src="installer/Tramper.ico" os="windows" targetdir="$INSTALL_PATH"/>
