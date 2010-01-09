@@ -13,14 +13,14 @@ Contents
 
 Introduction
 
-Thank you for downloading this release of Tramper, your Internet player. This is still 
-a beta version, so a bit buggy.
+Thank you for downloading this release of Tramper, your audio media browser. This is still 
+a beta version, so still buggy!
 
 
 System Requirements
 
-This software require a Java Runtime Environment (JRE(TM)) 1.5 or more on your system to run properly.
-It has been tested on Windows XP, Linux Fedora core 6 and Macos X.
+This software require a Java Runtime Environment (JRE(TM)) 1.6 or more on your system to run properly.
+It has been tested on Windows XP, but should work under Windows Vista/7, Linux and Mac OS X.
 A valid sound system is obviously required.
 
 Launch the application

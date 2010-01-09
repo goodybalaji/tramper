@@ -13,7 +13,7 @@
 				nonavbar="false" 
 				notree="false" 
 				packagenames="org.tramper,org.tramper.action,org.tramper.ui,org.tramper.aui,org.tramper.doc,org.tramper.loader,org.tramper.gui,org.tramper.gui.viewer,org.tramper.browser,org.tramper.player,org.tramper.speech,org.tramper.parser,org.tramper.parser.css,org.tramper.recorder" 
-				source="1.5" 
+				source="1.6" 
 				sourcepath="sources" 
 				splitindex="true" 
 				use="true" 

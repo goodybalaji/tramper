@@ -11,7 +11,7 @@
         <authors>
             <author name="Paul-Emile Veuve" email="peveuve@gmail.com"/>
         </authors>
-        <url>http://www.tramper.com</url>        <javaversion>1.5</javaversion>
+        <url>http://code.google.com/p/tramper/</url>        <javaversion>1.6</javaversion>
     </info>
     <!-- 
         The gui preferences indication.
@@ -59,7 +59,7 @@
     -->
     <packs>
         <pack name="Audio browser" required="yes">
-            <description>The audio browser itself</description>            <file src="sources/speech.properties" targetdir="$USER_HOME"/>
+            <description>The audio media browser</description>            <file src="sources/speech.properties" targetdir="$USER_HOME"/>
             <file src="soundbank.gm" targetdir="$INSTALL_PATH"/>
             <file src="GUIConfig.properties" targetdir="$INSTALL_PATH"/>
             <file src="installer/Readme.txt" targetdir="$INSTALL_PATH"/>
