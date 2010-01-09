@@ -4,9 +4,6 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import org.tramper.recognizer.RecognitionException;
-import org.tramper.recognizer.SpeechRecognizerFactory;
-
 /**
  * @author Paul-Emile
  * 
@@ -26,12 +23,7 @@ public class TooltipManager {
 	String description = label.getString(action+".desc");
 	String keys = label.getString(action+".keys");
 	
-	Locale recognizerLocale = null;
-	try {
-	    recognizerLocale = SpeechRecognizerFactory.getSpeechRecognizer().getLocale();
-	} catch (RecognitionException e) {
-	    recognizerLocale = Locale.getDefault();
-	}
+	Locale recognizerLocale = Locale.getDefault();
 	
 	label = ResourceBundle.getBundle("label", recognizerLocale);
 	String speechCommand = label.getString(action+".speech");
