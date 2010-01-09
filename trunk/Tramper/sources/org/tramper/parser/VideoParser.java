@@ -1,12 +1,15 @@
 package org.tramper.parser;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 
 import org.apache.log4j.Logger;
+import org.tramper.JavaSystem;
 import org.tramper.doc.SimpleDocument;
 import org.tramper.doc.Video;
 
@@ -39,6 +42,29 @@ public class VideoParser implements Parser {
 	Video video = new Video();
 	//Media media = null;
 	MediaProvider mediaProvider = null;
+	
+	// the JMC video player doesn't read the Windows long pathname
+	if (JavaSystem.isWindows()) {
+	    String protocol = url.getProtocol();
+	    if (protocol.equals("file")) {
+		// so translate the long pathname into short pathname
+		try {
+		    String longPathName = URLDecoder.decode(url.getPath(), "utf-8");
+		    if (longPathName.startsWith("/")) {
+			longPathName = longPathName.substring(1);
+		    }
+		    String shortPathName = JavaSystem.longToShortWindowsPathName(longPathName);
+		    if (shortPathName != null) {
+			shortPathName = shortPathName.replace('\\', '/');
+			url = new URL("file", null, shortPathName);
+		    }
+		} catch (UnsupportedEncodingException e) {
+		    
+		} catch (MalformedURLException e) {
+		    
+		}
+	    }
+	}
 	try {
 	    //media = new Media(url.toURI());
 	    mediaProvider = new MediaProvider(url.toURI());
