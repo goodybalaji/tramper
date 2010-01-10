@@ -50,7 +50,8 @@
 	<classpathentry kind="lib" path="lib/jogg-0.0.7.jar"/>
 	<classpathentry kind="lib" path="lib/jorbis-0.0.15.jar"/>
 	<classpathentry kind="lib" path="lib/jspeex.jar"/>
-	<classpathentry kind="lib" path="lib/vorbisspi1.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/jl1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/tritonus_jorbis-0.3.6.jar"/>
+	<classpathentry kind="lib" path="lib/tritonus_gsm-0.3.6.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

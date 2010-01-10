@@ -47,40 +47,50 @@ public class SoundParser implements Parser {
 
             Map<String, Object> metaData = encodedFileFormat.properties();
             logger.debug("metadata="+metaData);
-            String title = (String) metaData.get("title");
-            if (title != null) {
-                document.setTitle(title);
+            if (metaData != null) {
+                String title = (String) metaData.get("title");
+                if (title != null) {
+                    document.setTitle(title);
+                } else {
+                    //if no title, get the file name as title
+                    String path = url.getPath();
+                    int lastIndexSlash = path.lastIndexOf("/");
+                    if (lastIndexSlash != -1) {
+                        path = path.substring(lastIndexSlash+1);
+                    }
+                    document.setTitle(path);
+                }
+                String comment = (String) metaData.get("comment");
+                document.setDescription(comment);
+                String creationString = (String) metaData.get("date");
+                if (creationString != null) {
+                    Date creationDate = null;
+                    try {
+                        SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy");
+                        creationDate = dateFormater.parse(creationString);
+                    } catch (ParseException e) {
+                        logger.warn(e);
+                    }
+                    document.setCreationDate(creationDate);
+                }
+                String album = (String) metaData.get("album");
+                document.setAlbum(album);
+                String author = (String) metaData.get("author");
+                document.setAuthor(author);
+                String copyright = (String) metaData.get("copyright");
+                document.setCopyright(copyright);
+                Long duration = (Long) metaData.get("duration");
+                if (duration != null) {
+                    document.setDuration(duration.longValue());
+                }
             } else {
-                //if no title, get the file name as title
+                //if no metadata, get the file name as title
                 String path = url.getPath();
                 int lastIndexSlash = path.lastIndexOf("/");
                 if (lastIndexSlash != -1) {
                     path = path.substring(lastIndexSlash+1);
                 }
                 document.setTitle(path);
-            }
-            String comment = (String) metaData.get("comment");
-            document.setDescription(comment);
-            String creationString = (String) metaData.get("date");
-            if (creationString != null) {
-                Date creationDate = null;
-                try {
-                    SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy");
-                    creationDate = dateFormater.parse(creationString);
-                } catch (ParseException e) {
-                    logger.warn(e);
-                }
-                document.setCreationDate(creationDate);
-            }
-            String album = (String) metaData.get("album");
-            document.setAlbum(album);
-            String author = (String) metaData.get("author");
-            document.setAuthor(author);
-            String copyright = (String) metaData.get("copyright");
-            document.setCopyright(copyright);
-            Long duration = (Long) metaData.get("duration");
-            if (duration != null) {
-                document.setDuration(duration.longValue());
             }
         } catch (UnsupportedAudioFileException e) {
             logger.info("Not a file audio stream, no metadata to get", e);
