@@ -78,13 +78,8 @@ public class OutlineHeader extends SimpleHeader {
     public void displayDocument(SimpleDocument document, Target target) {
 	super.displayDocument(document, target);
 
-        String iconUrl = ((MarkupDocument)document).getIcon();
-        if (iconUrl != null) {
-            Icon icon = new EnhancedIcon(iconUrl);
-            documentTitle.setIcon(icon);
-        } else {
-            documentTitle.setIcon(null);
-        }
+        Icon icon = ((MarkupDocument)document).getIcon();
+        iconLabel.setIcon(icon);
         
         Locale language = ((MarkupDocument)document).getLanguage();
         if (language != null) {

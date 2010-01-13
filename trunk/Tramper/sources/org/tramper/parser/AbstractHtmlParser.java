@@ -14,6 +14,9 @@ import java.util.ResourceBundle;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import javax.swing.EnhancedIcon;
+import javax.swing.Icon;
+
 import org.apache.log4j.Logger;
 import org.tramper.doc.Link;
 import org.tramper.doc.Sound;
@@ -191,7 +194,8 @@ public abstract class AbstractHtmlParser implements Parser {
                 String linkRel = link.getAttribute("rel");
                 String linkType = link.getAttribute("type");
                 if (linkRel.equalsIgnoreCase("icon") || linkRel.equalsIgnoreCase("shortcut icon")) {
-                    doc.setIcon(anUrl.toString());
+                    Icon icon = new EnhancedIcon(anUrl);
+                    doc.setIcon(icon);
                 } else if (linkRel.equalsIgnoreCase("stylesheet")) {
                     if ("text/css".equals(linkType)) {
                         String media = link.getAttribute("media").toLowerCase();

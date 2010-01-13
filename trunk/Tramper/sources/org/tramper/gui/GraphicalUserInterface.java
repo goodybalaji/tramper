@@ -93,7 +93,6 @@ import org.tramper.ui.RenderingException;
 import org.tramper.ui.UserInterface;
 import org.tramper.ui.UserInterfaceFactory;
 
-
 /**
  * Standard window for a common GUI
  * @author Paul-Emile
@@ -169,17 +168,15 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	    String className = lafs[i].getClassName();
 	    if (!className.equals("javax.swing.plaf.metal.MetalLookAndFeel")) {
 		if (!className.equals("com.sun.java.swing.plaf.motif.MotifLookAndFeel")) {
-		    lookAndFeels.add(lafs[i]);
+		    if (!className.equals("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel")) {
+			lookAndFeels.add(lafs[i]);
+		    }
 		}
 	    }
 	}
 	// add nicer look and feels
-	LookAndFeelInfo nimrodLaF = new UIManager.LookAndFeelInfo("NimROD", "com.nilo.plaf.nimrod.NimRODLookAndFeel");
-	lookAndFeels.add(nimrodLaF);
 	LookAndFeelInfo quaquaLaF = new UIManager.LookAndFeelInfo("Quaqua", "ch.randelshofer.quaqua.QuaquaLookAndFeel");
 	lookAndFeels.add(quaquaLaF);
-	LookAndFeelInfo a03LaF = new UIManager.LookAndFeelInfo("A03", "a03.swing.plaf.A03LookAndFeel");
-	lookAndFeels.add(a03LaF);
 	LookAndFeelInfo substanceDustLaF = new UIManager.LookAndFeelInfo("Dust", "org.jvnet.substance.skin.SubstanceDustLookAndFeel");
 	lookAndFeels.add(substanceDustLaF);
 	LookAndFeelInfo substanceBusinessLaF = new UIManager.LookAndFeelInfo("Business Black Steel", "org.jvnet.substance.skin.SubstanceBusinessBlackSteelLookAndFeel");
@@ -1174,8 +1171,8 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
         
         barPanel.remove(addressPanel);
         addressPanel = null;
-        
-        barPanel.remove(miniaturePanel);
+
+	miniaturesViewersArea.remove(miniaturePanel);
         miniaturePanel = null;
 	
         if (displayPanel != null) {
@@ -1195,6 +1192,7 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
         
 	this.dispose();
         this.setUndecorated(true);
+	this.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 	this.pack();
 	GraphicsEnvironment graphicsEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	GraphicsDevice defaultScreen = graphicsEnv.getDefaultScreenDevice();
@@ -1221,9 +1219,9 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
         playerPanel = new PlayerControlPanel(this);
         this.getContentPane().add(playerPanel, BorderLayout.SOUTH);
         addressPanel = new AddressControlPanel();
-        barPanel.add(addressPanel, 1);
+        barPanel.add(addressPanel, 0);
         miniaturePanel = new ViewerControlPanel(this);
-        barPanel.add(miniaturePanel);
+	miniaturesViewersArea.setLeftComponent(miniaturePanel);
         
         Viewer docViewer = getActiveRenderer();
         if (docViewer != null) {
@@ -1284,6 +1282,12 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	saveGuiConfig();
 	try {
 	    this.dispose();
+	    if (UIManager.getLookAndFeel().getSupportsWindowDecorations()) {
+		this.setUndecorated(true);
+		this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+	    } else {
+		this.setUndecorated(false);
+	    }
 	    this.pack();
 	    this.setVisible(true);
 	} catch (Exception e) {

@@ -94,6 +94,10 @@ public class IconFactory {
             iconUrl = IconFactory.class.getResource("images/flags/USA.png");
         } else if (locale.equals(Locale.UK)) {
             iconUrl = IconFactory.class.getResource("images/flags/UK.png");
+        } else if (locale.equals(Locale.CANADA)) {
+            iconUrl = IconFactory.class.getResource("images/flags/Canada.png");
+        } else if (locale.equals(new Locale("en", "AU"))) {
+            iconUrl = IconFactory.class.getResource("images/flags/Australia.png");
         } else if (locale.equals(new Locale("es")) || locale.equals(new Locale("es", "ES"))) {
             iconUrl = IconFactory.class.getResource("images/flags/Spain.png");
         } else if (locale.equals(Locale.GERMAN) || locale.equals(Locale.GERMANY)) {
@@ -112,6 +116,10 @@ public class IconFactory {
             iconUrl = IconFactory.class.getResource("images/flags/China.png");
         } else if (locale.equals(new Locale("fi")) || locale.equals(new Locale("fi", "FI"))) {
             iconUrl = IconFactory.class.getResource("images/flags/Finland.png");
+        } else if (locale.equals(new Locale("ru")) || locale.equals(new Locale("ru", "RU"))) {
+            iconUrl = IconFactory.class.getResource("images/flags/Russian Federation.png");
+        } else if (locale.equals(new Locale("hi")) || locale.equals(new Locale("hi", "IN"))) {
+            iconUrl = IconFactory.class.getResource("images/flags/India.png");
         } else {
             return null;
         }

@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
+import javax.swing.Icon;
+
 /**
  * Abstract markup document
  * @author Paul-Emile
@@ -13,8 +15,8 @@ public abstract class MarkupDocument extends SimpleDocument {
     protected String charset;
     /** language/locale */
     protected Locale language;
-    /** url icon */
-    protected String icon;
+    /** icon */
+    protected Icon icon;
     /** links to related documents */
     protected transient List<Link> links;
     /** Speakable items list */
@@ -38,14 +40,14 @@ public abstract class MarkupDocument extends SimpleDocument {
     /**
      * @return icon.
      */
-    public String getIcon() {
+    public Icon getIcon() {
         return this.icon;
     }
 
     /**
      * @param icon icon 
      */
-    public void setIcon(String icon) {
+    public void setIcon(Icon icon) {
         this.icon = icon;
     }
 

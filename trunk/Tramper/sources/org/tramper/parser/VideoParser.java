@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.tramper.JavaSystem;
@@ -17,6 +18,7 @@ import com.sun.media.jmc.MediaCorruptedException;
 import com.sun.media.jmc.MediaProvider;
 import com.sun.media.jmc.MediaUnavailableException;
 import com.sun.media.jmc.MediaUnsupportedException;
+import com.sun.media.jmc.type.ContainerType;
 
 /**
  * 
@@ -65,6 +67,7 @@ public class VideoParser implements Parser {
 		}
 	    }
 	}
+	
 	try {
 	    //media = new Media(url.toURI());
 	    mediaProvider = new MediaProvider(url.toURI());
@@ -84,7 +87,16 @@ public class VideoParser implements Parser {
 	
 	double duration = mediaProvider.getDuration();
 	video.setDuration(duration);
-	
+	List<ContainerType> types = MediaProvider.getSupportedContainerTypes();
+	for (ContainerType type : types) {
+	    logger.debug(type.getDescription());
+	    for (String s : type.getExtensions()) {
+		logger.debug(" ext: "+s);
+	    }
+	    for (String s : type.getMimeTypes()) {
+		logger.debug(" mime: "+s);
+	    }
+	}
 	/*Dimension frameSize = media.getFrameSize();
 	video.setFrameSize(frameSize);
 	
