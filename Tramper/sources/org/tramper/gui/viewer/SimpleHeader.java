@@ -42,8 +42,12 @@ public class SimpleHeader extends JPanel implements ItemListener {
     protected JPanel detailsPanel;
     /** title */
     protected JLabel documentTitle;
+    /** document's icon */
+    protected JLabel iconLabel;
     /** description label */
-    private JLabel descLabel;
+    protected JLabel descLabel;
+    /** document's description */
+    protected JTextArea documentDescription;
     /** mime type label */
     private JLabel mimeTypeLabel;
     /** mime type */
@@ -66,8 +70,6 @@ public class SimpleHeader extends JPanel implements ItemListener {
     private JToggleButton detailButton;
     /** viewed document */
     protected SimpleDocument document;
-    /** document's description */
-    private JTextArea documentDescription;
     /** close control panel button */
     private JButton closeButton;
     /** color of the labels */
@@ -120,7 +122,7 @@ public class SimpleHeader extends JPanel implements ItemListener {
         closeButton = new JButton(closeIcon);
         closeButton.setMargin(marginButton);
         titlePanel.add(closeButton);
-
+        
         this.add(titlePanel, BorderLayout.NORTH);
         
         
@@ -131,12 +133,21 @@ public class SimpleHeader extends JPanel implements ItemListener {
         constraints.insets = new Insets(3, 3, 3, 3);
         constraints.weighty = 1;
         detailsPanel.setLayout(layout);
-
+        
+        iconLabel = new JLabel();
+        constraints.anchor = GridBagConstraints.NORTHWEST;
+        constraints.gridwidth = 1;
+        constraints.weightx = 1;
+        constraints.gridheight = 4;
+        layout.setConstraints(iconLabel, constraints);
+        detailsPanel.add(iconLabel);
+        
         descLabel = new JLabel();
         descLabel.setText(label.getString("javaspeaker.description")+":");
         descLabel.setForeground(labelColor);
         constraints.gridwidth = 1;
         constraints.weightx = 1;
+        constraints.gridheight = 1;
         constraints.anchor = GridBagConstraints.NORTHEAST;
         layout.setConstraints(descLabel, constraints);
         detailsPanel.add(descLabel);
@@ -157,6 +168,7 @@ public class SimpleHeader extends JPanel implements ItemListener {
         copyrightLabel = new JLabel();
         copyrightLabel.setText(label.getString("javaspeaker.copyright")+":");
         copyrightLabel.setForeground(labelColor);
+        constraints.gridx = 1;
         constraints.gridwidth = 1;
         constraints.weightx = 1;
         constraints.anchor = GridBagConstraints.NORTHEAST;
@@ -172,6 +184,7 @@ public class SimpleHeader extends JPanel implements ItemListener {
         documentCopyright.setBackground(this.getBackground());
         documentCopyright.setOpaque(false);
         documentCopyright.setBorder(null);
+        constraints.gridx = GridBagConstraints.RELATIVE;
         constraints.gridwidth = GridBagConstraints.REMAINDER;
         constraints.anchor = GridBagConstraints.WEST;
         constraints.fill = GridBagConstraints.BOTH;
@@ -183,6 +196,7 @@ public class SimpleHeader extends JPanel implements ItemListener {
         authorLabel = new JLabel();
         authorLabel.setText(label.getString("javaspeaker.item.author")+":");
         authorLabel.setForeground(labelColor);
+        constraints.gridx = 1;
         constraints.gridwidth = 1;
         constraints.weightx = 1;
         constraints.anchor = GridBagConstraints.EAST;
@@ -190,6 +204,7 @@ public class SimpleHeader extends JPanel implements ItemListener {
         detailsPanel.add(authorLabel);
         
         documentAuthor = new JLabel();
+        constraints.gridx = GridBagConstraints.RELATIVE;
         constraints.gridwidth = GridBagConstraints.REMAINDER;
         constraints.anchor = GridBagConstraints.WEST;
         layout.setConstraints(documentAuthor, constraints);
@@ -198,6 +213,7 @@ public class SimpleHeader extends JPanel implements ItemListener {
         mimeTypeLabel = new JLabel();
         mimeTypeLabel.setText(label.getString("javaspeaker.mimeType")+":");
         mimeTypeLabel.setForeground(labelColor);
+        constraints.gridx = 1;
         constraints.gridwidth = 1;
         constraints.weightx = 1;
         constraints.anchor = GridBagConstraints.EAST;
@@ -205,6 +221,7 @@ public class SimpleHeader extends JPanel implements ItemListener {
         detailsPanel.add(mimeTypeLabel);
         
         documentMimeType = new JLabel();
+        constraints.gridx = GridBagConstraints.RELATIVE;
         constraints.gridwidth = 1;
         constraints.weightx = 1;
         constraints.anchor = GridBagConstraints.WEST;

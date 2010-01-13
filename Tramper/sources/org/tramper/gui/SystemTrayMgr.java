@@ -5,15 +5,16 @@ import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
 import javax.swing.Action;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
-import org.jdesktop.jdic.tray.SystemTray;
-import org.jdesktop.jdic.tray.TrayIcon;
+import java.awt.AWTException;
+import java.awt.CheckboxMenuItem;
+import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
 import org.tramper.action.QuitAction;
 import org.tramper.action.ToggleAUIAction;
 import org.tramper.action.ToggleGUIAction;
@@ -36,30 +37,34 @@ public class SystemTrayMgr implements ActionListener, Runnable {
     }
 
     public void run() {
+	if (!SystemTray.isSupported()) {
+	    return;
+	}
 	ResourceBundle label = ResourceBundle.getBundle("label");
 	
-        JPopupMenu menu = new JPopupMenu(label.getString("javaspeaker.productTitle"));
+        PopupMenu menu = new PopupMenu(label.getString("javaspeaker.productTitle"));
         Action toggleGUIAction = ToggleGUIAction.getInstance();
-        toggleGUIAction.putValue(Action.NAME, label.getString("javaspeaker.toggleGUI"));
-        JMenuItem menuItemToggleGUIAction = new JCheckBoxMenuItem(toggleGUIAction);
-        menuItemToggleGUIAction.setSelected(true);
+        CheckboxMenuItem menuItemToggleGUIAction = new CheckboxMenuItem(label.getString("javaspeaker.toggleGUI"));
+        menuItemToggleGUIAction.addActionListener(toggleGUIAction);
+        menuItemToggleGUIAction.setState(true);
         menu.add(menuItemToggleGUIAction);
         Action toggleAUIAction = ToggleAUIAction.getInstance();
-        toggleAUIAction.putValue(Action.NAME, label.getString("javaspeaker.toggleAUI"));
-        JMenuItem menuItemToggleAUIAction = new JCheckBoxMenuItem(toggleAUIAction);
-        menuItemToggleAUIAction.setSelected(true);
+        CheckboxMenuItem menuItemToggleAUIAction = new CheckboxMenuItem(label.getString("javaspeaker.toggleAUI"));
+        menuItemToggleAUIAction.addActionListener(toggleAUIAction);
+        menuItemToggleAUIAction.setState(true);
         menu.add(menuItemToggleAUIAction);
         Action quitAction = QuitAction.getInstance();
-        quitAction.putValue(Action.NAME, label.getString("javaspeaker.menu.file.quit"));
-        JMenuItem menuItemQuitAction = new JMenuItem(quitAction);
+        MenuItem menuItemQuitAction = new MenuItem(label.getString("javaspeaker.menu.file.quit"));
+        menuItemQuitAction.addActionListener(quitAction);
         menu.add(menuItemQuitAction);
         
-        Icon icon = new ImageIcon(getClass().getResource("images/Tramper.png"));
-        trayIcon = new TrayIcon(icon, label.getString("javaspeaker.productTitle"), menu);
+        Image img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/Tramper.png"));
+        trayIcon = new TrayIcon(img, label.getString("javaspeaker.productTitle"), menu);
         trayIcon.addActionListener(this);
-        //trayIcon.addBalloonActionListener(this);
-        SystemTray tray = SystemTray.getDefaultSystemTray();
-        tray.addTrayIcon(trayIcon);
+        SystemTray tray = SystemTray.getSystemTray();
+        try {
+	    tray.add(trayIcon);
+	} catch (AWTException e) {}
 
         String readyMsg = label.getString("javaspeaker.message.ready");
         this.displayInfo(readyMsg);
@@ -71,7 +76,7 @@ public class SystemTrayMgr implements ActionListener, Runnable {
      */
     public void displayInfo(String message) {
 	ResourceBundle label = ResourceBundle.getBundle("label");
-        trayIcon.displayMessage(label.getString("javaspeaker.productTitle"), message, TrayIcon.INFO_MESSAGE_TYPE);
+        trayIcon.displayMessage(label.getString("javaspeaker.productTitle"), message, TrayIcon.MessageType.INFO);
     }
     
     /**

@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.swing.EnhancedIcon;
+import javax.swing.Icon;
 import javax.xml.parsers.*;
 import javax.xml.transform.TransformerException;
 
@@ -123,8 +125,13 @@ public class RssParser implements Parser {
             aNode = XPathAPI.selectSingleNode(docRoot, "/rss/channel/image/url/text()");
             if (aNode != null) {
                 String aText = aNode.getNodeValue();
-                if (aText != null)
-                    feed.setIcon(aText);
+                if (aText != null) {
+                    try {
+                	URL iconUrl = new URL(aText);
+                	Icon icon = new EnhancedIcon(iconUrl);
+                        feed.setIcon(icon);
+                    } catch (MalformedURLException e) {}
+                }
             }
             aNode = XPathAPI.selectSingleNode(docRoot, "/rss/channel/pubDate/text()");
             if (aNode != null) {

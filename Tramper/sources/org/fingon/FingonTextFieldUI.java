@@ -75,12 +75,13 @@ public class FingonTextFieldUI extends BasicTextUI implements KeyListener, Caret
 	if (mark != dot) {
 	    JTextComponent textComponent = (JTextComponent)e.getSource();
 	    String selectedText = textComponent.getSelectedText();
-	    if (selectedText != null) {
-        	try {
-        	    SpeechSynthesizer synthesizer = PlayerFactory.getSpeechSynthesizer();
-        	    synthesizer.play(selectedText);
-        	} catch (PlayException ex) {}
-	    }
+	    try {
+    	    	SpeechSynthesizer synthesizer = PlayerFactory.getSpeechSynthesizer();
+    	    	synthesizer.stop();
+    	    	if (selectedText != null) {
+            	    synthesizer.play(selectedText);
+    	    	}
+	    } catch (PlayException ex) {}
 	}
     }
 
@@ -96,6 +97,7 @@ public class FingonTextFieldUI extends BasicTextUI implements KeyListener, Caret
 	if (typedChar == ' ') {
 	    try {
 	        SpeechSynthesizer synthesizer = PlayerFactory.getSpeechSynthesizer();
+	        synthesizer.stop();
 	        synthesizer.play(typedString);
 	    } catch (PlayException ex) {
 	    }

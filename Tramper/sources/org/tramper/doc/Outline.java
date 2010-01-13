@@ -111,12 +111,4 @@ public class Outline extends MarkupDocument implements TreeModel, Serializable {
     public void valueForPathChanged(TreePath path, Object newValue) {
         //not used at this moment
     }
-
-    /**
-     * the outline format doesn't specify an icon at this moment, return null
-     * @see org.tramper.doc.MarkupDocument#getIcon()
-     */
-    public String getIcon() {
-        return null;
-    }
 }

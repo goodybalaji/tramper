@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.swing.EnhancedIcon;
+import javax.swing.Icon;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -137,15 +139,24 @@ public class AtomParser implements Parser {
             aNode = XPathAPI.selectSingleNode(docRoot, "/feed/icon/text()");
             if (aNode != null) {
                 String aText = aNode.getNodeValue();
-                if (aText != null)
-                    feed.setIcon(aText);
-            }
-            else {
+                if (aText != null) {
+                    try {
+                	URL iconUrl = new URL(aText);
+                	Icon icon = new EnhancedIcon(iconUrl);
+                        feed.setIcon(icon);
+                    } catch (MalformedURLException e) {}
+                }
+            } else {
                 aNode = XPathAPI.selectSingleNode(docRoot, "/feed/logo/text()");
                 if (aNode != null) {
                     String aText = aNode.getNodeValue();
-                    if (aText != null)
-                        feed.setIcon(aText);
+                    if (aText != null) {
+                        try {
+                            URL iconUrl = new URL(aText);
+                            Icon icon = new EnhancedIcon(iconUrl);
+                            feed.setIcon(icon);
+                        } catch (MalformedURLException e) {}
+                    }
                 }
             }
             aNode = XPathAPI.selectSingleNode(docRoot, "/feed/author");

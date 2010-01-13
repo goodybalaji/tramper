@@ -1,6 +1,7 @@
 Manifest-Version: 1.0 
 Created-By: 1.6.0_11 (Sun Microsystems Inc.) 
 Main-Class: org.tramper.Tramper
+SplashScreen-Image: org/tramper/gui/images/splash.png
 Class-Path: ./cmu_us_kal.jar
  ./cmudict04.jar 
  ./cmulex.jar

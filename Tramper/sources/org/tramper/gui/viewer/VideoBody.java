@@ -110,7 +110,7 @@ public class VideoBody extends JPanel implements Body, VideoRendererListener, Mo
 
 	Rectangle halfVideoSize = new Rectangle(0, videoHeight/2, videoWidth, videoHeight/2);
 	
-	g2d.setComposite(AlphaComposite.SrcOver.derive(0.33f));
+	g2d.setComposite(AlphaComposite.SrcOver.derive(0.5f));
 	AffineTransform currentTransform = g2d.getTransform();
 	AffineTransform flipTransform = new AffineTransform(1, 0, 0, -1, 0, videoHeight);
 	g2d.transform(flipTransform);
