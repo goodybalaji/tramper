@@ -404,8 +404,9 @@ public class NativeWebPageBody extends JPanel implements Body, WebBrowserListene
 	double scale = 0.4;
 	g2d.scale(scale, scale);
 	
+	Dimension screenCaptureSize = new Dimension((int)(miniatureSize.width/scale), (int)(miniatureSize.height/scale));
 	try {
-	    Rectangle screenPart = new Rectangle(this.getLocationOnScreen(), new Dimension(300, 225));
+	    Rectangle screenPart = new Rectangle(this.getLocationOnScreen(), screenCaptureSize);
 	    Robot robot = new Robot();
 	    screenCapture = robot.createScreenCapture(screenPart);
 	} catch (AWTException e) {
