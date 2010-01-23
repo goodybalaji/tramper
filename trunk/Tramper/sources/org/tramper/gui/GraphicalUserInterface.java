@@ -20,6 +20,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.plaf.FontUIResource;
 
 import java.text.MessageFormat;
@@ -31,6 +33,7 @@ import java.util.ResourceBundle;
 import java.util.Locale;
 
 import javax.swing.ActionMap;
+import javax.swing.BoundedRangeModel;
 import javax.swing.BoxLayout;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
@@ -48,8 +51,8 @@ import javax.swing.UIManager;
 import org.apache.log4j.Logger;
 import org.tramper.action.AddFavoriteAction;
 import org.tramper.action.BackHistoryAction;
-import org.tramper.action.EnlargementMinusAction;
-import org.tramper.action.EnlargementPlusAction;
+import org.tramper.action.DecreaseScaleAction;
+import org.tramper.action.IncreaseScaleAction;
 import org.tramper.action.ForwardHistoryAction;
 import org.tramper.action.LoadAboutAction;
 import org.tramper.action.LoadFavoritesAction;
@@ -97,7 +100,7 @@ import org.tramper.ui.UserInterfaceFactory;
  * Standard window for a common GUI
  * @author Paul-Emile
  */
-public class GraphicalUserInterface extends JFrame implements UserInterface, ActionListener, WindowListener, LoadingListener, LoaderFactoryListener, LibraryListener, AUIListener {
+public class GraphicalUserInterface extends JFrame implements UserInterface, ActionListener, WindowListener, LoadingListener, LoaderFactoryListener, LibraryListener, AUIListener, ChangeListener {
     /**  */
     private static final long serialVersionUID = 3478510518434269631L;
     /** logger */
@@ -134,12 +137,12 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
     private ViewerControlPanel miniaturePanel;
     /**  */
     private Map<Loader, LoadingViewer> loadingViewers;
-    /** enlargement */
-    private int enlargement;
     /** mouse pointer image */
     //private Image cursorImage;
     /** display listeners */
     private List<DisplayListener> displayListeners;
+    /** current scale */
+    private float currentScale = 1;
     
     /**
      * initialize the GUI
@@ -229,7 +232,10 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 
 	this.setTitle(label.getString("javaspeaker.productTitle"));
 	this.addWindowListener(this);
-	
+
+        BoundedRangeModel scaleModel = ScaleBoundedRangeModel.getInstance();
+	scaleModel.addChangeListener(this);
+        
 	boolean addressPanelFlag = guiConfig.getAddressPanel();
 	boolean displayPanelFlag = guiConfig.getDisplayPanel();
 	boolean synthesizerPanelFlag = guiConfig.getSynthesizerPanel();
@@ -356,10 +362,10 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	actionMap.put("openRecognizer", OpenRecognizerAction.getInstance());
 	inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0), "openDisplay");
 	actionMap.put("openDisplay", OpenDisplayAction.getInstance());
-	inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_MULTIPLY, InputEvent.CTRL_DOWN_MASK), "enlargementPlus");
-	actionMap.put("enlargementPlus", EnlargementPlusAction.getInstance());
-	inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DIVIDE, InputEvent.CTRL_DOWN_MASK), "enlargementMinus");
-	actionMap.put("enlargementMinus", EnlargementMinusAction.getInstance());
+	inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_MULTIPLY, InputEvent.CTRL_DOWN_MASK), "scalePlus");
+	actionMap.put("scalePlus", new IncreaseScaleAction(scaleModel));
+	inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DIVIDE, InputEvent.CTRL_DOWN_MASK), "scaleMinus");
+	actionMap.put("scaleMinus", new DecreaseScaleAction(scaleModel));
 	/*inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_CONTROL, 0, true), "stop typing number");
 	actionMap.put("stop typing number", new AbstractAction() {
 	    private static final long serialVersionUID = 1L;
@@ -470,8 +476,9 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	    }
 	});*/
 
-	changeEnlargement(guiConfig.getEnlargement());
-
+	float scale = guiConfig.getScale();
+	scaleModel.setValue((int)(scale*100));
+	
 	this.pack();
 
 	int windowExtendedState = guiConfig.getWindowExtendedState();
@@ -537,7 +544,7 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
             CardLayout panelLayout = (CardLayout)primaryPanel.getLayout();
             panelLayout.show(primaryPanel, tab);
             currentPrimaryTarget = target;
-            if (viewersArea.getDividerLocation() > 0.99) {
+            if (viewersArea.getDividerLocation() >= viewersArea.getMaximumDividerLocation()) {
         	viewersArea.setDividerLocation(0.3);
             }
         }
@@ -580,7 +587,7 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	        CardLayout panelLayout = (CardLayout)primaryPanel.getLayout();
 	        panelLayout.show(primaryPanel, tab);
 	        currentPrimaryTarget = target;
-	        if (viewersArea.getDividerLocation() > 0.99) {
+	        if (viewersArea.getDividerLocation() >= viewersArea.getMaximumDividerLocation()) {
 	            viewersArea.setDividerLocation(0.3);
 	        }
 	    }
@@ -1043,126 +1050,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
     }
 
     /**
-     * 
-     * @return
-     */
-    public int getEnlargement() {
-	return enlargement;
-    }
-    
-    /**
-     * Change the general size of fonts and images
-     * @param value
-     */
-    public void changeEnlargement(int value) {
-        enlargement += value;
-        
-        Font font = UIManager.getFont("Button.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("Button.font", font);
-
-        font = UIManager.getFont("Label.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("Label.font", font);
-
-        font = UIManager.getFont("CheckBox.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("CheckBox.font", font);
-
-        font = UIManager.getFont("ComboBox.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("ComboBox.font", font);
-
-        font = UIManager.getFont("EditorPane.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("EditorPane.font", font);
-
-        font = UIManager.getFont("FormattedTextField.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("FormattedTextField.font", font);
-
-        font = UIManager.getFont("List.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("List.font", font);
-
-        font = UIManager.getFont("Menu.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("Menu.font", font);
-
-        font = UIManager.getFont("MenuItem.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("MenuItem.font", font);
-
-        font = UIManager.getFont("Panel.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("Panel.font", font);
-
-        font = UIManager.getFont("RadioButton.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("RadioButton.font", font);
-
-        font = UIManager.getFont("ScrollPane.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("ScrollPane.font", font);
-
-        font = UIManager.getFont("Spinner.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("Spinner.font", font);
-
-        font = UIManager.getFont("Table.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("Table.font", font);
-
-        font = UIManager.getFont("TableHeader.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("TableHeader.font", font);
-
-        font = UIManager.getFont("TextArea.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("TextArea.font", font);
-
-        font = UIManager.getFont("TextField.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("TextField.font", font);
-
-        font = UIManager.getFont("TextPane.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("TextPane.font", font);
-
-        font = UIManager.getFont("ToggleButton.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("ToggleButton.font", font);
-
-        font = UIManager.getFont("ToolTip.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("ToolTip.font", font);
-
-        font = UIManager.getFont("Tree.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("Tree.font", font);
-
-        font = UIManager.getFont("ProgressBar.font");
-        font = new FontUIResource(font.deriveFont((float)(font.getSize()+value)));
-        UIManager.put("ProgressBar.font", font);
-        
-        int iconScale = UIManager.getInt("Icon.scale");
-        iconScale = iconScale + value;
-        UIManager.put("Icon.scale", iconScale);
-
-        /*int cursorWidth = cursorImage.getWidth(this);
-        int cursorHeight = cursorImage.getHeight(this);
-        int desiredCursorWidth = cursorWidth + value;
-        int desiredCursorHeight = cursorHeight + value;
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Dimension authorizedCursorDim = toolkit.getBestCursorSize(desiredCursorWidth, desiredCursorHeight);
-        cursorImage = cursorImage.getScaledInstance(authorizedCursorDim.width, authorizedCursorDim.height, Image.SCALE_DEFAULT);
-        Cursor cursor = toolkit.createCustomCursor(cursorImage, new Point(authorizedCursorDim.width-1, 0), "paper_plane");
-        this.setCursor(cursor);*/
-        
-        SwingUtilities.updateComponentTreeUI(this);
-    }
-    
-    /**
      * Display the GUI in full screen mode
      */
     public void displayFullScreenMode() {
@@ -1306,7 +1193,8 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
     public void saveGuiConfig() {
 	LookAndFeel laf = UIManager.getLookAndFeel();
         
-        guiConfig.setEnlargement(enlargement);
+	float scale = (float)ScaleBoundedRangeModel.getInstance().getValue()/(float)100;
+        guiConfig.setScale(scale);
 	guiConfig.setWindowX(this.getLocationOnScreen().x);
 	guiConfig.setWindowY(this.getLocationOnScreen().y);
 	guiConfig.setWindowWidth(this.getWidth());
@@ -1403,7 +1291,7 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
             CardLayout panelLayout = (CardLayout)primaryPanel.getLayout();
             panelLayout.show(primaryPanel, tab);
             currentPrimaryTarget = activatedTarget;
-            if (viewersArea.getDividerLocation() > 0.99) {
+            if (viewersArea.getDividerLocation() >= viewersArea.getMaximumDividerLocation()) {
                 viewersArea.setDividerLocation(0.3);
             }
         }
@@ -1602,5 +1490,118 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
     public void unregister() {
 	LoaderFactory.removeLoaderFactoryListener(this);
 	Library.getInstance().removeLibraryListener(this);
+    }
+
+    public void stateChanged(ChangeEvent e) {
+	BoundedRangeModel scaleModel = (BoundedRangeModel)e.getSource();
+	
+	float value = (float)scaleModel.getValue()/(float)100;
+	changeScale(value);
+    }
+    
+    public void changeScale(float newScale) {
+        Font font = UIManager.getFont("Button.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("Button.font", font);
+
+        font = UIManager.getFont("Label.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("Label.font", font);
+
+        font = UIManager.getFont("CheckBox.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("CheckBox.font", font);
+
+        font = UIManager.getFont("ComboBox.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("ComboBox.font", font);
+
+        font = UIManager.getFont("EditorPane.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("EditorPane.font", font);
+
+        font = UIManager.getFont("FormattedTextField.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("FormattedTextField.font", font);
+
+        font = UIManager.getFont("List.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("List.font", font);
+
+        font = UIManager.getFont("Menu.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("Menu.font", font);
+
+        font = UIManager.getFont("MenuItem.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("MenuItem.font", font);
+
+        font = UIManager.getFont("Panel.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("Panel.font", font);
+
+        font = UIManager.getFont("RadioButton.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("RadioButton.font", font);
+
+        font = UIManager.getFont("ScrollPane.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("ScrollPane.font", font);
+
+        font = UIManager.getFont("Spinner.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("Spinner.font", font);
+
+        font = UIManager.getFont("Table.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("Table.font", font);
+
+        font = UIManager.getFont("TableHeader.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("TableHeader.font", font);
+
+        font = UIManager.getFont("TextArea.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("TextArea.font", font);
+
+        font = UIManager.getFont("TextField.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("TextField.font", font);
+
+        font = UIManager.getFont("TextPane.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("TextPane.font", font);
+
+        font = UIManager.getFont("ToggleButton.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("ToggleButton.font", font);
+
+        font = UIManager.getFont("ToolTip.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("ToolTip.font", font);
+
+        font = UIManager.getFont("Tree.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("Tree.font", font);
+
+        font = UIManager.getFont("ProgressBar.font");
+        font = new FontUIResource(font.deriveFont((float)(font.getSize()/currentScale*newScale)));
+        UIManager.put("ProgressBar.font", font);
+        
+        UIManager.put("EnhancedIcon.scale", newScale);
+
+        /*int cursorWidth = cursorImage.getWidth(this);
+        int cursorHeight = cursorImage.getHeight(this);
+        int desiredCursorWidth = cursorWidth + value;
+        int desiredCursorHeight = cursorHeight + value;
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension authorizedCursorDim = toolkit.getBestCursorSize(desiredCursorWidth, desiredCursorHeight);
+        cursorImage = cursorImage.getScaledInstance(authorizedCursorDim.width, authorizedCursorDim.height, Image.SCALE_DEFAULT);
+        Cursor cursor = toolkit.createCustomCursor(cursorImage, new Point(authorizedCursorDim.width-1, 0), "paper_plane");
+        this.setCursor(cursor);*/
+        
+        currentScale = newScale;
+        
+        SwingUtilities.updateComponentTreeUI(this);
     }
 }

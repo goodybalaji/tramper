@@ -265,23 +265,23 @@ public class GUIConfig {
     }
 
     /**
-     * get the window's enlargement
-     * @return current enlargement
+     * get the window's scale
+     * @return current scale
      */
-    public int getEnlargement() {
+    public float getScale() {
 	try {
-	    return Integer.parseInt(prop.getProperty("enlargement"));
+	    return Float.parseFloat(prop.getProperty("scale"));
 	} catch (NumberFormatException e) {
-	    return 0;
+	    return 1;
 	}
     }
     
     /**
-     * set the window's enlargement
-     * @param enlargement 
+     * set the window's scale
+     * @param scale 
      */
-    public void setEnlargement(int enlargement) {
-        prop.setProperty("enlargement", String.valueOf(enlargement));
+    public void setScale(float scale) {
+        prop.setProperty("scale", String.valueOf(scale));
     }
 
     /**

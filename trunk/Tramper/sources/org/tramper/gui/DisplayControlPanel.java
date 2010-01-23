@@ -2,6 +2,7 @@ package org.tramper.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ItemEvent;
@@ -11,14 +12,17 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
+import javax.swing.BoundedRangeModel;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 import javax.swing.LookAndFeel;
 import javax.swing.EnhancedIcon;
@@ -29,8 +33,8 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.apache.log4j.Logger;
-import org.tramper.action.EnlargementMinusAction;
-import org.tramper.action.EnlargementPlusAction;
+import org.tramper.action.DecreaseScaleAction;
+import org.tramper.action.IncreaseScaleAction;
 import org.tramper.action.FullScreenAction;
 import org.tramper.action.WindowAction;
 import org.tramper.ui.UserInterfaceFactory;
@@ -62,6 +66,8 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
     private JLabel displayModeLabel;
     /** enlarge button */
     private JButton plusButton;
+    /** enlargement slider */
+    private JSlider enlargementSlider;
     /** reduce button */
     private JButton minusButton;
     /** window mode display button */
@@ -156,15 +162,21 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
         JPanel enlargmentPanel = new JPanel();
         enlargmentPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         enlargmentPanel.setMaximumSize(enlargmentPanel.getPreferredSize());
-        
-        minusButton = new JButton(EnlargementMinusAction.getInstance());
+
+	BoundedRangeModel enlargementModel = ScaleBoundedRangeModel.getInstance();
+	
+        minusButton = new JButton(new DecreaseScaleAction(enlargementModel));
 	URL iconMinusUrl = getClass().getResource("images/Minus.png");
 	Icon minusIcon = new EnhancedIcon(iconMinusUrl);
 	minusButton.setIcon(minusIcon);
 	minusButton.setToolTipText(TooltipManager.createTooltip("reduce"));
 	enlargmentPanel.add(minusButton);
 
-        plusButton = new JButton(EnlargementPlusAction.getInstance());
+	enlargementSlider = new JSlider(enlargementModel);
+	enlargementSlider.setPreferredSize(new Dimension(130, 30));
+	enlargmentPanel.add(enlargementSlider);
+	
+        plusButton = new JButton(new IncreaseScaleAction(enlargementModel));
 	URL iconPlusUrl = getClass().getResource("images/Plus.png");
 	Icon plusIcon = new EnhancedIcon(iconPlusUrl);
 	plusButton.setIcon(plusIcon);
