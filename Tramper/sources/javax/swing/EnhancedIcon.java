@@ -112,7 +112,10 @@ public class EnhancedIcon extends ImageIcon implements Runnable {
      */
     @Override
     public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
-	int iconScale = UIManager.getInt("Icon.scale");
+	Float iconScale = (Float)UIManager.get("EnhancedIcon.scale");
+	if (iconScale == null) {
+	    iconScale = Float.valueOf(1);
+	}
 	int w = super.getIconWidth();
 	int h = super.getIconHeight();
 	Image i = this.getImage();
@@ -130,8 +133,8 @@ public class EnhancedIcon extends ImageIcon implements Runnable {
 	    imgObs = c;
 	}
 	
-	int iconWidth = w + (int) (iconScale * ratio);
-	int iconHeight = h + iconScale;
+	int iconWidth = (int)(w*iconScale);
+	int iconHeight = (int)(h*iconScale);
 	g2d.drawImage(i, x, y, iconWidth, iconHeight, imgObs);
 	
 	if (northWestDecorationIcon != null) {
@@ -153,9 +156,12 @@ public class EnhancedIcon extends ImageIcon implements Runnable {
      */
     @Override
     public int getIconHeight() {
-	int iconScale = UIManager.getInt("Icon.scale");
+	Float iconScale = (Float)UIManager.get("EnhancedIcon.scale");
+	if (iconScale == null) {
+	    iconScale = Float.valueOf(1);
+	}
 	int h = super.getIconHeight();
-	return h + iconScale;
+	return (int)(h*iconScale);
     }
 
     /**
@@ -163,9 +169,12 @@ public class EnhancedIcon extends ImageIcon implements Runnable {
      */
     @Override
     public int getIconWidth() {
-	int iconScale = UIManager.getInt("Icon.scale");
+	Float iconScale = (Float)UIManager.get("EnhancedIcon.scale");
+	if (iconScale == null) {
+	    iconScale = Float.valueOf(1);
+	}
 	int w = super.getIconWidth();
-	return w + (int) (iconScale * ratio);
+	return (int)(w*iconScale);
     }
 
     /**
