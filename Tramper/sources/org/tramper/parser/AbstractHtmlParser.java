@@ -1,5 +1,7 @@
 package org.tramper.parser;
 
+import java.awt.Image;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
@@ -14,6 +16,7 @@ import java.util.ResourceBundle;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
 import javax.swing.EnhancedIcon;
 import javax.swing.Icon;
 
@@ -194,8 +197,11 @@ public abstract class AbstractHtmlParser implements Parser {
                 String linkRel = link.getAttribute("rel");
                 String linkType = link.getAttribute("type");
                 if (linkRel.equalsIgnoreCase("icon") || linkRel.equalsIgnoreCase("shortcut icon")) {
-                    Icon icon = new EnhancedIcon(anUrl);
-                    doc.setIcon(icon);
+                    try {
+			Image img = ImageIO.read(anUrl);
+	                Icon icon = new EnhancedIcon(img);
+	                doc.setIcon(icon);
+		    } catch (IOException e) {}
                 } else if (linkRel.equalsIgnoreCase("stylesheet")) {
                     if ("text/css".equals(linkType)) {
                         String media = link.getAttribute("media").toLowerCase();
@@ -218,7 +224,7 @@ public abstract class AbstractHtmlParser implements Parser {
                         }
                     }
                 } else {
-                    Sound aDocument = new Sound();
+                    SimpleDocument aDocument = new SimpleDocument();
                     aDocument.setUrl(anUrl);
                     aDocument.setTitle(linkTitle);
                     aDocument.setMimeType(linkType);

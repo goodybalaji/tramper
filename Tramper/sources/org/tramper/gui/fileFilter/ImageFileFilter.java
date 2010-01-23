@@ -13,7 +13,7 @@ public class ImageFileFilter extends FileFilter {
     /**
      * All supported image extensions
      */
-    private String[] imageExtension = {".gif", ".GIF", ".jpg", ".JPG", ".jpeg", ".JPEG", ".png", ".PNG"};
+    private String[] imageExtension = {".gif", ".GIF", ".jpg", ".JPG", ".jpeg", ".JPEG", ".png", ".PNG", ".bmp", ".BMP", ".ico", ".ICO"};
 
     /**
      * @see javax.swing.filechooser.FileFilter#accept(java.io.File)

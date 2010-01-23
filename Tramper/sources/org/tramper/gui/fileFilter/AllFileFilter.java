@@ -13,7 +13,7 @@ public class AllFileFilter extends FileFilter {
     /**
      * All supported file extensions
      */
-    private String[] allowedExtension = {".htm", ".HTM", ".html", ".HTML", ".rss", ".RSS", ".rdf", ".RDF", ".atom", ".ATOM", ".xml", ".XML", ".opml", ".OPML", ".mp3", ".MP3", ".ogg", ".OGG", ".ape", ".APE", ".spx", ".SPX", ".wav", ".WAV", ".au", ".AU", ".aif", ".AIF", ".aifc", ".AIFC", ".gif", ".GIF", ".jpg", ".JPG", ".jpeg", ".JPEG", ".png", ".PNG", ".avi", ".AVI", ".mov", ".MOV", ".qt", ".QT", ".mpe", ".MPE", ".mpg", ".MPG", ".mpeg", ".MPEG", ".m4v", ".M4V", ".mp4", ".MP4"};
+    private String[] allowedExtension = {".htm", ".HTM", ".html", ".HTML", ".rss", ".RSS", ".rdf", ".RDF", ".atom", ".ATOM", ".xml", ".XML", ".opml", ".OPML", ".mp3", ".MP3", ".ogg", ".OGG", ".ape", ".APE", ".spx", ".SPX", ".wav", ".WAV", ".au", ".AU", ".aif", ".AIF", ".aifc", ".AIFC", ".gif", ".GIF", ".jpg", ".JPG", ".jpeg", ".JPEG", ".png", ".PNG", ".bmp", ".BMP", ".ico", ".ICO", ".avi", ".AVI", ".mov", ".MOV", ".qt", ".QT", ".mpe", ".MPE", ".mpg", ".MPG", ".mpeg", ".MPEG", ".m4v", ".M4V", ".mp4", ".MP4"};
     
     /**
      * 
