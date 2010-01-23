@@ -529,16 +529,16 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
             CardLayout panelLayout = (CardLayout)secondaryPanel.getLayout();
             panelLayout.show(secondaryPanel, tab);
             currentSecondaryTarget = target;
-            if (viewersArea.getDividerLocation() < 0.2) {
-        	viewersArea.setDividerLocation(0.4);
+            if (viewersArea.getDividerLocation() == 0) {
+        	viewersArea.setDividerLocation(0.3);
             }
         } else {
             primaryPanel.add((Component) docViewer, tab);
             CardLayout panelLayout = (CardLayout)primaryPanel.getLayout();
             panelLayout.show(primaryPanel, tab);
             currentPrimaryTarget = target;
-            if (viewersArea.getDividerLocation() > 0.8) {
-        	viewersArea.setDividerLocation(0.4);
+            if (viewersArea.getDividerLocation() > 0.99) {
+        	viewersArea.setDividerLocation(0.3);
             }
         }
         
@@ -573,15 +573,15 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	        CardLayout panelLayout = (CardLayout)secondaryPanel.getLayout();
 	        panelLayout.show(secondaryPanel, tab);
 	        currentSecondaryTarget = target;
-	        if (viewersArea.getDividerLocation() < 0.2) {
-	            viewersArea.setDividerLocation(0.4);
+	        if (viewersArea.getDividerLocation() == 0) {
+	            viewersArea.setDividerLocation(0.3);
 	        }
 	    } else {
 	        CardLayout panelLayout = (CardLayout)primaryPanel.getLayout();
 	        panelLayout.show(primaryPanel, tab);
 	        currentPrimaryTarget = target;
-	        if (viewersArea.getDividerLocation() > 0.8) {
-	            viewersArea.setDividerLocation(0.4);
+	        if (viewersArea.getDividerLocation() > 0.99) {
+	            viewersArea.setDividerLocation(0.3);
 	        }
 	    }
 	    
@@ -1396,15 +1396,15 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
             CardLayout panelLayout = (CardLayout)secondaryPanel.getLayout();
             panelLayout.show(secondaryPanel, tab);
             currentSecondaryTarget = activatedTarget;
-            if (viewersArea.getDividerLocation() < 0.2) {
-                viewersArea.setDividerLocation(0.4);
+            if (viewersArea.getDividerLocation() == 0) {
+                viewersArea.setDividerLocation(0.3);
             }
         } else {
             CardLayout panelLayout = (CardLayout)primaryPanel.getLayout();
             panelLayout.show(primaryPanel, tab);
             currentPrimaryTarget = activatedTarget;
-            if (viewersArea.getDividerLocation() > 0.8) {
-                viewersArea.setDividerLocation(0.4);
+            if (viewersArea.getDividerLocation() > 0.99) {
+                viewersArea.setDividerLocation(0.3);
             }
         }
         // display the document's url in the address bar
