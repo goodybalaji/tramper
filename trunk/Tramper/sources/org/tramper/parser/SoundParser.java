@@ -41,7 +41,7 @@ public class SoundParser implements Parser {
     public SimpleDocument parse(InputStream inStream) throws ParsingException {
         Sound document = new Sound();
         try {
-            // we have metadata for files only
+            // we have metadata for local files only
             BufferedInputStream bufferInStream = new BufferedInputStream(inStream);
             AudioFileFormat encodedFileFormat = AudioSystem.getAudioFileFormat(bufferInStream);
 

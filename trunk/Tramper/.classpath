@@ -33,7 +33,6 @@
 	<classpathentry kind="lib" path="lib/cobra.jar" sourcepath="C:/Program Files/cobra-0.98.4/src"/>
 	<classpathentry kind="lib" path="lib/js.jar"/>
 	<classpathentry kind="lib" path="lib/quaqua.jar"/>
-	<classpathentry kind="lib" path="lib/a03-laf_4.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/xalan.jar"/>
 	<classpathentry kind="lib" path="lib/serializer.jar"/>
@@ -41,7 +40,6 @@
 	<classpathentry kind="lib" path="lib/windows/ext/cgjsapi.jar"/>
 	<classpathentry kind="lib" path="lib/jmc.jar"/>
 	<classpathentry kind="lib" path="lib/substance-lite.jar"/>
-	<classpathentry kind="lib" path="lib/nimrodlf.jar"/>
 	<classpathentry kind="lib" path="lib/freetts-jsapi10.jar"/>
 	<classpathentry kind="lib" path="lib/cmu_us_kal.jar"/>
 	<classpathentry kind="lib" path="lib/mp3spi1.9.4.jar"/>
@@ -53,5 +51,6 @@
 	<classpathentry kind="lib" path="lib/jl1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/tritonus_jorbis-0.3.6.jar"/>
 	<classpathentry kind="lib" path="lib/tritonus_gsm-0.3.6.jar"/>
+	<classpathentry kind="lib" path="lib/ICOReader-1.04.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
