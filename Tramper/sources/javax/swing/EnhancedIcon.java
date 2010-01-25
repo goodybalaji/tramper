@@ -36,7 +36,7 @@ public class EnhancedIcon extends ImageIcon implements Runnable {
     protected ImageIcon northEastDecorationIcon;
     /** South-west decoration icon */
     protected ImageIcon southWestDecorationIcon;
-    /** Sout-east decoration icon */
+    /** South-east decoration icon */
     protected ImageIcon southEastDecorationIcon;
 
     /**
