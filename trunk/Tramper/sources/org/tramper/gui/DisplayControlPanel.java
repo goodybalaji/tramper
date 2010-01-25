@@ -174,6 +174,7 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
 
 	enlargementSlider = new JSlider(enlargementModel);
 	enlargementSlider.setPreferredSize(new Dimension(130, 30));
+	enlargementSlider.setEnabled(false);
 	enlargmentPanel.add(enlargementSlider);
 	
         plusButton = new JButton(new IncreaseScaleAction(enlargementModel));
