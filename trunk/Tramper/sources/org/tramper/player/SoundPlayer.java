@@ -57,7 +57,7 @@ public class SoundPlayer implements MediaPlayer, Runnable, DocumentListener {
     /** play listeners list */
     private List<PlayListener> listener;
     /** decoded audio data buffer size */
-    private static final int BUFFER_SIZE = 2048;
+    private static final int BUFFER_SIZE = 1024;
     /** step for next and previous actions in decoded bytes */
     private static final int STEP = 1000000;
     /** document currently played */
@@ -310,13 +310,11 @@ public class SoundPlayer implements MediaPlayer, Runnable, DocumentListener {
                     }
                 }
                 currentLine.drain();
+            
+		bufferedDecodedStream.reset();
             } catch (IOException e) {
                 logger.error("error when reading audio stream", e);
             }
-            
-            try {
-		bufferedDecodedStream.reset();
-	    } catch (IOException e) {}
 	    
         } while (loop && !stopped);
         
