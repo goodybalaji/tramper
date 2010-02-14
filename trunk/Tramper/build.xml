@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Tramper" default="IzPack-install-FreeTTS">
+<project name="Tramper" default="archives">
 	<property name="izPackDir" value="C:\Program Files\IzPack"/>
 	
 	<target name="javadoc">
@@ -12,32 +12,98 @@
 				noindex="false" 
 				nonavbar="false" 
 				notree="false" 
-				packagenames="org.tramper,org.tramper.action,org.tramper.ui,org.tramper.aui,org.tramper.doc,org.tramper.loader,org.tramper.gui,org.tramper.gui.viewer,org.tramper.browser,org.tramper.player,org.tramper.speech,org.tramper.parser,org.tramper.parser.css,org.tramper.recorder" 
 				source="1.6" 
-				sourcepath="sources" 
 				splitindex="true" 
 				use="true" 
 				version="true">
 			<classpath>
 				<fileset dir="lib">
-					<include name="*.jar"/>
-				</fileset>
-				<fileset dir="lib/windows">
-					<include name="*.jar"/>
+					<include name="**/*.jar"/>
 				</fileset>
 			</classpath>
+			<packageset dir="sources/core">
+				<include name="org/tramper/**"/>
+				<include name="org/fingon/**"/>
+				<include name="javax/swing/**"/>
+			</packageset>
+			<packageset dir="sources/audio">
+				<include name="org/tramper/**"/>
+			</packageset>
+			<packageset dir="sources/video">
+				<include name="org/tramper/**"/>
+			</packageset>
+			<packageset dir="sources/image">
+				<include name="org/tramper/**"/>
+			</packageset>
+			<packageset dir="sources/feed">
+				<include name="org/tramper/**"/>
+			</packageset>
+			<packageset dir="sources/webPage">
+				<include name="org/tramper/**"/>
+			</packageset>
+			<packageset dir="sources/outline">
+				<include name="org/tramper/**"/>
+			</packageset>
+			<packageset dir="sources/jsapi-synthesizer">
+				<include name="org/tramper/**"/>
+			</packageset>
+			<packageset dir="sources/freetts-synthesizer">
+				<include name="org/tramper/**"/>
+			</packageset>
+			<packageset dir="sources/talkingjava-synthesizer">
+				<include name="org/tramper/**"/>
+			</packageset>
+			<packageset dir="sources/browser">
+				<include name="org/tramper/**"/>
+			</packageset>
 		</javadoc>
+	</target>
+	
+	<target name="archives">
+		<jar destfile="archives/audio.jar" manifest="sources/audio/META-INF/MANIFEST.MF">
+			<fileset dir="classes/audio"/>
+		</jar>
+		<jar destfile="archives/video.jar" manifest="sources/video/META-INF/MANIFEST.MF">
+			<fileset dir="classes/video"/>
+		</jar>
+		<jar destfile="archives/image.jar" manifest="sources/image/META-INF/MANIFEST.MF">
+			<fileset dir="classes/image"/>
+		</jar>
+		<jar destfile="archives/feed.jar" manifest="sources/feed/META-INF/MANIFEST.MF">
+			<fileset dir="classes/feed"/>
+		</jar>
+		<jar destfile="archives/outline.jar" manifest="sources/outline/META-INF/MANIFEST.MF">
+			<fileset dir="classes/outline"/>
+		</jar>
+		<jar destfile="archives/webPage.jar" manifest="sources/webPage/META-INF/MANIFEST.MF">
+			<fileset dir="classes/webPage"/>
+		</jar>
+		<jar destfile="archives/jsapi-synthesizer.jar" manifest="sources/jsapi-synthesizer/META-INF/MANIFEST.MF">
+			<fileset dir="classes/jsapi-synthesizer"/>
+		</jar>
+		<jar destfile="archives/freetts-synthesizer.jar" manifest="sources/freetts-synthesizer/META-INF/MANIFEST.MF">
+			<fileset dir="classes/freetts-synthesizer"/>
+		</jar>
+		<jar destfile="archives/talkingjava-synthesizer.jar" manifest="sources/talkingjava-synthesizer/META-INF/MANIFEST.MF">
+			<fileset dir="classes/talkingjava-synthesizer"/>
+		</jar>
+		<jar destfile="archives/browser.jar" manifest="sources/browser/META-INF/MANIFEST.MF">
+			<fileset dir="classes/browser"/>
+		</jar>
+		<jar destfile="archives/Tramper.jar" manifest="sources/core/META-INF/MANIFEST.MF">
+			<fileset dir="classes/core">
+				<exclude name="speech.properties"/>
+			</fileset>
+		</jar>
+		<!--
+		<signjar jar="archives/Tramper.jar" alias="peveuve" storepass="wyoming" />
+		-->
 	</target>
 	
 	<taskdef name="izpack" classpath="${izPackDir}/lib/compiler.jar" classname="com.izforge.izpack.ant.IzPackTask"/>
 	
 	<target name="IzPack-install-FreeTTS">
-		<jar destfile="installer/Tramper.jar" manifest="installer/MANIFEST.MF">
-			<fileset dir="classes">
-				<exclude name="speech.properties"/>
-			</fileset>
-		</jar>
-		<signjar jar="installer/Tramper.jar" alias="peveuve" storepass="wyoming" />
+		<antcall target="archives"/>
 		<izpack input="installer/IZPack-install-FreeTTS.xml"
 		    output="installer/Tramper-install-FreeTTS.jar"
 		    installerType="standard"
@@ -46,12 +112,7 @@
 	</target>
 
 	<target name="IzPack-install-TalkingJava">
-		<jar destfile="installer/Tramper.jar" manifest="installer/MANIFEST.MF">
-			<fileset dir="classes">
-				<exclude name="speech.properties"/>
-			</fileset>
-		</jar>
-		<signjar jar="installer/Tramper.jar" alias="peveuve" storepass="wyoming" />
+		<antcall target="archives"/>
 		<izpack input="installer/IZPack-install-TalkingJava.xml"
 		    output="installer/Tramper-install-TalkingJava.jar"
 		    installerType="standard"

@@ -1,0 +1,3 @@
+org.tramper.browser.FileBrowser
+org.tramper.browser.HttpBrowser
+org.tramper.browser.JarBrowser

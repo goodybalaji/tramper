@@ -59,7 +59,7 @@
     -->
     <packs>
         <pack name="Audio browser" required="yes">
-            <description>The audio media browser</description>            <file src="sources/speech.properties" targetdir="$USER_HOME"/>
+            <description>The audio media browser</description>            <file src="sources/core/speech.properties" targetdir="$USER_HOME"/>
             <file src="soundbank.gm" targetdir="$INSTALL_PATH"/>
             <file src="GUIConfig.properties" targetdir="$INSTALL_PATH"/>            <file os="windows" src="shortPathNameFormat.vbs" targetdir="$INSTALL_PATH"/>
             <file src="sphinx-recognizer.config.xml" targetdir="$INSTALL_PATH"/>
@@ -68,8 +68,7 @@
             <file src="installer/Tramper.ico" os="windows" targetdir="$INSTALL_PATH"/>
             <file src="installer/Tramper.png" os="unix" targetdir="$INSTALL_PATH"/>
             <file src="installer/Tramper-uninstall.ico" os="windows" targetdir="$INSTALL_PATH"/>
-            <file src="installer/Tramper-uninstall.png" os="unix" targetdir="$INSTALL_PATH"/>
-            <file src="installer/Tramper.jar" targetdir="$INSTALL_PATH/lib"/>            <fileset dir="lib" targetdir="$INSTALL_PATH/lib">
+            <file src="installer/Tramper-uninstall.png" os="unix" targetdir="$INSTALL_PATH"/>            <fileset dir="archives" targetdir="$INSTALL_PATH/lib">	            <include name="*.jar"/>            </fileset>            <fileset dir="lib" targetdir="$INSTALL_PATH/lib">
 	            <include name="*.jar"/>
             </fileset>
             <fileset dir="lib/windows" os="windows" targetdir="$INSTALL_PATH/lib/windows">

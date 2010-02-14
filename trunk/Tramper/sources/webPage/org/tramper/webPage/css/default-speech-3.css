@@ -1,0 +1,30 @@
+body {
+	voice-volume: x-loud;
+	voice-balance: center;
+	speak: normal;
+	pause-before: none;
+	pause-after: none;
+	rest-before: none;
+	rest-after: none;
+	cue-before: none;
+	cue-after: none;
+	voice-family: female;
+	voice-rate: medium;
+	voice-pitch: medium;
+	voice-pitch-range: medium;
+}
+a {
+	voice-volume: x-loud;
+	voice-balance: center;
+	speak: normal;
+	pause-before: strong;
+	pause-after: none;
+	rest-before: none;
+	rest-after: none;
+/*	cue-before: url(file://Documents and Settings/Paul-Emile/Mes documents/workspace/Tramper/sources/org/tramper/aui/sounds/boing.wav);*/
+	cue-after: none;
+	voice-family: male;
+	voice-rate: medium;
+	voice-pitch: medium;
+	voice-pitch-range: medium;
+}
