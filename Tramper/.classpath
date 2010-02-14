@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="sources"/>
-	<classpathentry kind="lib" path="lib/tritonus_share-0.3.6.jar"/>
-	<classpathentry kind="lib" path="lib/jflac-1.3.jar"/>
+	<classpathentry kind="lib" path="archives/Tramper.jar" sourcepath="sources/core"/>
+	<classpathentry kind="lib" path="archives/browser.jar" sourcepath="sources/browser"/>
+	<classpathentry kind="lib" path="archives/outline.jar" sourcepath="sources/outline"/>
+	<classpathentry kind="lib" path="archives/feed.jar" sourcepath="sources/feed"/>
+	<classpathentry kind="lib" path="archives/audio.jar" sourcepath="sources/audio"/>
+	<classpathentry kind="lib" path="archives/video.jar" sourcepath="sources/video"/>
+	<classpathentry kind="lib" path="archives/webPage.jar" sourcepath="sources/webPage"/>
+	<classpathentry kind="lib" path="archives/image.jar" sourcepath="sources/image"/>
+	<classpathentry kind="lib" path="archives/jsapi-synthesizer.jar" sourcepath="sources/jsapi-synthesizer"/>
+	<classpathentry kind="lib" path="archives/freetts-synthesizer.jar" sourcepath="sources/freetts-synthesizer"/>
+	<classpathentry kind="lib" path="archives/talkingjava-synthesizer.jar" sourcepath="sources/talkingjava-synthesizer"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_13"/>
+	<classpathentry kind="lib" path="lib/tritonus_share-0.3.6.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.4.jar"/>
 	<classpathentry kind="lib" path="lib/en_us.jar"/>
 	<classpathentry kind="lib" path="lib/freetts.jar">
@@ -52,5 +61,16 @@
 	<classpathentry kind="lib" path="lib/tritonus_jorbis-0.3.6.jar"/>
 	<classpathentry kind="lib" path="lib/tritonus_gsm-0.3.6.jar"/>
 	<classpathentry kind="lib" path="lib/ICOReader-1.04.jar"/>
-	<classpathentry kind="output" path="classes"/>
+	<classpathentry kind="src" output="classes/audio" path="sources/audio"/>
+	<classpathentry kind="src" output="classes/talkingjava-synthesizer" path="sources/talkingjava-synthesizer"/>
+	<classpathentry kind="src" output="classes/freetts-synthesizer" path="sources/freetts-synthesizer"/>
+	<classpathentry kind="src" output="classes/jsapi-synthesizer" path="sources/jsapi-synthesizer"/>
+	<classpathentry kind="src" output="classes/browser" path="sources/browser"/>
+	<classpathentry kind="src" output="classes/outline" path="sources/outline"/>
+	<classpathentry kind="src" output="classes/image" path="sources/image"/>
+	<classpathentry kind="src" output="classes/core" path="sources/core"/>
+	<classpathentry kind="src" output="classes/video" path="sources/video"/>
+	<classpathentry kind="src" output="classes/feed" path="sources/feed"/>
+	<classpathentry kind="src" output="classes/webPage" path="sources/webPage"/>
+	<classpathentry kind="output" path="classes/core"/>
 </classpath>

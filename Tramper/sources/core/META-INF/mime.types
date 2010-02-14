@@ -1,0 +1,36 @@
+
+application/rss+xml rss
+application/rdf+xml rdf
+application/atom+xml atom
+text/x-opml opml
+text/html htm html
+application/xhtml+xml xhtml
+
+image/gif gif
+image/jpeg jpg jpeg jpe
+image/png png
+image/bmp bmp
+image/vnd.microsoft.icon ico
+
+text/xml xml 
+
+audio/basic au snd
+audio/x-wav wav
+audio/x-aiff aif aiff aifc
+audio/mpg mp2
+audio/mp3 mp3
+audio/x-mpegaudio mpa
+audio/x-mp3 mpu
+audio/x-ogg ogg
+audio/x-flac flac
+audio/x-ape ape
+audio/speex spx
+audio/gsm gsm
+audio/mid mid midi 
+
+video/x-msvideo avi
+video/quicktime mov qt
+video/mpeg mpe mpg mpeg mpv2
+video/mp4 mp4
+video/x-m4v m4v
+video/x-ms-asf asf asr asx
