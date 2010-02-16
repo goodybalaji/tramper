@@ -64,4 +64,12 @@ public class Video extends SimpleDocument {
     public void setFrameSize(Dimension frameSize) {
         this.frameSize = frameSize;
     }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+	return "video";
+    }
 }

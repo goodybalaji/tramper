@@ -59,4 +59,12 @@ public class ImageDocument extends SimpleDocument {
     public void setImage(BufferedImage image) {
         this.image = image;
     }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+	return "image";
+    }
 }

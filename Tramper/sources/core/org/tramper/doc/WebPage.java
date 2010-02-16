@@ -72,4 +72,12 @@ public class WebPage extends MarkupDocument implements Serializable {
     public void removeItem(DocumentItem item) {
         this.items.remove(item);
     }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+	return "webPage";
+    }
 }

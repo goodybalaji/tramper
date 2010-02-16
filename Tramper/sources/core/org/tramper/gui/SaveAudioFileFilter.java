@@ -1,4 +1,4 @@
-package org.tramper.gui.fileFilter;
+package org.tramper.gui;
 
 import java.io.File;
 import java.util.List;
@@ -6,25 +6,30 @@ import java.util.ResourceBundle;
 
 import javax.swing.filechooser.FileFilter;
 
-import org.tramper.image.ImageParser;
+import org.tramper.audio.SoundParser;
 
 /**
+ * Display the available audio encoding format in the file chooser
  * @author Paul-Emile
- * 
  */
-public class ImageFileFilter extends FileFilter {
+public class SaveAudioFileFilter extends FileFilter {
+    /**
+     * 
+     */
+    public SaveAudioFileFilter() {
+        super();
+    }
+
     /**
      * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
      */
-    @Override
     public boolean accept(File aFile) {
         if (aFile.isDirectory()) {
             return true;
         }
-
-        List<String> imageExtension = ImageParser.getSupportedExtensions();
+        List<String> audioExtension = SoundParser.getSupportedEncodingExtensions();
         String filename = aFile.getName();
-        for (String extension : imageExtension) {
+        for (String extension : audioExtension) {
             if (filename.toLowerCase().endsWith(extension.toLowerCase())) {
         	return true;
             }
@@ -35,15 +40,14 @@ public class ImageFileFilter extends FileFilter {
     /**
      * @see javax.swing.filechooser.FileFilter#getDescription()
      */
-    @Override
     public String getDescription() {
         ResourceBundle label = ResourceBundle.getBundle("label");
-        String imageLabel = label.getString("image").concat(" (");
-        List<String> imageExtension = ImageParser.getSupportedExtensions();
-        for (String extension : imageExtension) {
-            imageLabel = imageLabel.concat("*.").concat(extension).concat(", ");
+        String audioLabel = label.getString("saveAudioFilter");
+        List<String> audioExtension = SoundParser.getSupportedEncodingExtensions();
+        for (String extension : audioExtension) {
+            audioLabel = audioLabel.concat("*.").concat(extension).concat(", ");
         }
-        imageLabel = imageLabel.concat(")");
-        return imageLabel;
+        audioLabel = audioLabel.concat(")");
+        return audioLabel;
     }
 }

@@ -590,4 +590,12 @@ public abstract class AbstractHtmlParser implements Parser {
     public void unparse(OutputStream outStream, SimpleDocument document, URL url) throws ParsingException {
         
     }
+    
+    /**
+     * 
+     * @return
+     */
+    public SimpleDocument getSupportedDocument() {
+	return new WebPage();
+    }
 }

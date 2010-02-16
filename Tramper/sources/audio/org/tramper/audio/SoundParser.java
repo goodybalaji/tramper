@@ -210,7 +210,7 @@ public class SoundParser implements Parser {
 	return false;
     }
     
-    public static List<String> getSupportedExtensions() {
+    public List<String> getSupportedExtensions() {
 	Type[] types = AudioSystem.getAudioFileTypes();
 	List<String> extensions = new ArrayList<String>();
 	for (Type type : types) {
@@ -236,5 +236,13 @@ public class SoundParser implements Parser {
 	    extensions.add(anExtension);
 	}
 	return extensions;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public SimpleDocument getSupportedDocument() {
+	return new Sound();
     }
 }

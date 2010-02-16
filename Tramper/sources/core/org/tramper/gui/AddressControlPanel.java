@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -24,7 +25,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.EnhancedIcon;
 import javax.swing.SwingConstants;
-import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 import org.tramper.action.LoadCurrentPrimaryTargetAction;
@@ -36,14 +36,9 @@ import org.tramper.browser.SearchEngine;
 import org.tramper.browser.SearchEngineFactory;
 import org.tramper.doc.Library;
 import org.tramper.doc.Target;
-import org.tramper.gui.fileFilter.AudioFileFilter;
-import org.tramper.gui.fileFilter.FeedFileFilter;
-import org.tramper.gui.fileFilter.ImageFileFilter;
-import org.tramper.gui.fileFilter.OutlineFileFilter;
-import org.tramper.gui.fileFilter.VideoFileFilter;
-import org.tramper.gui.fileFilter.WebPageFileFilter;
 import org.tramper.loader.Loader;
 import org.tramper.loader.LoaderFactory;
+import org.tramper.parser.ParserFactory;
 import org.tramper.ui.UserInterface;
 import org.tramper.ui.UserInterfaceFactory;
 
@@ -261,18 +256,12 @@ public class AddressControlPanel extends JPanel implements ActionListener {
 	    JFileChooser fileDialog = new JFileChooser();
 	    fileDialog.setMultiSelectionEnabled(false);
 
-	    FileFilter webPageFilter = new WebPageFileFilter();
-	    fileDialog.addChoosableFileFilter(webPageFilter);
-	    FileFilter feedFilter = new FeedFileFilter();
-	    fileDialog.addChoosableFileFilter(feedFilter);
-	    FileFilter outlineFilter = new OutlineFileFilter();
-	    fileDialog.addChoosableFileFilter(outlineFilter);
-	    FileFilter audioFilter = new AudioFileFilter();
-	    fileDialog.addChoosableFileFilter(audioFilter);
-	    FileFilter videoFilter = new VideoFileFilter();
-	    fileDialog.addChoosableFileFilter(videoFilter);
-	    FileFilter imageFilter = new ImageFileFilter();
-	    fileDialog.addChoosableFileFilter(imageFilter);
+	    Iterator<FileFilterByExtension> fileFilters = ParserFactory.getFileFiltersByExtension();
+	    while (fileFilters.hasNext()) {
+		FileFilterByExtension aFileFilter = fileFilters.next();
+		fileDialog.addChoosableFileFilter(aFileFilter);
+	    }
+	    
 	    fileDialog.setAcceptAllFileFilterUsed(true);
 	    
 	    fileDialog.setLocale(Locale.getDefault());

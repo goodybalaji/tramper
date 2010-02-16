@@ -1,15 +1,19 @@
 package org.tramper.parser;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.log4j.Logger;
+import org.tramper.gui.FileFilterByExtension;
 
 /**
- * Returns the right parser following a mime type or a file extension.
+ * Returns the right parser following a MIME type or a file extension.
  * @author Paul-Emile
  */
 public class ParserFactory {
@@ -73,5 +77,28 @@ public class ParserFactory {
 	lock.unlock();
         logger.error("Unknown extension: "+extension);
         throw new ParsingException("Unknown extension: "+extension);
+    }
+    
+    public static Iterator<FileFilterByExtension> getFileFiltersByExtension() {
+	Map<String, FileFilterByExtension> fileFilterMap = new HashMap<String, FileFilterByExtension>();
+	lock.lock();
+	Iterator<Parser> parserIterator = parserLoader.iterator();
+	while (parserIterator.hasNext()) {
+	    try {
+		Parser aParser = parserIterator.next();
+		List<String> extensions = aParser.getSupportedExtensions();
+		String documentType = aParser.getSupportedDocument().toString();
+		if (fileFilterMap.containsKey(documentType)) {
+		    fileFilterMap.get(documentType).addExtensions(extensions);
+		} else {
+		    FileFilterByExtension aFileFilter = new FileFilterByExtension(documentType, extensions);
+		    fileFilterMap.put(documentType, aFileFilter);
+		}
+	    } catch (ServiceConfigurationError e) {
+		logger.error("Error when loading a service provider", e);
+	    }
+	}
+	lock.unlock();
+	return fileFilterMap.values().iterator();
     }
 }

@@ -1,38 +1,49 @@
 package org.tramper.recognizer;
 
-import javax.speech.Central;
-import javax.speech.EngineList;
+import java.util.Iterator;
+import java.util.ServiceConfigurationError;
+import java.util.ServiceLoader;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+import org.apache.log4j.Logger;
 
 /**
  * A speechRecognizer factory
  * @author Paul-Emile
  */
 public class SpeechRecognizerFactory {
-    /** current speechRecognizer */
-    private static SpeechRecognizer speechRecognizer;
+    /** logger */
+    private static Logger logger = Logger.getLogger(SpeechRecognizerFactory.class);
+    /** service provider loader for speech recognizer interface */
+    private static ServiceLoader<SpeechRecognizer> recognizerLoader;
+    /** lock preventing several threads to use the service loader concurrently */
+    private static Lock lock;
     
-    /**
-     * 
-     */
-    private SpeechRecognizerFactory() {
-        super();
+    static {
+	recognizerLoader = ServiceLoader.load(SpeechRecognizer.class);
+	lock = new ReentrantLock();
     }
-    
+
     /**
-     * instanciate and return the available speechRecognizer
-     * @return
+     * Instantiates and returns the first available speech recognizer.
+     * @return a speech recognizer
      * @throws RecognitionException 
      */
     public static SpeechRecognizer getSpeechRecognizer() throws RecognitionException {
-        if (speechRecognizer == null) {
-            EngineList list = Central.availableRecognizers(null);
-            if (list != null && list.size() > 0) {
-                speechRecognizer = new JSAPISpeechRecognizer();
-            } else {
-                speechRecognizer = new SphinxSpeechRecognizer();
-            }
-        }
-        return speechRecognizer;
+	lock.lock();
+	Iterator<SpeechRecognizer> recognizerIterator = recognizerLoader.iterator();
+	while (recognizerIterator.hasNext()) {
+	    try {
+		SpeechRecognizer aRecognizer = recognizerIterator.next();
+		lock.unlock();
+		return aRecognizer;
+	    } catch (ServiceConfigurationError e) {
+		logger.error("Error when loading a service provider", e);
+	    }
+	}
+	lock.unlock();
+        logger.error("Unable to load a speech recognizer");
+        throw new RecognitionException("Unable to load a speech recognizer");
     }
-
 }

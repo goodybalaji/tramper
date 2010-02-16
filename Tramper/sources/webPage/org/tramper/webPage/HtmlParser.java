@@ -70,7 +70,7 @@ public class HtmlParser extends AbstractHtmlParser {
      * 
      * @return
      */
-    public static List<String> getSupportedExtensions() {
+    public List<String> getSupportedExtensions() {
 	List<String> extensions = new ArrayList<String>();
 	extensions.add("htm");
 	extensions.add("html");

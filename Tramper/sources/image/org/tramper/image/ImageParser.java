@@ -90,8 +90,16 @@ public class ImageParser implements Parser {
      * 
      * @return
      */
-    public static List<String> getSupportedExtensions() {
+    public List<String> getSupportedExtensions() {
 	String[] extensions = ImageIO.getReaderFileSuffixes();
 	return Arrays.asList(extensions);
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public SimpleDocument getSupportedDocument() {
+	return new ImageDocument();
     }
 }

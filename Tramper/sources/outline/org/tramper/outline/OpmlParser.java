@@ -351,9 +351,17 @@ public class OpmlParser implements Parser {
 	return false;
     }
 
-    public static List<String> getSupportedExtensions() {
+    public List<String> getSupportedExtensions() {
 	List<String> extensions = new ArrayList<String>();
 	extensions.add("opml");
 	return extensions;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public SimpleDocument getSupportedDocument() {
+	return new Outline();
     }
 }
