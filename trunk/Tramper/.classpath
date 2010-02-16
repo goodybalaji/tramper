@@ -1,67 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="lib" path="archives/Tramper.jar" sourcepath="sources/core"/>
-	<classpathentry kind="lib" path="archives/browser.jar" sourcepath="sources/browser"/>
-	<classpathentry kind="lib" path="archives/outline.jar" sourcepath="sources/outline"/>
-	<classpathentry kind="lib" path="archives/feed.jar" sourcepath="sources/feed"/>
-	<classpathentry kind="lib" path="archives/audio.jar" sourcepath="sources/audio"/>
-	<classpathentry kind="lib" path="archives/video.jar" sourcepath="sources/video"/>
-	<classpathentry kind="lib" path="archives/webPage.jar" sourcepath="sources/webPage"/>
-	<classpathentry kind="lib" path="archives/image.jar" sourcepath="sources/image"/>
-	<classpathentry kind="lib" path="archives/jsapi-synthesizer.jar" sourcepath="sources/jsapi-synthesizer"/>
-	<classpathentry kind="lib" path="archives/freetts-synthesizer.jar" sourcepath="sources/freetts-synthesizer"/>
-	<classpathentry kind="lib" path="archives/talkingjava-synthesizer.jar" sourcepath="sources/talkingjava-synthesizer"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_13"/>
-	<classpathentry kind="lib" path="lib/tritonus_share-0.3.6.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-1.2.4.jar"/>
-	<classpathentry kind="lib" path="lib/en_us.jar"/>
-	<classpathentry kind="lib" path="lib/freetts.jar">
+	<classpathentry exported="true" kind="lib" path="archives/Tramper.jar" sourcepath="sources/core"/>
+	<classpathentry exported="true" kind="lib" path="archives/browser.jar" sourcepath="sources/browser"/>
+	<classpathentry exported="true" kind="lib" path="archives/outline.jar" sourcepath="sources/outline"/>
+	<classpathentry exported="true" kind="lib" path="archives/feed.jar" sourcepath="sources/feed"/>
+	<classpathentry kind="lib" path="archives/audio.jar"/>
+	<classpathentry exported="true" kind="lib" path="archives/video.jar" sourcepath="sources/video"/>
+	<classpathentry exported="true" kind="lib" path="archives/webPage.jar" sourcepath="sources/webPage"/>
+	<classpathentry exported="true" kind="lib" path="archives/image.jar" sourcepath="sources/image"/>
+	<classpathentry exported="true" kind="lib" path="archives/jsapi-synthesizer.jar" sourcepath="sources/jsapi-synthesizer"/>
+	<classpathentry exported="true" kind="lib" path="archives/talkingjava-synthesizer.jar" sourcepath="sources/talkingjava-synthesizer"/>
+	<classpathentry exported="true" kind="lib" path="archives/freetts-synthesizer.jar" sourcepath="sources/freetts-synthesizer"/>
+	<classpathentry exported="true" kind="lib" path="archives/jsapi-recognizer.jar"/>
+	<classpathentry exported="true" kind="lib" path="archives/sphinx-recognizer.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_13"/>
+	<classpathentry exported="true" kind="lib" path="lib/tritonus_share-0.3.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/en_us.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/freetts.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="http://freetts.sourceforge.net/javadoc/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/jsapi.jar"/>
-	<classpathentry kind="lib" path="lib/cmudict04.jar"/>
-	<classpathentry kind="lib" path="lib/cmulex.jar"/>
-	<classpathentry kind="lib" path="lib/nekohtml.jar">
+	<classpathentry exported="true" kind="lib" path="lib/jsapi.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cmudict04.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cmulex.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/nekohtml.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="http://people.apache.org/~andyc/neko/doc/html/javadoc/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/sphinx4.jar">
+	<classpathentry exported="true" kind="lib" path="lib/sphinx4.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="http://cmusphinx.sourceforge.net/sphinx4/javadoc/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/WSJ_8gau_13dCep_16k_40mel_130Hz_6800Hz.jar"/>
-	<classpathentry kind="lib" path="lib/jdic.jar">
+	<classpathentry exported="true" kind="lib" path="lib/WSJ_8gau_13dCep_16k_40mel_130Hz_6800Hz.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jdic.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="https://jdic.dev.java.net/nonav/documentation/javadoc/jdic/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/cobra.jar" sourcepath="C:/Program Files/cobra-0.98.4/src"/>
-	<classpathentry kind="lib" path="lib/js.jar"/>
-	<classpathentry kind="lib" path="lib/quaqua.jar"/>
-	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
-	<classpathentry kind="lib" path="lib/xalan.jar"/>
-	<classpathentry kind="lib" path="lib/serializer.jar"/>
-	<classpathentry kind="lib" path="lib/xml-apis.jar"/>
-	<classpathentry kind="lib" path="lib/windows/ext/cgjsapi.jar"/>
-	<classpathentry kind="lib" path="lib/jmc.jar"/>
-	<classpathentry kind="lib" path="lib/substance-lite.jar"/>
-	<classpathentry kind="lib" path="lib/freetts-jsapi10.jar"/>
-	<classpathentry kind="lib" path="lib/cmu_us_kal.jar"/>
-	<classpathentry kind="lib" path="lib/mp3spi1.9.4.jar"/>
-	<classpathentry kind="lib" path="lib/jmacdecoder.jar"/>
-	<classpathentry kind="lib" path="lib/jmactritonusspi.jar"/>
-	<classpathentry kind="lib" path="lib/jogg-0.0.7.jar"/>
-	<classpathentry kind="lib" path="lib/jorbis-0.0.15.jar"/>
-	<classpathentry kind="lib" path="lib/jspeex.jar"/>
-	<classpathentry kind="lib" path="lib/jl1.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/tritonus_jorbis-0.3.6.jar"/>
-	<classpathentry kind="lib" path="lib/tritonus_gsm-0.3.6.jar"/>
-	<classpathentry kind="lib" path="lib/ICOReader-1.04.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cobra.jar" sourcepath="C:/Program Files/cobra-0.98.4/src"/>
+	<classpathentry exported="true" kind="lib" path="lib/js.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/quaqua.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/xercesImpl.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/xalan.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/serializer.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/xml-apis.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/windows/ext/cgjsapi.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jmc.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/substance-lite.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/freetts-jsapi10.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cmu_us_kal.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/mp3spi1.9.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jmacdecoder.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jmactritonusspi.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jogg-0.0.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jorbis-0.0.15.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jspeex.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jl1.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/tritonus_jorbis-0.3.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/tritonus_gsm-0.3.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ICOReader-1.04.jar"/>
 	<classpathentry kind="src" output="classes/audio" path="sources/audio"/>
+	<classpathentry kind="src" output="classes/jsapi-recognizer" path="sources/jsapi-recognizer"/>
+	<classpathentry kind="src" output="classes/sphinx-recognizer" path="sources/sphinx-recognizer"/>
 	<classpathentry kind="src" output="classes/talkingjava-synthesizer" path="sources/talkingjava-synthesizer"/>
 	<classpathentry kind="src" output="classes/freetts-synthesizer" path="sources/freetts-synthesizer"/>
 	<classpathentry kind="src" output="classes/jsapi-synthesizer" path="sources/jsapi-synthesizer"/>

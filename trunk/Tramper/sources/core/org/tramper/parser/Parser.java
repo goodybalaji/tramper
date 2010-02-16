@@ -3,6 +3,7 @@ package org.tramper.parser;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.List;
 
 import org.tramper.doc.SimpleDocument;
 
@@ -21,7 +22,7 @@ public interface Parser {
      */
     public SimpleDocument parse(InputStream inStream, URL url) throws ParsingException;
     /**
-     * Unparse a document into a output stream
+     * Unparse a document into an output stream
      * @param document a document
      * @param url URL where to unparse the document
      * @param inStream input stream
@@ -30,14 +31,24 @@ public interface Parser {
     public void unparse(OutputStream outStream, SimpleDocument document, URL url) throws ParsingException;
     /**
      * 
-     * @param mimeType
-     * @return
+     * @param mimeType a MIME type to test
+     * @return true if the MIME type is supported, false otherwise
      */
     public boolean isMimeTypeSupported(String mimeType);
     /**
      * 
-     * @param extension
-     * @return
+     * @param extension an extension to test
+     * @return true if the extension is supported, false otherwise
      */
-    public boolean isExtensionSupported(String extension);
+    public boolean isExtensionSupported(String extension);    
+    /**
+     * 
+     * @return the list of supported extensions
+     */
+    public List<String> getSupportedExtensions();
+    /**
+     * The kind of document produced by this parser.
+     * @return a subclass of SimpleDocument
+     */
+    public SimpleDocument getSupportedDocument(); 
 }

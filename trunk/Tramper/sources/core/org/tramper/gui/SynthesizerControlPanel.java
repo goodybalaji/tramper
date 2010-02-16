@@ -35,7 +35,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
-import org.tramper.gui.fileFilter.SaveAudioFileFilter;
+import org.tramper.gui.SaveAudioFileFilter;
 import org.tramper.player.Player;
 import org.tramper.synthesizer.SpeechSynthesizer;
 import org.tramper.synthesizer.SynthesisEvent;

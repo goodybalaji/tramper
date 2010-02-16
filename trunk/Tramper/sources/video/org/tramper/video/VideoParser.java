@@ -143,7 +143,7 @@ public class VideoParser implements Parser {
 	return false;
     }
 
-    public static List<String> getSupportedExtensions() {
+    public List<String> getSupportedExtensions() {
 	List<String> extensions = new ArrayList<String>();
 	List<ContainerType> types = MediaProvider.getSupportedContainerTypes();
 	for (ContainerType type : types) {
@@ -157,5 +157,13 @@ public class VideoParser implements Parser {
 	    }
 	}
 	return extensions;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public SimpleDocument getSupportedDocument() {
+	return new Video();
     }
 }

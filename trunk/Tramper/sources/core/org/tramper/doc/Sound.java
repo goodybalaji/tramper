@@ -49,13 +49,6 @@ public class Sound extends SimpleDocument {
     public void setId(String id) {
         this.id = id;
     }
-    
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        return title;
-    }
 
     /**
      * @return album.
@@ -83,5 +76,12 @@ public class Sound extends SimpleDocument {
      */
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+    
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        return "audio";
     }
 }

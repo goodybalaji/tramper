@@ -1,29 +1,33 @@
-package org.tramper.gui.fileFilter;
+package org.tramper.gui;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.swing.filechooser.FileFilter;
 
-import org.tramper.audio.SoundParser;
+public class FileFilterByExtension extends FileFilter {
 
-/**
- * 
- * @author Paul-Emile
- */
-public class AudioFileFilter extends FileFilter {
-    /**
-     * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
-     */
+    private String documentType;
+    private List<String> extensions = new ArrayList<String>();
+    
+    public FileFilterByExtension(String docType, List<String> extensions) {
+	this.documentType = docType;
+	this.extensions = extensions;
+    }
+    
+    public void addExtensions(List<String> newExtensions) {
+	extensions.addAll(newExtensions);
+    }
+    
     @Override
     public boolean accept(File aFile) {
         if (aFile.isDirectory()) {
             return true;
         }
-        List<String> audioExtension = SoundParser.getSupportedExtensions();
         String filename = aFile.getName();
-        for (String extension : audioExtension) {
+        for (String extension : extensions) {
             if (filename.toLowerCase().endsWith(extension.toLowerCase())) {
         	return true;
             }
@@ -31,15 +35,11 @@ public class AudioFileFilter extends FileFilter {
         return false;
     }
 
-    /**
-     * @see javax.swing.filechooser.FileFilter#getDescription()
-     */
     @Override
     public String getDescription() {
         ResourceBundle label = ResourceBundle.getBundle("label");
-        String audioLabel = label.getString("audio").concat(" (");
-        List<String> audioExtension = SoundParser.getSupportedExtensions();
-        for (String extension : audioExtension) {
+        String audioLabel = label.getString(documentType).concat(" (");
+        for (String extension : extensions) {
             audioLabel = audioLabel.concat("*.").concat(extension).concat(", ");
         }
         audioLabel = audioLabel.concat(")");

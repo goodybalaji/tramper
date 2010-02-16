@@ -79,7 +79,7 @@ public class XhtmlParser extends AbstractHtmlParser {
      * 
      * @return
      */
-    public static List<String> getSupportedExtensions() {
+    public List<String> getSupportedExtensions() {
 	List<String> extensions = new ArrayList<String>();
 	extensions.add("xhtml");
 	return extensions;

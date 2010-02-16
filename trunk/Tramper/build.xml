@@ -56,6 +56,12 @@
 			<packageset dir="sources/browser">
 				<include name="org/tramper/**"/>
 			</packageset>
+			<packageset dir="sources/jsapi-recognizer">
+				<include name="org/tramper/**"/>
+			</packageset>
+			<packageset dir="sources/sphinx-recognizer">
+				<include name="org/tramper/**"/>
+			</packageset>
 		</javadoc>
 	</target>
 	
@@ -89,6 +95,12 @@
 		</jar>
 		<jar destfile="archives/browser.jar" manifest="sources/browser/META-INF/MANIFEST.MF">
 			<fileset dir="classes/browser"/>
+		</jar>
+		<jar destfile="archives/jsapi-recognizer.jar" manifest="sources/jsapi-recognizer/META-INF/MANIFEST.MF">
+			<fileset dir="classes/jsapi-recognizer"/>
+		</jar>
+		<jar destfile="archives/sphinx-recognizer.jar" manifest="sources/sphinx-recognizer/META-INF/MANIFEST.MF">
+			<fileset dir="classes/sphinx-recognizer"/>
 		</jar>
 		<jar destfile="archives/Tramper.jar" manifest="sources/core/META-INF/MANIFEST.MF">
 			<fileset dir="classes/core">

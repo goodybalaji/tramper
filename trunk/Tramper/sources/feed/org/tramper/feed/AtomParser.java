@@ -773,9 +773,17 @@ public class AtomParser implements Parser {
 	return false;
     }
 
-    public static List<String> getSupportedExtensions() {
+    public List<String> getSupportedExtensions() {
 	List<String> extensions = new ArrayList<String>();
 	extensions.add("atom");
 	return extensions;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public SimpleDocument getSupportedDocument() {
+	return new Feed();
     }
 }

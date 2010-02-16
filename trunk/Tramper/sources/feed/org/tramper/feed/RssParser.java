@@ -333,11 +333,19 @@ public class RssParser implements Parser {
 	return false;
     }
 
-    public static List<String> getSupportedExtensions() {
+    public List<String> getSupportedExtensions() {
 	List<String> extensions = new ArrayList<String>();
 	extensions.add("rss");
 	extensions.add("rdf");
 	extensions.add("xml");
 	return extensions;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public SimpleDocument getSupportedDocument() {
+	return new Feed();
     }
 }
