@@ -11,13 +11,16 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
+import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
+import java.awt.MultipleGradientPaint.CycleMethod;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineMetrics;
+import java.awt.geom.Point2D;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -152,6 +155,7 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 	Color titleBackground = null;
 	Color titleForeground = null;
 	if (document.isActive()) {
+	    marginWidth = 1;
 	    titleBackground = UIManager.getColor("TextField.selectionBackground");
 	    if (titleBackground == null) {
 		titleBackground = UIManager.getColor("textHighlight");
@@ -161,6 +165,7 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 		titleForeground = UIManager.getColor("textHighlightText");
 	    }
 	} else {
+	    marginWidth = 4;
 	    titleBackground = UIManager.getColor("TextField.background");
 	    if (titleBackground == null) {
 		titleBackground = UIManager.getColor("text");
@@ -171,37 +176,31 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 	    }
 	}
 	Color borderColor = titleBackground;
-        
-	Body body = miniaturised.getBody();
+
+	g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
 	g2d.setClip(marginWidth, marginWidth, miniatureSize.width - 2*marginWidth, miniatureSize.height - 2*marginWidth);
+	
+	Body body = miniaturised.getBody();
 	body.paintMiniature(g2d, miniatureSize, mouseOn);
-	g2d.setClip(null);
 
 	// draw a spot light to the top left corner if the mouse is over the miniature
-	/*if (mouseOn) {
-	    int blue = UIManager.getColor("TextField.selectionBackground").getBlue();
-	    int red = UIManager.getColor("TextField.selectionBackground").getRed();
-	    int green = UIManager.getColor("TextField.selectionBackground").getGreen();
-	    Color spotLightColor = new Color(red, green, blue, 75);
-	    
-	    Point2D center = new Point2D.Float(miniatureSize.height/3, miniatureSize.height/3);
-	    float radius = miniatureSize.height/3;
-	    Point2D focus = new Point2D.Float(miniatureSize.height/4, miniatureSize.height/4);
-	    float[] dist = {0.1f, 0.7f, 0.9f};
-	    Color bgColor = new Color(255, 255, 255, 0);
-	    Color coreColor = new Color(255, 255, 255, 200);
-	    Color[] colors = {coreColor, spotLightColor, bgColor};
-	    RadialGradientPaint p = new RadialGradientPaint(center, radius, focus, dist, colors, CycleMethod.NO_CYCLE);
+	if (mouseOn) {
+	    Color extenalColor = new Color(230, 230, 230, 100);
+	    Point2D center = new Point2D.Float(miniatureSize.width/2, miniatureSize.height/2);
+	    float radius = miniatureSize.width/2;
+	    float[] dist = {0.5f, 1.0f};
+	    Color internalColor = new Color(255, 255, 255, 0);
+	    Color[] colors = {internalColor, extenalColor};
+	    RadialGradientPaint p = new RadialGradientPaint(center, radius, dist, colors, CycleMethod.NO_CYCLE);
 	    g2d.setPaint(p);
-	    g2d.fillRect(0, 0, miniatureSize.height*2/3, miniatureSize.height*2/3);
-	}*/
+	    g2d.fillRect(0, 0, miniatureSize.width, miniatureSize.height);
+	}
 	
 	// apply transparency for title
 	AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f);
         g2d.setComposite(composite);
         
-	g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
 	// get title metrics
 	String title = document.getTitle();
 	if (title == null) {
@@ -245,15 +244,11 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
         int borderShapeWidth = miniatureSize.width - 2*marginWidth;
         int borderShapeHeight = miniatureSize.height - 2*marginWidth;
 	g2d.drawRect(borderX, borderY, borderShapeWidth, borderShapeHeight);
-	Color darkerColor = borderColor.darker();
-	g2d.setColor(darkerColor);
-        g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
-        borderX = marginWidth;
-        borderY = marginWidth;
-        borderShapeWidth = miniatureSize.width - 2*marginWidth;
-        borderShapeHeight = miniatureSize.height - 2*marginWidth;
-	g2d.drawRect(borderX, borderY, borderShapeWidth, borderShapeHeight);
 
+	g2d.setClip(null);
+	
+	composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f);
+        g2d.setComposite(composite);
 	super.paint(g);
     }
 
@@ -286,7 +281,6 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 
     public void mouseEntered(MouseEvent e) {
 	this.mouseOn = true;
-	marginWidth = 1;
 	Component body = (Component)miniaturised.getBody();
 	if (body.getWidth() > 0 && body.getHeight() > 0) {
 	    this.repaint();
@@ -295,7 +289,6 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 
     public void mouseExited(MouseEvent e) {
 	this.mouseOn = false;
-	marginWidth = 4;
 	Component body = (Component)miniaturised.getBody();
 	if (body.getWidth() > 0 && body.getHeight() > 0) {
 	    this.repaint();

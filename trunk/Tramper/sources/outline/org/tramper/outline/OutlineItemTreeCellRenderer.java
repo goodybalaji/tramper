@@ -26,17 +26,15 @@ public class OutlineItemTreeCellRenderer extends DefaultTreeCellRenderer {
             boolean hasFocus) {
         super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         OutlineItem item = (OutlineItem)value;
-
+        String title = item.getTitle();
+        this.setText(title);
+        
         List<Link> links = item.getLinks();
         if (links.size() > 0) {
             Link aLink = links.get(0);
             SimpleDocument aDocument = aLink.getLinkedDocument();
             String mimeType = aDocument.getMimeType();
             this.setIcon(IconFactory.getIconByMimeType(mimeType));
-            String title = item.getTitle();
-            if (title != null && !title.equals("")) {
-                this.setText(title);
-            }
         }
         
         return this;
