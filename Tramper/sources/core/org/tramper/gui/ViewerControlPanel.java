@@ -1,5 +1,6 @@
 package org.tramper.gui;
 
+import java.awt.Color;
 import java.util.List;
 
 import javax.swing.Box;
@@ -19,6 +20,8 @@ public class ViewerControlPanel extends JPanel {
     public ViewerControlPanel(GraphicalUserInterface main) {
 	BoxLayout panelLayout = new BoxLayout(this, BoxLayout.X_AXIS);
 	this.setLayout(panelLayout);
+	this.setOpaque(true);
+	this.setBackground(Color.BLACK);
 	
 	List<Viewer> viewers = main.getRenderers();
 	for (Viewer viewer : viewers) {

@@ -45,7 +45,7 @@ public class ViewerFactory {
 		    return aViewer;
 		}
 	    } catch (ServiceConfigurationError e) {
-		logger.error("Error when loading a service provider", e);
+		logger.error("Error when loading a service provider, continue", e);
 	    }
 	}
 	lock.unlock();
