@@ -64,6 +64,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/tritonus_gsm-0.3.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ICOReader-1.04.jar"/>
 	<classpathentry kind="src" output="classes/audio" path="sources/audio"/>
+	<classpathentry kind="src" output="classes/fingon" path="sources/fingon"/>
 	<classpathentry kind="src" output="classes/jsapi-recognizer" path="sources/jsapi-recognizer"/>
 	<classpathentry kind="src" output="classes/sphinx-recognizer" path="sources/sphinx-recognizer"/>
 	<classpathentry kind="src" output="classes/talkingjava-synthesizer" path="sources/talkingjava-synthesizer"/>
@@ -76,5 +77,6 @@
 	<classpathentry kind="src" output="classes/video" path="sources/video"/>
 	<classpathentry kind="src" output="classes/feed" path="sources/feed"/>
 	<classpathentry kind="src" output="classes/webPage" path="sources/webPage"/>
+	<classpathentry kind="lib" path="archives/fingon.jar"/>
 	<classpathentry kind="output" path="classes/core"/>
 </classpath>

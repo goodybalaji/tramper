@@ -1,4 +1,4 @@
-package org.tramper.gui;
+package org.tramper.webPage;
 
 import java.net.URL;
 import java.security.Policy;
