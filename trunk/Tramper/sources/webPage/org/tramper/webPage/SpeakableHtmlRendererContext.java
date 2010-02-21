@@ -1,4 +1,4 @@
-package org.tramper.gui;
+package org.tramper.webPage;
 
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -21,6 +21,7 @@ import org.tramper.action.QuitAction;
 import org.tramper.doc.History;
 import org.tramper.doc.Library;
 import org.tramper.doc.Target;
+import org.tramper.gui.GraphicalUserInterface;
 import org.tramper.loader.Loader;
 import org.tramper.loader.LoaderFactory;
 import org.tramper.ui.UserInterface;

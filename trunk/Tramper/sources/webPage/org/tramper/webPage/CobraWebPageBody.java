@@ -34,7 +34,6 @@ import org.tramper.doc.Target;
 import org.tramper.doc.WebPage;
 import org.tramper.doc.WebPageItem;
 import org.tramper.gui.MagnifyingGlass;
-import org.tramper.gui.SpeakableHtmlRendererContext;
 import org.tramper.gui.viewer.Body;
 import org.tramper.ui.Renderer;
 import org.w3c.dom.Document;
@@ -82,7 +81,7 @@ public class CobraWebPageBody extends HtmlPanel implements Body, MouseListener {
         userAgentcontext = rendererContext.getUserAgentContext();
         docBuilder = new DocumentBuilderImpl(userAgentcontext, rendererContext);
 
-        //load the javascript to modify the web page
+        //load the Javascript to modify the web page
         /*InputStream in = this.getClass().getResourceAsStream("webPageMagnifier.js");
         InputStreamReader reader = null;
         try {

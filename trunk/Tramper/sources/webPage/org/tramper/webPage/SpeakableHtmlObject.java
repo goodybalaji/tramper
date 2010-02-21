@@ -1,4 +1,4 @@
-package org.tramper.gui;
+package org.tramper.webPage;
 
 import java.awt.Component;
 
@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 
 import org.lobobrowser.html.HtmlObject;
 import org.lobobrowser.html.gui.HtmlPanel;
+import org.tramper.gui.IconFactory;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.html2.HTMLElement;
 
