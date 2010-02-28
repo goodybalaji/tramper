@@ -1,23 +1,43 @@
 package org.tramper.gui;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
+import org.apache.log4j.Logger;
 import org.tramper.gui.viewer.Viewer;
+import org.tramper.loader.Loader;
+import org.tramper.loader.LoaderFactory;
+import org.tramper.loader.LoaderFactoryEvent;
+import org.tramper.loader.LoaderFactoryListener;
+import org.tramper.loader.LoadingEvent;
+import org.tramper.loader.LoadingListener;
+import org.tramper.ui.UserInterface;
+import org.tramper.ui.UserInterfaceFactory;
 
 /**
- * 
+ * Displays the miniatures of the viewers and the loading viewers.
  * @author Paul-Emile
  */
-public class ViewerControlPanel extends JPanel {
+public class ViewerControlPanel extends JPanel implements LoadingListener, LoaderFactoryListener {
     /** ViewerControlPanel.java long */
     private static final long serialVersionUID = 1L;
+    /** logger */
+    private Logger logger = Logger.getLogger(ViewerControlPanel.class);
+    /**  */
+    private Map<Loader, LoadingViewer> loadingViewers;
 
     public ViewerControlPanel(GraphicalUserInterface main) {
+	loadingViewers = new HashMap<Loader, LoadingViewer>();
+        LoaderFactory.addLoaderFactoryListener(this);
+	
 	BoxLayout panelLayout = new BoxLayout(this, BoxLayout.X_AXIS);
 	this.setLayout(panelLayout);
 	this.setOpaque(true);
@@ -37,27 +57,31 @@ public class ViewerControlPanel extends JPanel {
     
     public void modifyMiniature(Viewer oldViewer, Viewer newViewer) {
 	int componentCount = this.getComponentCount();
-	// we don't want to test the last component, the glue
-	for (int i=0; i<componentCount-1; i++) {
-	    ViewerMiniature miniature = (ViewerMiniature)this.getComponent(i);
-	    Viewer currentViewer = miniature.getViewer();
-	    if (currentViewer.equals(oldViewer)) {
-		miniature.setViewer(newViewer);
-		break;
+	for (int i=0; i<componentCount; i++) {
+	    Component aComponent = this.getComponent(i);
+	    if (aComponent instanceof ViewerMiniature) {
+    	    	ViewerMiniature miniature = (ViewerMiniature)aComponent;
+    	    	Viewer currentViewer = miniature.getViewer();
+    	    	if (currentViewer.equals(oldViewer)) {
+    	    	    miniature.setViewer(newViewer);
+    	    	    break;
+    	    	}
 	    }
 	}
     }
     
     public void removeMiniature(Viewer viewer) {
 	int componentCount = this.getComponentCount();
-	// we don't want to test the last component, the glue
-	for (int i=0; i<componentCount-1; i++) {
-	    ViewerMiniature mini = (ViewerMiniature)this.getComponent(i);
-	    Viewer aViewer = mini.getViewer();
-	    if (aViewer.equals(viewer)) {
-		this.remove(mini);
-		this.validate();
-		break;
+	for (int i=0; i<componentCount; i++) {
+	    Component aComponent = this.getComponent(i);
+	    if (aComponent instanceof ViewerMiniature) {
+    	    	ViewerMiniature miniature = (ViewerMiniature)aComponent;
+    	    	Viewer aViewer = miniature.getViewer();
+    	    	if (aViewer.equals(viewer)) {
+    	    	    this.remove(miniature);
+    	    	    this.validate();
+    	    	    break;
+    	    	}
 	    }
 	}
     }
@@ -71,13 +95,112 @@ public class ViewerControlPanel extends JPanel {
 	BoxLayout panelLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
 	this.setLayout(panelLayout);
     }
+
+    /**
+     * 
+     * @see org.tramper.loader.LoaderFactoryListener#newLoader(org.tramper.loader.LoaderFactoryEvent)
+     */
+    public void newLoader(LoaderFactoryEvent event) {
+	final Loader loader = event.getLoader();
+	loader.addLoadingListener(this);
+	Runnable thread = new Runnable() {
+	    public void run() {
+	    	LoadingViewer loadingViewer = new LoadingViewer();
+	    	loadingViewer.setLoader(loader);
+	    	loadingViewers.put(loader, loadingViewer);
+	    	add(loadingViewer, 0);
+	    	UserInterfaceFactory.getGraphicalUserInterface().validate();
+	    }
+	};
+	if (SwingUtilities.isEventDispatchThread()) {
+	    thread.run();
+	} else {
+	    try {
+		SwingUtilities.invokeAndWait(thread);
+	    } catch (Exception e) {
+		logger.error("Error when creating a loading viewer in the EDT", e);
+	    }
+	}
+    }
+
+    /**
+     * 
+     * @see org.tramper.loader.LoadingListener#loadingStarted(org.tramper.loader.LoadingEvent)
+     */
+    public void loadingStarted(LoadingEvent event) {
+	final LoadingViewer loadingViewer = loadingViewers.get(event.getSource());
+	if (loadingViewer != null) {
+	    SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+            	    loadingViewer.start();
+            	}
+            });
+    	}
+    }
+
+    /**
+     * 
+     * @see org.tramper.loader.LoadingListener#loadingCompleted(org.tramper.loader.LoadingEvent)
+     */
+    public void loadingCompleted(LoadingEvent event) {
+	final LoadingViewer loadingViewer = loadingViewers.remove(event.getSource());
+	if (loadingViewer != null) {
+	    SwingUtilities.invokeLater(new Runnable() {
+		public void run() {
+		    loadingViewer.stop();
+		    remove(loadingViewer);
+        	    UserInterfaceFactory.getGraphicalUserInterface().validate();
+        	}
+            });
+        }
+    }
+
+    /**
+     * 
+     * @see org.tramper.loader.LoadingListener#loadingFailed(org.tramper.loader.LoadingEvent)
+     */
+    public void loadingFailed(LoadingEvent event) {
+	final LoadingViewer loadingViewer = loadingViewers.remove(event.getSource());
+	if (loadingViewer != null) {
+	    SwingUtilities.invokeLater(new Runnable() {
+		public void run() {
+		    loadingViewer.stop();
+		    remove(loadingViewer);
+		    UserInterfaceFactory.getGraphicalUserInterface().validate();
+	            List<UserInterface> ui = UserInterfaceFactory.getAllUserInterfaces();
+	            for (UserInterface anUi : ui) {
+	        	anUi.raiseError("loadingFailed");
+	            }
+		}
+	    });
+	}
+    }
+
+    /**
+     * 
+     * @see org.tramper.loader.LoadingListener#loadingStopped(org.tramper.loader.LoadingEvent)
+     */
+    public void loadingStopped(LoadingEvent event) {
+	final LoadingViewer loadingViewer = loadingViewers.remove(event.getSource());
+	if (loadingViewer != null) {
+	    SwingUtilities.invokeLater(new Runnable() {
+		public void run() {
+		    loadingViewer.stop();
+		    remove(loadingViewer);
+        	    UserInterfaceFactory.getGraphicalUserInterface().validate();
+        	}
+	    });
+        }
+    }
     
     public void relocalize() {
 	int componentCount = this.getComponentCount();
-	// we don't want to relocalize the last component, the glue
-	for (int i=0; i<componentCount-1; i++) {
-	    ViewerMiniature miniature = (ViewerMiniature)this.getComponent(i);
-	    miniature.relocalize();
+	for (int i=0; i<componentCount; i++) {
+	    Component aComponent = this.getComponent(i);
+	    if (aComponent instanceof ViewerMiniature) {
+    	    	ViewerMiniature miniature = (ViewerMiniature)aComponent;
+    	    	miniature.relocalize();
+	    }
 	}
     }
 }

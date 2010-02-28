@@ -90,6 +90,11 @@ public class UserInterfaceFactory {
         	} catch (Exception e) {
         	    logger.warn("unable to load the look and feel and its theme at startup", e);
         	}
+        	UIManager.put("ProgressBarUI", "org.tramper.gui.CompactProgressBarUI");
+        	UIManager.put("ProgressBar.cycleTime", Integer.valueOf(800));
+        	UIManager.put("ProgressBar.repaintInterval", Integer.valueOf(100));
+        	UIManager.put("ProgressBar.backgroundHighlight", UIManager.getColor("TextField.selectionBackground"));
+        	UIManager.put("ProgressBar.foregroundHighlight", UIManager.getColor("TextField.selectionForeground"));
 	    }
 	});
     }
