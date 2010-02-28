@@ -25,15 +25,12 @@ import javax.swing.plaf.FontUIResource;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Locale;
 
 import javax.swing.ActionMap;
 import javax.swing.BoundedRangeModel;
-import javax.swing.BoxLayout;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -83,12 +80,7 @@ import org.tramper.doc.SimpleDocument;
 import org.tramper.doc.Target;
 import org.tramper.gui.viewer.Viewer;
 import org.tramper.gui.viewer.ViewerFactory;
-import org.tramper.loader.Loader;
 import org.tramper.loader.LoaderFactory;
-import org.tramper.loader.LoaderFactoryEvent;
-import org.tramper.loader.LoaderFactoryListener;
-import org.tramper.loader.LoadingEvent;
-import org.tramper.loader.LoadingListener;
 import org.tramper.player.Player;
 import org.tramper.synthesizer.SpeechSynthesizer;
 import org.tramper.ui.RenderingException;
@@ -99,14 +91,14 @@ import org.tramper.ui.UserInterfaceFactory;
  * Standard window for a common GUI
  * @author Paul-Emile
  */
-public class GraphicalUserInterface extends JFrame implements UserInterface, ActionListener, WindowListener, LoadingListener, LoaderFactoryListener, LibraryListener, AUIListener, ChangeListener {
+public class GraphicalUserInterface extends JFrame implements UserInterface, ActionListener, WindowListener, LibraryListener, AUIListener, ChangeListener {
     /**  */
     private static final long serialVersionUID = 3478510518434269631L;
     /** logger */
     private Logger logger = Logger.getLogger(GraphicalUserInterface.class);
-    /** spliter between viewers */
+    /** splitter between viewers */
     private JSplitPane viewersArea;
-    /** spliter between miniatures and viewers */
+    /** splitter between miniatures and viewers */
     private JSplitPane miniaturesViewersArea;
     /** primary (right or down) panel */
     private JPanel primaryPanel;
@@ -116,8 +108,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
     private JPanel secondaryPanel;
     /** currently showed tab in primary panel */
     private Target currentSecondaryTarget;
-    /** bars panel */
-    private JPanel barPanel;
     /** GUI configuration */
     private GUIConfig guiConfig;
     /** link id typed by user when control key pressed */
@@ -134,8 +124,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
     private RecognizerControlPanel recorderPanel;
     /**  */
     private ViewerControlPanel miniaturePanel;
-    /**  */
-    private Map<Loader, LoadingViewer> loadingViewers;
     /** mouse pointer image */
     //private Image cursorImage;
     /** display listeners */
@@ -224,19 +212,11 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	miniaturePanel = new ViewerControlPanel(this);
 	miniaturesViewersArea.setLeftComponent(miniaturePanel);
 	
-	
-	barPanel = new JPanel();
-	BoxLayout barLayout = new BoxLayout(barPanel, BoxLayout.Y_AXIS);
-	barPanel.setLayout(barLayout);
-	this.getContentPane().add(barPanel, BorderLayout.NORTH);
-
-	// loading progress bar
-	loadingViewers = new HashMap<Loader, LoadingViewer>();
         
 	// Address bar
 	if (addressPanelFlag) {
 	    addressPanel = new AddressControlPanel();
-	    barPanel.add(addressPanel, 0);
+	    this.getContentPane().add(addressPanel, BorderLayout.NORTH);
 	}
 
 	// display control panel
@@ -261,7 +241,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	    this.getContentPane().add(playerPanel, BorderLayout.SOUTH);
 	}
 	
-        LoaderFactory.addLoaderFactoryListener(this);
         Library library = Library.getInstance();
         
 	InputMap inputMap = this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -717,7 +696,7 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
                 SimpleDocument document = docViewer.getDocument();
                 addressPanel.setUrl(document.getUrl().toString());
             }
-            barPanel.add(addressPanel);
+	    this.getContentPane().add(addressPanel, BorderLayout.NORTH);
             addressPanel.requestFocusInWindow();
             // transfer the focus to the next component: the textfield
             addressPanel.transferFocus();
@@ -822,103 +801,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
     }
 
     /**
-     * 
-     * @see org.tramper.loader.LoaderFactoryListener#newLoader(org.tramper.loader.LoaderFactoryEvent)
-     */
-    public void newLoader(LoaderFactoryEvent event) {
-	final Loader loader = event.getLoader();
-	loader.addLoadingListener(this);
-	Runnable thread = new Runnable() {
-	    public void run() {
-	    	LoadingViewer loadingViewer = new LoadingViewer();
-	    	loadingViewer.setLoader(loader);
-	    	loadingViewers.put(loader, loadingViewer);
-	    	barPanel.add(loadingViewer, -1);
-	    	UserInterfaceFactory.getGraphicalUserInterface().validate();
-	    }
-	};
-	if (SwingUtilities.isEventDispatchThread()) {
-	    thread.run();
-	} else {
-	    try {
-		SwingUtilities.invokeAndWait(thread);
-	    } catch (Exception e) {
-		logger.error("Error when creating a loading viewer in the EDT", e);
-	    }
-	}
-    }
-
-    /**
-     * 
-     * @see org.tramper.loader.LoadingListener#loadingStarted(org.tramper.loader.LoadingEvent)
-     */
-    public void loadingStarted(LoadingEvent event) {
-	final LoadingViewer loadingViewer = loadingViewers.get(event.getSource());
-	if (loadingViewer != null) {
-	    SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-            	    loadingViewer.start();
-            	}
-            });
-    	}
-    }
-
-    /**
-     * 
-     * @see org.tramper.loader.LoadingListener#loadingCompleted(org.tramper.loader.LoadingEvent)
-     */
-    public void loadingCompleted(LoadingEvent event) {
-	final LoadingViewer loadingViewer = loadingViewers.remove(event.getSource());
-	if (loadingViewer != null) {
-	    SwingUtilities.invokeLater(new Runnable() {
-		public void run() {
-		    loadingViewer.stop();
-        	    barPanel.remove(loadingViewer);
-        	    UserInterfaceFactory.getGraphicalUserInterface().validate();
-        	}
-            });
-        }
-    }
-
-    /**
-     * 
-     * @see org.tramper.loader.LoadingListener#loadingFailed(org.tramper.loader.LoadingEvent)
-     */
-    public void loadingFailed(LoadingEvent event) {
-	final LoadingViewer loadingViewer = loadingViewers.remove(event.getSource());
-	if (loadingViewer != null) {
-	    SwingUtilities.invokeLater(new Runnable() {
-		public void run() {
-		    loadingViewer.stop();
-		    barPanel.remove(loadingViewer);
-		    UserInterfaceFactory.getGraphicalUserInterface().validate();
-	            List<UserInterface> ui = UserInterfaceFactory.getAllUserInterfaces();
-	            for (UserInterface anUi : ui) {
-	        	anUi.raiseError("loadingFailed");
-	            }
-		}
-	    });
-	}
-    }
-
-    /**
-     * 
-     * @see org.tramper.loader.LoadingListener#loadingStopped(org.tramper.loader.LoadingEvent)
-     */
-    public void loadingStopped(LoadingEvent event) {
-	final LoadingViewer loadingViewer = loadingViewers.remove(event.getSource());
-	if (loadingViewer != null) {
-	    SwingUtilities.invokeLater(new Runnable() {
-		public void run() {
-		    loadingViewer.stop();
-        	    barPanel.remove(loadingViewer);
-        	    UserInterfaceFactory.getGraphicalUserInterface().validate();
-        	}
-	    });
-        }
-    }
-    
-    /**
      * display a confirmation message. 
      * @param msgKey
      * @return
@@ -1013,7 +895,7 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
         this.getContentPane().remove(playerPanel);
         playerPanel = null;
         
-        barPanel.remove(addressPanel);
+	this.getContentPane().remove(addressPanel);
         addressPanel = null;
 
 	miniaturesViewersArea.remove(miniaturePanel);
@@ -1045,10 +927,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	// associates the escape button with the "quit full screen" action
 	ActionMap actionMap = this.getRootPane().getActionMap();
 	actionMap.put("stop", WindowAction.getInstance());
-
-	DisplayEvent event = new DisplayEvent();
-	event.setDisplay(DisplayEvent.FULL_SCREEN);
-	fireDisplayChanged(event);
     }
     
     /**
@@ -1063,7 +941,7 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
         playerPanel = new PlayerControlPanel(this);
         this.getContentPane().add(playerPanel, BorderLayout.SOUTH);
         addressPanel = new AddressControlPanel();
-        barPanel.add(addressPanel, 0);
+	this.getContentPane().add(addressPanel, BorderLayout.NORTH);
         miniaturePanel = new ViewerControlPanel(this);
 	miniaturesViewersArea.setLeftComponent(miniaturePanel);
         
@@ -1086,10 +964,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
         // reset the escape button default action
 	ActionMap actionMap = this.getRootPane().getActionMap();
 	actionMap.put("stop", StopPlayAction.getInstance());
-	
-	DisplayEvent event = new DisplayEvent();
-	event.setDisplay(DisplayEvent.WINDOW);
-	fireDisplayChanged(event);
     }
     
     /**
@@ -1107,16 +981,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	}
     }
     
-    /**
-     * Fires a display changed event to all the display listener.
-     * @param event
-     */
-    private void fireDisplayChanged(DisplayEvent event) {
-	for (DisplayListener listener : displayListeners) {
-	    listener.displayChanged(event);
-	}
-    }
-
     /**
      * Save the GUI configuration, dispose the window, set the singleton to null
      * and reinit the singleton.
@@ -1425,23 +1289,42 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
         return this.currentSecondaryTarget;
     }
     
+    public boolean isSplitPaneHorizontal() {
+	int orientation = viewersArea.getOrientation();
+	if (orientation == JSplitPane.VERTICAL_SPLIT) {
+	    return false;
+	} else {
+	    return true;
+	}
+    }
+    
     /**
      * 
      */
     public void switchSplitPaneOrientation() {
+	DisplayEvent event = new DisplayEvent();
 	int orientation = viewersArea.getOrientation();
 	if (orientation == JSplitPane.VERTICAL_SPLIT) {
 	    viewersArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+	    event.setDisplay(DisplayEvent.HORIZONTAL);
 	} else {
 	    viewersArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
+	    event.setDisplay(DisplayEvent.VERTICAL);
 	}
-	orientation = miniaturesViewersArea.getOrientation();
+	fireDisplayEvent(event);
+	/*orientation = miniaturesViewersArea.getOrientation();
 	if (orientation == JSplitPane.VERTICAL_SPLIT) {
 	    miniaturesViewersArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 	    miniaturePanel.verticalLayout();
 	} else {
 	    miniaturesViewersArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
 	    miniaturePanel.horizontalLayout();
+	}*/
+    }
+
+    private void fireDisplayEvent(DisplayEvent event) {
+	for (DisplayListener listener : displayListeners) {
+	    listener.displayChanged(event);
 	}
     }
 
@@ -1450,13 +1333,12 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
      * @see org.tramper.ui.UserInterface#unregister()
      */
     public void unregister() {
-	LoaderFactory.removeLoaderFactoryListener(this);
+	LoaderFactory.removeLoaderFactoryListener(miniaturePanel);
 	Library.getInstance().removeLibraryListener(this);
     }
 
     public void stateChanged(ChangeEvent e) {
 	BoundedRangeModel scaleModel = (BoundedRangeModel)e.getSource();
-	
 	float value = (float)scaleModel.getValue()/(float)100;
 	changeScale(value);
     }

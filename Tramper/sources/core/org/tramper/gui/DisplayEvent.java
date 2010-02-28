@@ -11,6 +11,10 @@ public class DisplayEvent {
     public static final int WINDOW = 0;
     /** Mini display */
     public static final int MINI = 2;
+    /** Horizontal splitter */
+    public static final int HORIZONTAL = 3;
+    /** Vertical splitter */
+    public static final int VERTICAL = 4;
     /** Full screen, window or mini */
     private int display;
     

@@ -10,10 +10,11 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import javax.swing.JPanel;
+
+import org.apache.log4j.Logger;
 
 /**
  * Obfuscates the window to block the user inputs. Implements MouseListener to catch the mouse event.
@@ -23,6 +24,8 @@ import javax.swing.JPanel;
 public class Obfuscator extends JPanel implements MouseListener {
     /** Obfuscator.java long */
     private static final long serialVersionUID = 8056144400202482727L;
+    /** logger */
+    private Logger logger = Logger.getLogger(Obfuscator.class);
     /**  */
     private Method componentMixingMethod;
 
@@ -34,10 +37,10 @@ public class Obfuscator extends JPanel implements MouseListener {
 	this.addMouseListener(this);
 	setOpaque(false);
 	try {
-	    Class awtUtilitiesClass = Class.forName("com.sun.awt.AWTUtilities");
+	    Class<?> awtUtilitiesClass = Class.forName("com.sun.awt.AWTUtilities");
 	    componentMixingMethod = awtUtilitiesClass.getMethod("setComponentMixingCutoutShape", Component.class, Shape.class);
 	} catch (Exception e) {
-	    System.err.println(e.toString() + " " + e.getMessage());
+	    logger.warn(e.toString() + " " + e.getMessage());
 	}
     }
     
@@ -46,10 +49,12 @@ public class Obfuscator extends JPanel implements MouseListener {
      */
     protected void paintComponent(Graphics g) {
 	super.paintComponent(g);
-	try {
-	    componentMixingMethod.invoke(null, this, new Rectangle(0, 0, getWidth(), getHeight()));
-	} catch (Exception e) {
-	    System.err.println(e.toString() + " " + e.getMessage());
+	if (componentMixingMethod != null) {
+	    try {
+		componentMixingMethod.invoke(null, this, new Rectangle(0, 0, getWidth(), getHeight()));
+	    } catch (Exception e) {
+		logger.warn(e.toString() + " " + e.getMessage());
+	    }
 	}
 	Graphics2D g2d = (Graphics2D)g;
 	Color obfuscatorPaint = new Color(30, 30, 30);

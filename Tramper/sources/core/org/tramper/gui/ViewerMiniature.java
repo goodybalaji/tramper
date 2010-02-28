@@ -70,13 +70,15 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
     private JToggleButton detailButton;
 
     /**
-     * 
-     * @param miniaturised
+     * Displays a miniature of the viewer in parameter 
+     * with a few buttons to control the viewer: 
+     * a close button, an add/remove from favorites, a show/hide details.
+     * @param aViewer a viewer to miniaturize
      */
     public ViewerMiniature(Viewer aViewer) {
 	SpringLayout layoutMgr = new SpringLayout();
 	this.setLayout(layoutMgr);
-
+	
 	this.setOpaque(false);
 	
         ResourceBundle label = ResourceBundle.getBundle("label");

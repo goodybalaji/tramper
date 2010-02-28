@@ -7,7 +7,7 @@
   <shortcut
     name="Tramper"
     target="$JAVA_HOME\bin\javaw.exe"
-    commandLine="-Xmx512m -Djava.ext.dirs=lib\windows -Djava.library.path=lib\windows\x86 -jar lib\Tramper.jar"
+    commandLine="-Xmx512m -Djava.ext.dirs=lib\windows\ext -Djava.library.path=lib\windows\x86 -jar lib\Tramper.jar"
     workingDirectory="$INSTALL_PATH"
     description="This starts the commercial and Windows version of Tramper"
     iconFile="$INSTALL_PATH\Tramper.ico"

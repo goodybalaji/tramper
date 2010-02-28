@@ -33,9 +33,10 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.apache.log4j.Logger;
 import org.tramper.action.DecreaseScaleAction;
+import org.tramper.action.HorizontalViewersOrientationAction;
 import org.tramper.action.IncreaseScaleAction;
 import org.tramper.action.FullScreenAction;
-import org.tramper.action.WindowAction;
+import org.tramper.action.VerticalViewersOrientationAction;
 import org.tramper.ui.UserInterfaceFactory;
 
 /**
@@ -69,10 +70,12 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
     private JSlider enlargementSlider;
     /** reduce button */
     private JButton minusButton;
-    /** window mode display button */
-    private JToggleButton windowModeButton;
+    /** horizontal splitter button */
+    private JToggleButton horizontalButton;
+    /** vertical splitter button */
+    private JToggleButton verticalButton;
     /** full screen mode display button */
-    private JToggleButton fullScreenModeButton;
+    private JButton fullScreenModeButton;
     
     /**
      * 
@@ -172,7 +175,7 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
 	enlargmentPanel.add(minusButton);
 
 	enlargementSlider = new JSlider(enlargementModel);
-	enlargementSlider.setPreferredSize(new Dimension(130, 30));
+	enlargementSlider.setPreferredSize(new Dimension(100, 20));
 	enlargementSlider.setEnabled(false);
 	enlargmentPanel.add(enlargementSlider);
 	
@@ -190,24 +193,31 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
         displayPropPanel.add(displayModeLabel);
 
         JPanel displayModePanel = new JPanel();
-        displayModePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 3));
+        displayModePanel.setLayout(new BoxLayout(displayModePanel, BoxLayout.X_AXIS));
         displayModePanel.setMaximumSize(displayModePanel.getPreferredSize());
-        
-        windowModeButton = new JToggleButton(WindowAction.getInstance());
-        windowModeButton.setIcon(new EnhancedIcon(getClass().getResource("images/window.png")));
-        windowModeButton.setSelected(!main.isFullScreenMode());
-        windowModeButton.setToolTipText(label.getString("javaspeaker.window"));
-        displayModePanel.add(windowModeButton);
 
-        fullScreenModeButton = new JToggleButton(FullScreenAction.getInstance());
+        fullScreenModeButton = new JButton(FullScreenAction.getInstance());
         fullScreenModeButton.setIcon(new EnhancedIcon(getClass().getResource("images/fullscreen.png")));
-        fullScreenModeButton.setSelected(main.isFullScreenMode());
         fullScreenModeButton.setToolTipText(label.getString("javaspeaker.fullScreen"));
         displayModePanel.add(fullScreenModeButton);
         
+        displayModePanel.add(Box.createHorizontalStrut(10));
+        
+        horizontalButton = new JToggleButton(new HorizontalViewersOrientationAction());
+        horizontalButton.setIcon(new EnhancedIcon(getClass().getResource("images/view_left_right.png")));
+        horizontalButton.setSelected(main.isSplitPaneHorizontal());
+        horizontalButton.setToolTipText(label.getString("horizontal"));
+        displayModePanel.add(horizontalButton);
+
+        verticalButton = new JToggleButton(new VerticalViewersOrientationAction());
+        verticalButton.setIcon(new EnhancedIcon(getClass().getResource("images/view_top_bottom.png")));
+        verticalButton.setSelected(!main.isSplitPaneHorizontal());
+        verticalButton.setToolTipText(label.getString("vertical"));
+        displayModePanel.add(verticalButton);
+
         ButtonGroup bGroup = new ButtonGroup();
-        bGroup.add(windowModeButton);
-        bGroup.add(fullScreenModeButton);
+        bGroup.add(horizontalButton);
+        bGroup.add(verticalButton);
         
         displayPropPanel.add(displayModePanel);
         
@@ -247,7 +257,8 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
         minusButton.setToolTipText(TooltipManager.createTooltip("reduce"));
         displayModeLabel.setText(label.getString("javaspeaker.displayMode"));
         fullScreenModeButton.setToolTipText(label.getString("javaspeaker.fullScreen"));
-        windowModeButton.setToolTipText(label.getString("javaspeaker.window"));
+        horizontalButton.setToolTipText(label.getString("horizontal"));
+        verticalButton.setToolTipText(label.getString("vertical"));
     }
 
     /**
@@ -265,16 +276,14 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
                 Locale.setDefault(selectedLocale);
                 main.relocalize();
             }
-        }
-        else if (source == appearenceList) {
+        } else if (source == appearenceList) {
             if (stateChange == ItemEvent.SELECTED) {
                 LookAndFeelInfo selectedAppearence = (LookAndFeelInfo)appearenceList.getSelectedItem();
                 String lafClassName = selectedAppearence.getClassName();
                 try {
                     UIManager.setLookAndFeel(lafClassName);
                     SwingUtilities.updateComponentTreeUI(main);
-                }
-                catch (Exception ex) {
+                } catch (Exception ex) {
                     logger.error(ex.getMessage(), ex);
                 } finally {
                     main.restart();
@@ -297,10 +306,10 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
      */
     public void displayChanged(DisplayEvent e) {
 	int display = e.getDisplay();
-	if (display == DisplayEvent.FULL_SCREEN) {
-	    fullScreenModeButton.setSelected(true);
-	} else if (display == DisplayEvent.WINDOW) {
-	    windowModeButton.setSelected(true);
+	if (display == DisplayEvent.HORIZONTAL) {
+	    horizontalButton.setSelected(true);
+	} else if (display == DisplayEvent.VERTICAL) {
+	    verticalButton.setSelected(true);
 	}
     }
 }

@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -119,7 +120,7 @@ public class PlayerControlPanel extends JPanel implements PlayListener, ChangeLi
         this.add(recognizerButton);
         
         this.add(Box.createHorizontalGlue());
-
+        
         //speed control
         speedLabel = new JLabel(label.getString("javaspeaker.speakingRateLabel"));
         this.add(speedLabel);
