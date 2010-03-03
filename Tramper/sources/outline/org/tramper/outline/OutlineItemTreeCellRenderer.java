@@ -36,7 +36,6 @@ public class OutlineItemTreeCellRenderer extends DefaultTreeCellRenderer {
             String mimeType = aDocument.getMimeType();
             this.setIcon(IconFactory.getIconByMimeType(mimeType));
         }
-        
         return this;
     }
 }

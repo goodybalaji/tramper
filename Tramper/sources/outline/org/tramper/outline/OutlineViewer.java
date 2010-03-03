@@ -26,24 +26,21 @@ public class OutlineViewer extends Viewer {
     }
 
     /**
-     * Select the first child in the list of selected node's parent's children
-     * @see org.tramper.gui.viewer.Viewer#first()
+     * Selects the first child in the list of selected node's parent's children.
      */
     public void first() {
 	body.first();
     }
     
     /**
-     * Select the next child in the list of selected node's parent's children
-     * @see org.tramper.gui.viewer.Viewer#next()
+     * Selects the next child in the list of selected node's parent's children.
      */
     public void next() {
 	body.next();
     }
 
     /**
-     * Select the previous child in the list of selected node's parent's children
-     * @see org.tramper.gui.viewer.Viewer#previous()
+     * Selects the previous child in the list of selected node's parent's children.
      */
     public void previous() {
 	body.previous();
@@ -51,7 +48,6 @@ public class OutlineViewer extends Viewer {
 
     /**
      * Select the last child in the list of selected node's parent's children
-     * @see org.tramper.gui.viewer.Viewer#last()
      */
     public void last() {
 	body.last();
