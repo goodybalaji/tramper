@@ -40,8 +40,7 @@ public class SearchEngineListCellRenderer extends JLabel implements ListCellRend
         if (isSelected) {
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());
-        }
-        else {
+        } else {
             setBackground(list.getBackground());
             setForeground(list.getForeground());
         }

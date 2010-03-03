@@ -57,7 +57,8 @@ public class OutlineHeader extends SimpleHeader {
     }
 
     /**
-     * @see org.tramper.gui.viewer.SimpleHeader#displayDocument(org.tramper.doc.SimpleDocument)
+     * 
+     * @see org.tramper.gui.viewer.SimpleHeader#displayDocument(org.tramper.doc.SimpleDocument, org.tramper.doc.Target)
      */
     public void displayDocument(SimpleDocument document, Target target) {
 	super.displayDocument(document, target);

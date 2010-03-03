@@ -66,10 +66,10 @@ public class OutlineBody extends JScrollPane implements Body, MouseListener, Tre
         long index = document.getIndex();
         selectItem((int)index);
     }
-
+    
     /**
-     * Select the nth child in the list of selected node's parent's children
-     * @see org.tramper.gui.viewer.Viewer#last()
+     * Selects a child in the list of selected node's parent's children.
+     * @param index
      */
     public void selectItem(int index) {
         TreePath selectionPath = outlineTree.getSelectionPath();
