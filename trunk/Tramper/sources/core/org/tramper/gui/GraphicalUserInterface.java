@@ -174,7 +174,7 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	boolean recognizerPanelFlag = guiConfig.getRecognizerPanel();
 	boolean readerPanelFlag = guiConfig.getPlayerPanel();
 
-	// JMenus must be "heavy" to render in front of JDIC WebBrowser component
+	// Menus must be "heavy" to render in front of JDIC WebBrowser component
 	JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
 	// Main window

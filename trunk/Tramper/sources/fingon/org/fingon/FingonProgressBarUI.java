@@ -6,6 +6,7 @@ import java.net.URL;
 
 import javax.swing.JComponent;
 import javax.swing.JProgressBar;
+import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.ProgressBarUI;
 
@@ -27,7 +28,6 @@ public class FingonProgressBarUI extends ProgressBarUI implements PropertyChange
     private URL soundUrl;
     
     public FingonProgressBarUI() {
-	soundUrl = getClass().getResource("/org/tramper/aui/sounds/Le seigneur des anneaux - Le retour du roi[1]_chapter60-01.mp3");
 	try {
 	    soundPlayer = (SoundPlayer)PlayerFactory.getPlayerByExtension("mp3");
 	} catch (PlayException e) {
@@ -51,6 +51,7 @@ public class FingonProgressBarUI extends ProgressBarUI implements PropertyChange
     public void installUI(JComponent c) {
 	JProgressBar progress = (JProgressBar)c;
 	progress.addPropertyChangeListener(this);
+	soundUrl = (URL)UIManager.get("ProgressBarUI.backgroundMusic");
     }
 
     /**

@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+import org.tramper.doc.Library;
 import org.tramper.gui.viewer.Viewer;
 import org.tramper.loader.Loader;
 import org.tramper.loader.LoaderFactory;
@@ -46,12 +47,12 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
 	BoxLayout panelLayout = new BoxLayout(this, BoxLayout.X_AXIS);
 	this.setLayout(panelLayout);
 	//this.setOpaque(true);
-	
+
+	this.add(Box.createGlue());
 	List<Viewer> viewers = main.getRenderers();
 	for (Viewer viewer : viewers) {
 	    addMiniature(viewer);
 	}
-	this.add(Box.createGlue());
     }
     
     /**
@@ -73,7 +74,12 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
 
     public void addMiniature(Viewer viewer) {
         ViewerMiniature mini = new ViewerMiniature(viewer);
-        this.add(mini, 0);
+        String frame = viewer.getTarget().getFrame();
+        if (Library.PRIMARY_FRAME.equals(frame)) {
+            this.add(mini, -1);
+        } else {
+            this.add(mini, 0);
+        }
     }
     
     public void modifyMiniature(Viewer oldViewer, Viewer newViewer) {
@@ -129,7 +135,7 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
 	    	LoadingViewer loadingViewer = new LoadingViewer();
 	    	loadingViewer.setLoader(loader);
 	    	loadingViewers.put(loader, loadingViewer);
-	    	add(loadingViewer, 0);
+		add(loadingViewer, 0);
 	    	UserInterfaceFactory.getGraphicalUserInterface().validate();
 	    }
 	};
