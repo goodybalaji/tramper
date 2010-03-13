@@ -5,12 +5,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.net.URL;
 
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
+import javax.swing.JToggleButton;
+import javax.swing.UIManager;
 import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.ComponentUI;
 
+import org.tramper.audio.SoundPlayer;
 import org.tramper.player.PlayException;
 import org.tramper.player.PlayerFactory;
 import org.tramper.synthesizer.SpeechSynthesizer;
@@ -22,6 +26,12 @@ import org.tramper.synthesizer.SpeechSynthesizer;
 public class FingonButtonUI extends ButtonUI implements ActionListener, FocusListener {
     /** the instance common to every component */
     private static FingonButtonUI instance;
+    /** selected sound URL */
+    private URL selectedSound;
+    /** pressed sound URL */
+    private URL pressedSound;
+    /** unselected sound URL */
+    private URL unselectedSound;
 
     /**
      * @see javax.swing.plaf.ComponentUI#installUI(javax.swing.JComponent)
@@ -31,6 +41,9 @@ public class FingonButtonUI extends ButtonUI implements ActionListener, FocusLis
 	AbstractButton button = (AbstractButton)c;
 	button.addActionListener(this);
 	button.addFocusListener(this);
+	pressedSound = (URL)UIManager.get("Button.pressedSound");
+	selectedSound = (URL)UIManager.get("ToggleButton.selectedSound");
+	unselectedSound = (URL)UIManager.get("ToggleButton.unselectedSound");
     }
 
     /**
@@ -72,19 +85,27 @@ public class FingonButtonUI extends ButtonUI implements ActionListener, FocusLis
     public void actionPerformed(ActionEvent e) {
 	AbstractButton componentGainingFocus = (AbstractButton)e.getSource();
 	String text = componentGainingFocus.getText();
+	boolean selected = componentGainingFocus.isSelected();
 	if (text != null && !text.equals("")) {
             try {
                 SpeechSynthesizer synthesizer = PlayerFactory.getSpeechSynthesizer();
                 synthesizer.play(text);
             } catch (PlayException ex) {
             }
-	}/* else {
-            URL soundUrl = getClass().getResource("/org/tramper/aui/sounds/Droplet.aiff");
+	} else {
             try {
-    	    	SoundPlayer player = (SoundPlayer)PlayerFactory.getPlayerByExtension("aiff");
-    	    	player.play(soundUrl);
+        	SoundPlayer player = (SoundPlayer)PlayerFactory.getPlayerByExtension("wav");
+        	if (componentGainingFocus instanceof JToggleButton) {
+        	    if (selected) {
+        		player.play(selectedSound);
+        	    } else {
+            	    	player.play(unselectedSound);
+        	    }
+        	} else {
+        	    player.play(pressedSound);
+        	}
             } catch (PlayException e1) {
             }
-	}*/
+	}
     }
 }

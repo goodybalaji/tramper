@@ -44,8 +44,7 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
         //load the recognizer
         try {
             SpeechRecognizerFactory.getSpeechRecognizer();
-        }
-        catch (RecognitionException e) {
+        } catch (RecognitionException e) {
             logger.error("can't launch the recorder", e);
         }
 	Library.getInstance().addLibraryListener(this);
@@ -67,9 +66,9 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
      * @return true if confirmed by the user, false otherwise
      */
     public boolean confirmMessage(String msgKey, Object[] params) {
-        URL url = getClass().getResource("sounds/Droplet.aiff");
+        URL url = getClass().getResource("/org/fingon/question.wav");
         try {
-            MediaPlayer soundPlayer = (MediaPlayer)PlayerFactory.getPlayerByExtension("aiff");
+            MediaPlayer soundPlayer = (MediaPlayer)PlayerFactory.getPlayerByExtension("wav");
             soundPlayer.play(url);
         } catch (PlayException e) {
             logger.error(e.getMessage(), e);
@@ -94,9 +93,9 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
      * @param msgKey message key
      */
     public void raiseInfo(String msgKey) {
-        URL url = getClass().getResource("sounds/Droplet.aiff");
+        URL url = getClass().getResource("/org/fingon/Balloon.wav");
         try {
-            MediaPlayer soundPlayer = (MediaPlayer)PlayerFactory.getPlayerByExtension("aiff");
+            MediaPlayer soundPlayer = (MediaPlayer)PlayerFactory.getPlayerByExtension("wav");
             soundPlayer.play(url);
         } catch (PlayException e) {
             logger.error(e.getMessage(), e);
@@ -117,9 +116,9 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
      * @param msgKey message key
      */
     public void raiseWarning(String msgKey) {
-        URL url = getClass().getResource("sounds/Indigo.aiff");
+        URL url = getClass().getResource("/org/fingon/Exclamation.wav");
         try {
-            MediaPlayer soundPlayer = (MediaPlayer)PlayerFactory.getPlayerByExtension("aiff");
+            MediaPlayer soundPlayer = (MediaPlayer)PlayerFactory.getPlayerByExtension("wav");
             soundPlayer.play(url);
         } catch (PlayException e) {
             logger.error(e.getMessage(), e);
@@ -140,9 +139,9 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
      * @param msgKey message key
      */
     public void raiseError(String msgKey) {
-        URL urlError = getClass().getResource("sounds/Indigo.aiff");
+        URL urlError = getClass().getResource("/org/fingon/error.wav");
         try {
-            MediaPlayer soundPlayer = (MediaPlayer)PlayerFactory.getPlayerByExtension("aiff");
+            MediaPlayer soundPlayer = (MediaPlayer)PlayerFactory.getPlayerByExtension("wav");
             soundPlayer.play(urlError);
         } catch (PlayException e) {
             logger.error(e.getMessage(), e);

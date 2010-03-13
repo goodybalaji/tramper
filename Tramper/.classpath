@@ -4,15 +4,15 @@
 	<classpathentry exported="true" kind="lib" path="archives/browser.jar" sourcepath="sources/browser"/>
 	<classpathentry exported="true" kind="lib" path="archives/outline.jar" sourcepath="sources/outline"/>
 	<classpathentry exported="true" kind="lib" path="archives/feed.jar" sourcepath="sources/feed"/>
-	<classpathentry kind="lib" path="archives/audio.jar"/>
+	<classpathentry kind="lib" path="archives/audio.jar" sourcepath="sources/audio"/>
 	<classpathentry exported="true" kind="lib" path="archives/video.jar" sourcepath="sources/video"/>
 	<classpathentry exported="true" kind="lib" path="archives/webPage.jar" sourcepath="sources/webPage"/>
 	<classpathentry exported="true" kind="lib" path="archives/image.jar" sourcepath="sources/image"/>
 	<classpathentry exported="true" kind="lib" path="archives/jsapi-synthesizer.jar" sourcepath="sources/jsapi-synthesizer"/>
 	<classpathentry exported="true" kind="lib" path="archives/talkingjava-synthesizer.jar" sourcepath="sources/talkingjava-synthesizer"/>
 	<classpathentry exported="true" kind="lib" path="archives/freetts-synthesizer.jar" sourcepath="sources/freetts-synthesizer"/>
-	<classpathentry exported="true" kind="lib" path="archives/jsapi-recognizer.jar"/>
-	<classpathentry exported="true" kind="lib" path="archives/sphinx-recognizer.jar"/>
+	<classpathentry exported="true" kind="lib" path="archives/jsapi-recognizer.jar" sourcepath="sources/jsapi-recognizer"/>
+	<classpathentry exported="true" kind="lib" path="archives/sphinx-recognizer.jar" sourcepath="sources/sphinx-recognizer"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_13"/>
 	<classpathentry exported="true" kind="lib" path="lib/tritonus_share-0.3.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.4.jar"/>
@@ -77,6 +77,6 @@
 	<classpathentry kind="src" output="classes/video" path="sources/video"/>
 	<classpathentry kind="src" output="classes/feed" path="sources/feed"/>
 	<classpathentry kind="src" output="classes/webPage" path="sources/webPage"/>
-	<classpathentry kind="lib" path="archives/fingon.jar"/>
+	<classpathentry kind="lib" path="archives/fingon.jar" sourcepath="sources/fingon"/>
 	<classpathentry kind="output" path="classes/core"/>
 </classpath>

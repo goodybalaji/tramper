@@ -86,4 +86,9 @@ public interface Loader {
      * @return
      */
     public int getLoadingType();
+    /**
+     * 
+     * @return
+     */
+    public Target getTarget();
 }
