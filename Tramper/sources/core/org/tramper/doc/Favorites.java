@@ -84,30 +84,30 @@ public class Favorites implements LoadingListener {
         favorites.setLanguage(Locale.getDefault());
         favorites.setUrl(favoritesUrl);
         
-        OutlineItem root = new OutlineItem();
+        OutlineItem root = new OutlineItem(favorites);
         favorites.setRoot(root);
         
-        OutlineItem feedItem = new OutlineItem();
+        OutlineItem feedItem = new OutlineItem(favorites);
         feedItem.setTitle(label.getString("feed"));
         root.addChild(feedItem);
         
-        OutlineItem outlineItem = new OutlineItem();
+        OutlineItem outlineItem = new OutlineItem(favorites);
         outlineItem.setTitle(label.getString("outline"));
         root.addChild(outlineItem);
         
-        OutlineItem webPageItem = new OutlineItem();
+        OutlineItem webPageItem = new OutlineItem(favorites);
         webPageItem.setTitle(label.getString("webPage"));
         root.addChild(webPageItem);
         
-        OutlineItem audioItem = new OutlineItem();
+        OutlineItem audioItem = new OutlineItem(favorites);
         audioItem.setTitle(label.getString("audio"));
         root.addChild(audioItem);
         
-        OutlineItem videoItem = new OutlineItem();
+        OutlineItem videoItem = new OutlineItem(favorites);
         videoItem.setTitle(label.getString("video"));
         root.addChild(videoItem);
         
-        OutlineItem imageItem = new OutlineItem();
+        OutlineItem imageItem = new OutlineItem(favorites);
         imageItem.setTitle(label.getString("image"));
         root.addChild(imageItem);
     }
@@ -119,7 +119,7 @@ public class Favorites implements LoadingListener {
     public void addFavorite(SimpleDocument document) {
         if (!isFavorite(document)) {
             ResourceBundle label = ResourceBundle.getBundle("label");
-            OutlineItem newItem = new OutlineItem();
+            OutlineItem newItem = new OutlineItem(favorites);
             String title = document.getTitle();
             newItem.setTitle(title);
             Link aLink = new Link();

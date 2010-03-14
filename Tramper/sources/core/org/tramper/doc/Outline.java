@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
@@ -21,7 +22,7 @@ public class Outline extends MarkupDocument implements TreeModel, Serializable {
     /** tree model listeners */
     private List<TreeModelListener> treeModelListener;
     /** virtual root item */
-    private transient OutlineItem rootItem;
+    private OutlineItem rootItem;
     
     /**
      * 
@@ -45,6 +46,18 @@ public class Outline extends MarkupDocument implements TreeModel, Serializable {
      */
     public void addItem(OutlineItem newItem) {
         items.add(newItem);
+    }
+    
+    protected void fireTreeNodesInserted(TreeModelEvent e) {
+	for (TreeModelListener aListener : treeModelListener) {
+	    aListener.treeNodesInserted(e);
+	}
+    }
+
+    protected void fireTreeNodesRemoved(TreeModelEvent e) {
+	for (TreeModelListener aListener : treeModelListener) {
+	    aListener.treeNodesRemoved(e);
+	}
     }
     
     /**

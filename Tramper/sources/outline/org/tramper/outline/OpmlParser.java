@@ -131,7 +131,7 @@ public class OpmlParser implements Parser {
             }
             
             Node body = docRoot.getElementsByTagName("body").item(0);
-            OutlineItem aRootItem = new OutlineItem();
+            OutlineItem aRootItem = new OutlineItem(outline);
             this.depthFirstReading(aRootItem, body, linkNumber);
             outline.setRoot(aRootItem);
         }
@@ -157,7 +157,7 @@ public class OpmlParser implements Parser {
                 continue;
             }
             Element aChildNode = (Element)aChild;
-            OutlineItem aChildItem = new OutlineItem();
+            OutlineItem aChildItem = new OutlineItem(anItem.getTree());
 
             String url = null;
             if (aChildNode.hasAttribute("url")) {
@@ -219,7 +219,6 @@ public class OpmlParser implements Parser {
             }
             
             anItem.addChild(aChildItem);
-            aChildItem.setParent(anItem);
             depthFirstReading(aChildItem, aChildNode, linkNumber);
         }
     }
