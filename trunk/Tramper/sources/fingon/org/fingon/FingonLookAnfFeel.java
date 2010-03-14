@@ -20,7 +20,7 @@ public class FingonLookAnfFeel extends LookAndFeel {
 	uiDefaults.put("TextFieldUI", "org.fingon.FingonTextFieldUI");
 	uiDefaults.put("TextAreaUI", "org.fingon.FingonTextAreaUI");
 	
-	UIManager.put("Button.pressedSound", getClass().getResource("Default.wav"));
+	UIManager.put("Button.pressedSound", getClass().getResource("Menu popup.wav"));
 	uiDefaults.put("ButtonUI", "org.fingon.FingonButtonUI");
 	//uiDefaults.put("MenuItemUI", "org.fingon.FingonButtonUI");
 

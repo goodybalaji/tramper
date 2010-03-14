@@ -59,6 +59,7 @@ public class TableFeedBody extends JSplitPane implements Body, MouseListener, Ke
     public TableFeedBody() {
         this.setOrientation(JSplitPane.VERTICAL_SPLIT);
         this.setOneTouchExpandable(false);
+	this.setContinuousLayout(true);
         //the top component (the list) takes the extra space
         this.setResizeWeight(1);
 
