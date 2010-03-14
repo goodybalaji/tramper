@@ -8,14 +8,14 @@ import javax.swing.UIManager;
  * 
  * @author Paul-Emile
  */
-public class FingonLookAnfFeel extends LookAndFeel {
+public class FingonLookAndFeel extends LookAndFeel {
     /** UI defaults */
     private FingonUIDefaults uiDefaults;
     
     /**
      * 
      */
-    public FingonLookAnfFeel() {
+    public FingonLookAndFeel() {
 	uiDefaults = new FingonUIDefaults();
 	uiDefaults.put("TextFieldUI", "org.fingon.FingonTextFieldUI");
 	uiDefaults.put("TextAreaUI", "org.fingon.FingonTextAreaUI");
