@@ -9,7 +9,7 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.apache.log4j.Logger;
-import org.fingon.FingonLookAnfFeel;
+import org.fingon.FingonLookAndFeel;
 import org.tramper.aui.AudioUserInterface;
 import org.tramper.gui.GUIConfig;
 import org.tramper.gui.GraphicalUserInterface;
@@ -29,7 +29,7 @@ public class UserInterfaceFactory {
     
     static {
 	// add the auxiliary "look and feel" for assistive technology
-	UIManager.addAuxiliaryLookAndFeel(new FingonLookAnfFeel());
+	UIManager.addAuxiliaryLookAndFeel(new FingonLookAndFeel());
 	
 	// for Quaqua look and feel only
 	System.setProperty("Quaqua.sizeStyle","small");
