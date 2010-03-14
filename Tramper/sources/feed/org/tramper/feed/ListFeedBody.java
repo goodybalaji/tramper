@@ -64,6 +64,7 @@ public class ListFeedBody extends JSplitPane implements Body, MouseListener, Hyp
     public ListFeedBody() {
         this.setOrientation(JSplitPane.VERTICAL_SPLIT);
         this.setOneTouchExpandable(false);
+	this.setContinuousLayout(true);
         //the top component (the list) takes the extra space
         this.setResizeWeight(1);
 

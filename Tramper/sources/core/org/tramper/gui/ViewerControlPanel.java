@@ -46,7 +46,6 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
 	
 	BoxLayout panelLayout = new BoxLayout(this, BoxLayout.X_AXIS);
 	this.setLayout(panelLayout);
-	//this.setOpaque(true);
 
 	this.add(Box.createGlue());
 	List<Viewer> viewers = main.getRenderers();
@@ -219,7 +218,16 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
 	    });
         }
     }
-    
+
+    /**
+     * 
+     * @see javax.swing.JComponent#getMaximumSize()
+     */
+    @Override
+    public Dimension getMaximumSize() {
+	return new Dimension(200, 150);
+    }
+
     public void relocalize() {
 	int componentCount = this.getComponentCount();
 	for (int i=0; i<componentCount; i++) {

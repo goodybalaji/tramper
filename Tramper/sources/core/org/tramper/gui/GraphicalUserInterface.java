@@ -191,11 +191,7 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	miniaturesViewersArea.setResizeWeight(0);
 	this.getContentPane().add(miniaturesViewersArea, BorderLayout.CENTER);
 
-	viewersArea = new JSplitPane();
-	viewersArea.setDividerLocation(0);
-	viewersArea.setOneTouchExpandable(true);
-	viewersArea.setDividerSize(6);
-	viewersArea.setContinuousLayout(true);
+	viewersArea = new ViewerSplitPane();
 	viewersArea.setOrientation(guiConfig.getOrientation());
 	miniaturesViewersArea.setRightComponent(viewersArea);
 	
