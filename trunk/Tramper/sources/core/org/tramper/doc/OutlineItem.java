@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
 
+import javax.swing.event.TreeModelEvent;
 import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 /**
  * An outline item
@@ -15,18 +17,35 @@ import javax.swing.tree.TreeNode;
 public class OutlineItem extends DocumentItem implements TreeNode {
     /** title */
     private String title;
-    /** children items */
+    /** the children nodes */
     private List<OutlineItem> children;
-    /** father item */
-    private OutlineItem father;
+    /** the parent node */
+    private OutlineItem parent;
+    /** tree to notify when a node has been added or removed */
+    private Outline tree;
     
     /**
      * 
      */
-    public OutlineItem() {
+    public OutlineItem(Outline tree) {
+	this.tree = tree;
         children = new ArrayList<OutlineItem>();
         media = new ArrayList<Sound>();
         links = new ArrayList<Link>();
+    }
+
+    /**
+     * @return tree.
+     */
+    public Outline getTree() {
+        return this.tree;
+    }
+
+    /**
+     * @param tree tree 
+     */
+    public void setTree(Outline tree) {
+        this.tree = tree;
     }
 
     /**
@@ -34,17 +53,48 @@ public class OutlineItem extends DocumentItem implements TreeNode {
      * @param newChild
      */
     public void addChild(OutlineItem newChild) {
-        children.add(newChild);
+	if (newChild != null && !children.contains(newChild)) {
+	    children.add(newChild);
+	    newChild.setParent(this);
+	    
+	    TreePath treePath = buildTreePath();
+	    int[] addedIndices = {this.getIndex(newChild)};
+	    Object[] addedChildren = {newChild};
+	    TreeModelEvent treeEvent = new TreeModelEvent(tree, treePath, addedIndices, addedChildren);
+	    tree.fireTreeNodesInserted(treeEvent);
+	}
     }
 
     /**
      * remove a child from the list of children
-     * @param child
+     * @param oldChild
      */
-    public void removeChild(OutlineItem child) {
-        children.remove(child);
+    public void removeChild(OutlineItem oldChild) {
+	if (oldChild != null && children.contains(oldChild)) {
+	    int oldChildIndex = this.getIndex(oldChild);
+            children.remove(oldChild);
+            oldChild.setParent(null);
+            
+            TreePath treePath = buildTreePath();
+	    int[] removedIndices = {oldChildIndex};
+	    Object[] removedChildren = {oldChild};
+            TreeModelEvent treeEvent = new TreeModelEvent(tree, treePath, removedIndices, removedChildren);
+            tree.fireTreeNodesRemoved(treeEvent);
+	}
     }
 
+    private TreePath buildTreePath() {
+        List<TreeNode> listPath = new ArrayList<TreeNode>();
+        listPath.add(0, this);
+        TreeNode aParent = parent;
+        while (aParent != null) {
+            listPath.add(0, aParent);
+            aParent = aParent.getParent();
+        }
+        TreeNode[] path = listPath.toArray(new TreeNode[listPath.size()]);
+        return new TreePath(path);
+    }
+    
     /**
      * 
      * @return
@@ -91,21 +141,29 @@ public class OutlineItem extends DocumentItem implements TreeNode {
      * @see javax.swing.tree.TreeNode#getParent()
      */
     public TreeNode getParent() {
-        return this.father;
+        return this.parent;
     }
     
     /**
      * @param parent the parent 
      */
     public void setParent(OutlineItem parent) {
-        this.father = parent;
+	if (parent != this.parent) {
+	    if (this.parent != null) {
+		this.parent.removeChild(this);
+	    }
+	    this.parent = parent;
+	    if (parent != null) {
+		parent.addChild(this);
+	    }
+	}
     }
 
     /**
      * 
      * @see javax.swing.tree.TreeNode#children()
      */
-    public Enumeration children() {
+    public Enumeration<OutlineItem> children() {
         Vector<OutlineItem> vector = new Vector<OutlineItem>(children);
         return vector.elements();
     }
@@ -147,7 +205,7 @@ public class OutlineItem extends DocumentItem implements TreeNode {
      * @see javax.swing.tree.TreeNode#isLeaf()
      */
     public boolean isLeaf() {
-        return (children.size() == 0);
+        return (children.isEmpty());
     }
 
     /**
