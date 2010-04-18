@@ -1,32 +1,22 @@
 package org.tramper.synthesizer;
 
 import java.beans.PropertyVetoException;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StreamTokenizer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import org.apache.log4j.Logger;
-import org.tramper.doc.DocumentEvent;
-import org.tramper.doc.DocumentItem;
-import org.tramper.doc.DocumentListener;
-import org.tramper.doc.Library;
-import org.tramper.doc.Link;
-import org.tramper.doc.Sound;
-import org.tramper.doc.SimpleDocument;
-import org.tramper.doc.MarkupDocument;
-import org.tramper.doc.SpeakableItem;
-import org.tramper.doc.Target;
-import org.tramper.loader.Loader;
-import org.tramper.loader.LoaderFactory;
 import org.tramper.player.PlayEvent;
 import org.tramper.player.PlayException;
 import org.tramper.player.PlayListener;
-import org.tramper.player.PlayerFactory;
-import org.tramper.audio.SoundPlayer;
-import org.tramper.ui.Renderer;
-import org.tramper.ui.RenderingException;
 
 import javax.speech.AudioException;
 import javax.speech.Central;
@@ -40,38 +30,23 @@ import javax.speech.synthesis.SynthesizerProperties;
 import javax.speech.synthesis.Voice;
 
 /**
- * A synthesizer implementing the Sun's JSAPI.
+ * A speech synthesizer using the Sun's Java Speech API.
+ * Fits any JSAPI implementation.
  * @author Paul-Emile
  */
-public class JSAPISpeechSynthesizer implements SpeechSynthesizer, Runnable, DocumentListener {
+public class JSAPISpeechSynthesizer implements SpeechSynthesizer {
     /** logger */
     private Logger logger = Logger.getLogger(JSAPISpeechSynthesizer.class);
     /** speech synthesizer */
     protected Synthesizer synthe;
-    /** a list of speakables to read in the run method */
-    protected List<SpeakableItem> listToSpeak;
     /** flag to stop the current reading (break from the thread) */
     protected boolean stopped = true;
     /** flag to pause the current reading (wait for notify) */
     protected boolean paused = false;
-    /** flag to go to the next item */
-    protected boolean goNext = false;
-    /** flag to go to the previous item */
-    protected boolean goPrevious = false;
-    /** flag to skip media playing (when saving in file) */
-    protected boolean skipMedia = false;
-    /** current speakable index */
-    protected int speakableIndex;
     /** speech listeners list */
     protected List<SynthesisListener> listener;
-    /** list of reading listener */
+    /** list of play listeners */
     protected List<PlayListener> playListener;
-    /** step by step flag */
-    protected boolean stepByStep;
-    /** document to speak */
-    protected SimpleDocument document;
-    /** target */
-    private Target target;
 
     /**
      * Load the default speech synthesizer
@@ -83,272 +58,88 @@ public class JSAPISpeechSynthesizer implements SpeechSynthesizer, Runnable, Docu
     }
 
     /**
-     * 
-     * @see org.tramper.ui.Renderer#render(int)
+     * Tries to read the URL as a stream of characters, sentence by sentence.
+     * Sentences are delimited by the point character.
+     * @param anUrl an URL pointing a characters resource
+     * @throws PlayException
      */
-    public void render(int documentPart) throws RenderingException {
-	render(document, target, documentPart);
+    public void play(URL anUrl) throws PlayException {
+	Reader r = null;
+	try {
+	    InputStream in = anUrl.openStream();
+	    r = new BufferedReader(new InputStreamReader(in));
+	    StreamTokenizer tokenizer = new StreamTokenizer(r);
+	    tokenizer.resetSyntax();
+	    tokenizer.eolIsSignificant(false);
+	    tokenizer.whitespaceChars('.', '.');
+	    while (tokenizer.nextToken() != StreamTokenizer.TT_EOF) {
+		switch (tokenizer.ttype) {
+		case StreamTokenizer.TT_WORD:
+		    play(tokenizer.sval);
+		    break;
+		}
+	    }
+	} catch (IOException e) {
+	    logger.error(e);
+	} finally {
+	    if (r != null) {
+		try {
+		    r.close();
+		} catch (IOException e) {}
+	    }
+	}
     }
     
     /**
-     * 
-     * @see org.tramper.player.Player#play(SimpleDocument)
+     * Play a media from an URL and wait for it's ending
+     * @param anUrl
+     * @exception PlayException 
      */
-    public void render(SimpleDocument document, Target target) throws RenderingException {
-	render(document, target, Renderer.ALL_PART);
+    public void playAndWait(URL anUrl) throws PlayException {
+	Reader r = null;
+	try {
+	    InputStream in = anUrl.openStream();
+	    r = new BufferedReader(new InputStreamReader(in));
+	    StreamTokenizer tokenizer = new StreamTokenizer(r);
+	    tokenizer.resetSyntax();
+	    tokenizer.eolIsSignificant(false);
+	    tokenizer.whitespaceChars('.', '.');
+	    while (tokenizer.nextToken() != StreamTokenizer.TT_EOF) {
+		switch (tokenizer.ttype) {
+		case StreamTokenizer.TT_WORD:
+		    playAndWait(tokenizer.sval);
+		    break;
+		}
+	    }
+	} catch (IOException e) {
+	    logger.error(e);
+	} finally {
+	    if (r != null) {
+		try {
+		    r.close();
+		} catch (IOException e) {}
+	    }
+	}
     }
     
     /**
-     * 
-     * @param document
-     * @param rendering
+     * Play a sound from a clip in loop
+     * @param aStream
+     * @exception PlayException 
      */
-    public void render(SimpleDocument doc, Target target, int documentPart) throws RenderingException {
-	this.target = target;
+    public void playLoop(URL anUrl) throws PlayException {
 	
-        if (!(doc instanceof MarkupDocument)) {
-            throw new RenderingException("wrong document class");
-        }
-        if (document != null) {
-            document.removeDocumentListener(this);
-        }
-	document = doc;
-	document.addDocumentListener(this);
-
-	listToSpeak = new ArrayList<SpeakableItem>();
-	if (Renderer.ALL_PART == documentPart) {
-	    skipMedia = false;
-	    List<DocumentItem> items = ((MarkupDocument) document).getItems();
-	    listToSpeak.addAll(items);
-	} else if (Renderer.LINK_PART == documentPart) {
-	    skipMedia = true;
-	    List<DocumentItem> speakable = ((MarkupDocument) document).getItems();
-	    for (int i = 0; i < speakable.size(); i++) {
-		DocumentItem item = speakable.get(i);
-		List<Link> links = item.getLinks();
-		listToSpeak.addAll(links);
-	    }
-	} else {
-	    return;
-	}
-
-	// check the language of the doc
-	Locale locale = ((MarkupDocument) document).getLanguage();
-	if (locale != null) {
-	    try {
-		boolean match = this.matchEngineLanguage(locale);
-		if (match == false) {
-		    this.load(locale);
-		}
-	    } catch (SynthesisException se) {
-		logger.warn("no available speaker, can't check the language");
-	    }
-	}
-
-	Thread aReading = new Thread(this, "reading");
-	aReading.start();
     }
-
+    
     /**
-     * @see java.lang.Runnable#run()
-     */
-    public void run() {
-	if (listToSpeak == null) {
-	    return;
-	}
-
-	stopped = false;
-
-	PlayEvent event = new PlayEvent(this);
-	this.fireReadingStartedEvent(event);
-
-	int startIndex = (int)document.getIndex();
-	for (speakableIndex = startIndex; speakableIndex < listToSpeak.size(); speakableIndex++) {
-	    SpeakableItem anItem = listToSpeak.get(speakableIndex);
-	    document.setIndex(speakableIndex);
-	    
-	    //make a pause before the speech
-	    Float pause = anItem.getPauseBefore();
-	    if (pause != null) {
-                try {
-                    Thread.sleep(pause.longValue());
-                } catch (InterruptedException e) {}
-	    }
-	    
-	    //play a sound before the speech if any
-	    URL cue = anItem.getCueBefore();
-	    if (cue != null) {
-                String cuePath = cue.getPath();
-                String extension = cuePath.substring(cuePath.lastIndexOf('.')+1);
-                try {
-                    SoundPlayer player = (SoundPlayer)PlayerFactory.getPlayerByExtension(extension);
-		    player.playAndWait(cue);
-		} catch (PlayException e) {}
-	    }
-
-	    //have a rest before the speech
-	    Float rest = anItem.getRestBefore();
-	    if (rest != null) {
-                try {
-                    Thread.sleep(rest.longValue());
-                } catch (InterruptedException e) {}
-	    }
-	    
-	    //set some parameters
-	    Float rate = anItem.getRate();
-	    if (rate != null) {
-		setSpeed(rate.intValue());
-	    }
-	    Float volume = anItem.getVolume();
-	    if (volume != null) {
-		setVolume(volume.intValue());
-	    }
-	    Float pitch = anItem.getPitch();
-	    if (pitch != null) {
-		setPitch(pitch.floatValue());
-	    }
-	    Float pitchRange = anItem.getPitchRange();
-	    if (pitchRange != null) {
-		setPitchRange(pitchRange.floatValue());
-	    }
-	    List<VoiceDesc> voiceFamily = anItem.getVoiceFamily();
-	    if (voiceFamily != null) {
-                for (int i=0; i<voiceFamily.size(); i++) {
-                    VoiceDesc voiceDesc = voiceFamily.get(i);
-                    boolean found = loadVoice(voiceDesc);
-                    if (found) {
-                        break;
-                    }
-                }
-	    }
-	    
-	    //speak the text
-	    String text = anItem.getText(getEngineLocale());
-	    play(text);
-	    try {
-		synthe.waitEngineState(Synthesizer.QUEUE_EMPTY);
-	    } catch (InterruptedException e) {
-                logger.warn("speak interrupted : " + e.getMessage());
-            }
-
-	    //have a rest after the speech
-	    rest = anItem.getRestAfter();
-	    if (rest != null) {
-                try {
-                    Thread.sleep(rest.longValue());
-                } catch (InterruptedException e) {}
-	    }
-
-	    //play a sound after the speech if any
-	    cue = anItem.getCueAfter();
-	    if (cue != null) {
-                String cuePath = cue.getPath();
-                String extension = cuePath.substring(cuePath.lastIndexOf('.'));
-                try {
-                    SoundPlayer player = (SoundPlayer)PlayerFactory.getPlayerByExtension(extension);
-		    player.playAndWait(cue);
-		} catch (PlayException e) {}
-	    }
-
-	    //make a pause after the speech
-	    pause = anItem.getPauseAfter();
-	    if (pause != null) {
-                try {
-                    Thread.sleep(pause.longValue());
-                } catch (InterruptedException e) {}
-	    }
-	    
-	    // stop the thread if requested
-	    if (stopped) {
-		return;
-	    }
-
-	    // pause the thread if requested
-	    synchronized (listener) {
-		if (paused) {
-		    try {
-			listener.wait();
-		    } catch (InterruptedException e) {
-			logger.warn("waiting speech interrupted", e);
-		    }
-		}
-	    }
-
-	    // skip the current speakable
-	    if (!goNext && !goPrevious) {
-
-		// play the media
-		if (skipMedia == false) {
-		    List<Sound> media = ((DocumentItem) anItem).getMedia();
-		    for (int i = 0; i < media.size(); i++) {
-			Sound aMedia = (Sound) media.get(i);
-                        URL url = aMedia.getUrl();
-                        Loader loader = LoaderFactory.getLoader();
-                        loader.download(url.toString(), new Target(Library.PRIMARY_FRAME, null));
-                        pause();
-
-			// stop the thread if requested
-			if (stopped) {
-			    return;
-			}
-
-			// skip the current speakable
-			if (goNext || goPrevious) {
-			    break;
-			}
-
-			// pause the thread if requested
-			synchronized (listener) {
-			    if (paused) {
-				try {
-				    listener.wait();
-				} catch (InterruptedException e) {
-				    logger.warn("waiting speech interrupted", e);
-				}
-			    }
-			}
-		    }
-		}
-	    }
-
-            synchronized (listener) {
-                if (stepByStep) {
-            	paused = true;
-                    try {
-                	listener.wait();
-                    } catch (InterruptedException e) {
-                        logger.warn("waiting speech interrupted", e);
-                    }
-                }
-            }
-		
-	    // Refresh the speakable list in the document viewer
-	    if (goPrevious) {
-		goPrevious = false;
-		event.setFirstSelected((speakableIndex == 0));
-		firePreviousReadEvent(event);
-	    } else {
-		goNext = false;
-		event.setLastSelected((speakableIndex == listToSpeak.size() - 1));
-		fireNextReadEvent(event);
-	    }
-	}
-
-	fireReadingEndedEvent(event);
-	
-	stopped = true;
-    }
-
-    /**
-     * load the first engine with the default locale and the firt voice of
-     * this engine. if there is no engine with default locale, select
-     * english
+     * Loads the first engine with the default locale and the first voice of
+     * this engine. if there is no engine with default locale, select English.
      */
     public void load() throws SynthesisException {
 	// try to find an engine with the default locale
 	Locale defaultLocale = Locale.getDefault();
 	boolean engineFound = this.load(defaultLocale);
-	// if not found, try to find an engine with the english locale
+	// if not found, try to find an engine with the English locale
 	if (!engineFound) {
 	    engineFound = this.load(Locale.ENGLISH);
 	}
@@ -392,7 +183,7 @@ public class JSAPISpeechSynthesizer implements SpeechSynthesizer, Runnable, Docu
 		    if (engineName.equals(currentEngine)) {
                         loadEngine(engineName, eng.getModeName(), engineLocale);
                         Voice[] voices = eng.getVoices();
-
+                        
                         VoiceDesc voiceDesc = new VoiceDesc();
                         voiceDesc.setName(voices[0].getName());
                         voiceDesc.setGender(voices[0].getGender());
@@ -403,7 +194,7 @@ public class JSAPISpeechSynthesizer implements SpeechSynthesizer, Runnable, Docu
 		} else {
 		    loadEngine(engineName, eng.getModeName(), engineLocale);
                     Voice[] voices = eng.getVoices();
-
+                    
         	    VoiceDesc voiceDesc = new VoiceDesc();
         	    voiceDesc.setName(voices[0].getName());
         	    voiceDesc.setGender(voices[0].getGender());
@@ -584,39 +375,39 @@ public class JSAPISpeechSynthesizer implements SpeechSynthesizer, Runnable, Docu
             throw new SynthesisException("engine is not in the right state");
         }
             
-            float volume = synthe.getSynthesizerProperties().getVolume();
-            if (volume == 0) {
-        	try {
-		    synthe.getSynthesizerProperties().setVolume(1f);
-		} catch (PropertyVetoException e) {
-	            logger.error("error when setting synthesizer volume to 1.0", e);
-		}
+        float volume = synthe.getSynthesizerProperties().getVolume();
+        if (volume == 0) {
+            try {
+		synthe.getSynthesizerProperties().setVolume(1f);
+            } catch (PropertyVetoException e) {
+	        logger.error("error when setting synthesizer volume to 1.0", e);
             }
+        }
             
-            SynthesisEvent event = new SynthesisEvent(this);
-            EngineModeDesc engineDesc = synthe.getEngineModeDesc();
-            event.setEngine(engineDesc);
-            this.fireEngineChanged(event);
+        SynthesisEvent event = new SynthesisEvent(this);
+        EngineModeDesc engineDesc = synthe.getEngineModeDesc();
+        event.setEngine(engineDesc);
+        this.fireEngineChanged(event);
 
-	    float pitch = this.getPitch();
-	    SynthesisEvent pitchEvent = new SynthesisEvent(this);
-	    pitchEvent.setPitch(pitch);
-	    this.firePitchChanged(pitchEvent);
+	float pitch = this.getPitch();
+	SynthesisEvent pitchEvent = new SynthesisEvent(this);
+	pitchEvent.setPitch(pitch);
+	this.firePitchChanged(pitchEvent);
 
-	    float pitchRange = this.getPitchRange();
-	    SynthesisEvent synthesisEvent = new SynthesisEvent(this);
-	    synthesisEvent.setPitchRange(pitchRange);
-	    this.firePitchRangeChanged(synthesisEvent);
+	float pitchRange = this.getPitchRange();
+	SynthesisEvent synthesisEvent = new SynthesisEvent(this);
+	synthesisEvent.setPitchRange(pitchRange);
+	this.firePitchRangeChanged(synthesisEvent);
 	    
-	    List<VoiceDesc> voices = this.listAvailableVoices();
-	    SynthesisEvent voiceListEvent = new SynthesisEvent(this);
-	    voiceListEvent.setVoices(voices);
-	    this.fireVoicesListChanged(voiceListEvent);
+	List<VoiceDesc> voices = this.listAvailableVoices();
+	SynthesisEvent voiceListEvent = new SynthesisEvent(this);
+	voiceListEvent.setVoices(voices);
+	this.fireVoicesListChanged(voiceListEvent);
 
-	    VoiceDesc voice = this.getVoiceDesc();
-	    SynthesisEvent voiceEvent = new SynthesisEvent(this);
-	    voiceEvent.setVoice(voice);
-	    this.fireVoiceChanged(voiceEvent);
+	VoiceDesc voice = this.getVoiceDesc();
+	SynthesisEvent voiceEvent = new SynthesisEvent(this);
+	voiceEvent.setVoice(voice);
+	this.fireVoiceChanged(voiceEvent);
     }
 
     /**
@@ -719,7 +510,7 @@ public class JSAPISpeechSynthesizer implements SpeechSynthesizer, Runnable, Docu
      * @param locale a locale
      * @return true if equal, false otherwise
      */
-    protected boolean matchEngineLanguage(Locale locale) {
+    public boolean matchEngineLanguage(Locale locale) {
 	Locale engineLocale = getEngineLocale();
 	String engineLanguage = engineLocale.getLanguage();
 	String otherLanguage = locale.getLanguage();
@@ -743,26 +534,31 @@ public class JSAPISpeechSynthesizer implements SpeechSynthesizer, Runnable, Docu
     }
 
     /**
-     * Stop the current speech : clear the synthesizer queue and set the
-     * flag to stop the thread
+     * Speaks the text in parameter and wait for the end before returning.
+     * @param text
+     */
+    public void playAndWait(String text) {
+	try {
+	    synthe.speakPlainText(text, null);
+	    synthe.waitEngineState(Synthesizer.QUEUE_EMPTY);
+	} catch (EngineStateError e) {
+	    logger.error("engine state error : " + e.getMessage());
+	} catch (InterruptedException e) {
+            logger.warn("speak interrupted : " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Stops the current speech: clear the synthesizer queue.
      */
     public void stop() {
-	stopped = true;
-	
-	if (isPaused()) {
-	    resume();
-	}
-	
 	try {
 	    synthe.cancel();
 	} catch (EngineStateError e) {
 	    logger.error("engine state error : " + e.getMessage());
 	} catch (Exception e) {
-	    // a nullpointerexception occurs sometimes with FreeTTS during the start
+	    // a NullPointerException occurs sometimes with FreeTTS during the start
 	    logger.error(e);
-	}
-	if (document != null) {
-	    document.setIndex(0);
 	}
 	
 	PlayEvent event = new PlayEvent(this);
@@ -773,9 +569,6 @@ public class JSAPISpeechSynthesizer implements SpeechSynthesizer, Runnable, Docu
      * Pause the current speech : set a flag and pause the engine
      */
     public void pause() {
-	synchronized (listener) {
-	    paused = true;
-	}
 	try {
 	    synthe.pause();
 	} catch (EngineStateError e) {
@@ -789,10 +582,6 @@ public class JSAPISpeechSynthesizer implements SpeechSynthesizer, Runnable, Docu
      * Resume the current speech : reset a flag and resume the engine
      */
     public void resume() {
-	synchronized (listener) {
-	    paused = false;
-	    listener.notify();
-	}
 	try {
 	    synthe.resume();
 	} catch (EngineStateError e) {
@@ -809,60 +598,41 @@ public class JSAPISpeechSynthesizer implements SpeechSynthesizer, Runnable, Docu
      * @see org.tramper.player.Player#isRunning()
      */
     public boolean isRunning() {
-	return !stopped;
+	return (synthe.testEngineState(Synthesizer.QUEUE_NOT_EMPTY) && !synthe.testEngineState(Synthesizer.PAUSED));
     }
-
+    
     /**
      * 
      * @see org.tramper.player.Player#isPaused()
      */
     public boolean isPaused() {
-	synchronized (listener) {
-	    return paused;
-	}
+	return synthe.testEngineState(Synthesizer.PAUSED);
     }
-
+    
     /**
      * read the next speakable
      */
     public void next() {
-	boolean isLast = (speakableIndex == listToSpeak.size() - 1);
-	if (isLast) {
-	    return;
-	}
-	goNext = true;
-	
-	if (isPaused()) {
-	    resume();
-	}
-	
 	try {
 	    synthe.cancel();
 	} catch (EngineStateError e) {
 	    logger.error("engine state error : " + e.getMessage());
 	}
+	PlayEvent event = new PlayEvent(this);
+	fireNextReadEvent(event);
     }
 
     /**
      * Read the previous speakable
      */
     public void previous() {
-	boolean isFirst = (speakableIndex == 0);
-	if (isFirst) {
-	    return;
-	}
-	goPrevious = true;
-	speakableIndex = speakableIndex - 2;
-	
-	if (isPaused()) {
-	    resume();
-	}
-	
 	try {
 	    synthe.cancel();
 	} catch (EngineStateError e) {
 	    logger.error("engine state error : " + e.getMessage());
 	}
+	PlayEvent event = new PlayEvent(this);
+	firePreviousReadEvent(event);
     }
 
     /**
@@ -960,11 +730,19 @@ public class JSAPISpeechSynthesizer implements SpeechSynthesizer, Runnable, Docu
 	playListener.remove(listener);
     }
 
+    /**
+     * 
+     * @see org.tramper.player.Player#getSpeed()
+     */
     public int getSpeed() throws PlayException {
 	SynthesizerProperties prop = (SynthesizerProperties) synthe.getEngineProperties();
 	return (int) prop.getSpeakingRate()/4;
     }
 
+    /**
+     * 
+     * @see org.tramper.player.Player#setSpeed(int)
+     */
     public void setSpeed(int sampleRate) {
 	SynthesizerProperties prop = (SynthesizerProperties) synthe.getEngineProperties();
 	try {
@@ -978,11 +756,19 @@ public class JSAPISpeechSynthesizer implements SpeechSynthesizer, Runnable, Docu
 	}
     }
 
+    /**
+     * 
+     * @see org.tramper.player.Player#getVolume()
+     */
     public int getVolume() throws PlayException {
 	SynthesizerProperties prop = (SynthesizerProperties) synthe.getEngineProperties();
 	return (int) prop.getVolume()*100;
     }
 
+    /**
+     * 
+     * @see org.tramper.player.Player#setVolume(int)
+     */
     public void setVolume(int volume) {
 	SynthesizerProperties prop = (SynthesizerProperties) synthe.getEngineProperties();
 	try {
@@ -1073,30 +859,14 @@ public class JSAPISpeechSynthesizer implements SpeechSynthesizer, Runnable, Docu
     }
 
     /**
-     * 
-     * @see org.tramper.synthesizer.SpeechSynthesizer#isStepByStep()
-     */
-    public boolean isStepByStep() {
-	return stepByStep;
-    }
-
-    /**
-     * 
-     * @see org.tramper.synthesizer.SpeechSynthesizer#setStepByStep(boolean)
-     */
-    public void setStepByStep(boolean stepByStep) {
-	this.stepByStep = stepByStep;
-    }
-
-    /**
-     * To overload in the subclass
+     * To be overloaded in the subclass
      * @see org.tramper.player.Player#setOutput(java.io.File)
      */
     public void setOutput(File aFile) {
     }
 
     /**
-     * To overload in the subclass
+     * To be overloaded in the subclass
      * @see org.tramper.player.Player#setOutput()
      */
     public void setOutput() {
@@ -1104,59 +874,8 @@ public class JSAPISpeechSynthesizer implements SpeechSynthesizer, Runnable, Docu
 
     /**
      * 
-     * @return
+     * @see org.tramper.player.Player#isExtensionSupported(java.lang.String)
      */
-    public List<String> getRenderings() {
-        List<String> renderings = new ArrayList<String>();
-        renderings.add("document");
-        renderings.add("links");
-        renderings.add("forms");
-        return renderings;
-    }
-    
-    /**
-     * Unload the engine before destroying the oject
-     */
-    protected void finalize() throws Throwable {
-	unload();
-    }
-
-    /**
-     * @return document.
-     */
-    public SimpleDocument getDocument() {
-        return this.document;
-    }
-
-    /**
-     * 
-     * @see org.tramper.ui.Renderer#isActive()
-     */
-    public boolean isActive() {
-	return document.isActive();
-    }
-
-    /**
-     * 
-     * @see org.tramper.doc.DocumentListener#documentActivated(org.tramper.doc.DocumentEvent)
-     */
-    public void documentActivated(DocumentEvent event) {
-    }
-
-    /**
-     * 
-     * @see org.tramper.doc.DocumentListener#documentDeactivated(org.tramper.doc.DocumentEvent)
-     */
-    public void documentDeactivated(DocumentEvent event) {
-    }
-
-    public boolean isDocumentSupported(SimpleDocument document) {
-	if (document instanceof MarkupDocument) {
-	    return true;
-	}
-	return false;
-    }
-
     public boolean isExtensionSupported(String extension) {
 	if (extension.equalsIgnoreCase("htm")) {
 	    return true;
@@ -1180,5 +899,12 @@ public class JSAPISpeechSynthesizer implements SpeechSynthesizer, Runnable, Docu
 	    return true;
 	}
 	return false;
+    }
+    
+    /**
+     * Unload the engine before destroying the object
+     */
+    protected void finalize() throws Throwable {
+	unload();
     }
 }

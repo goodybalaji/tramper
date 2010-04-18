@@ -53,7 +53,7 @@ public class SoundBody extends JScrollPane implements Body, MouseListener {
 	    throw new RuntimeException(doc.getTitle()+" is not a sound");
 	}
 	this.target = target;
-	document = (Sound)doc;
+	this.document = (Sound)doc;
     }
 
     /**
@@ -113,7 +113,6 @@ public class SoundBody extends JScrollPane implements Body, MouseListener {
      */
     public void paintMiniature(Graphics2D g2d, Dimension miniatureSize, boolean mouseOver) {
 	Dimension documentSize = progress.getSize();
-	int iconWidth = runningIcon.getIconWidth();
 
 	/*double scale = (double)miniatureSize.width/(double)iconWidth;
 	if (scale > 1) {

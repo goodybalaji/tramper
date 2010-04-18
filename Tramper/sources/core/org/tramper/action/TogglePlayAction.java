@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.tramper.player.Player;
+import org.tramper.conductor.Conductor;
 import org.tramper.ui.Renderer;
 import org.tramper.ui.RenderingException;
 import org.tramper.ui.UserInterfaceFactory;
@@ -42,13 +42,13 @@ public class TogglePlayAction extends AbstractAction {
      */
     public void actionPerformed(ActionEvent e) {
 	if (UserInterfaceFactory.isAudioUserInterfaceInstanciated()) {
-            Player aPlayer = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer();
-            if (aPlayer != null) {
-                if (aPlayer.isRunning()) {
-                    aPlayer.stop();
+	    Conductor aConductor = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer();
+            if (aConductor != null) {
+                if (aConductor.isRunning()) {
+                    aConductor.stop();
                 } else {
                     try {
-                	aPlayer.render(Renderer.ALL_PART);
+                	aConductor.render(Renderer.ALL_PART);
                     } catch (RenderingException ex) {}
                 }
             }

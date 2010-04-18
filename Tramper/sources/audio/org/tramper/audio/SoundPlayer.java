@@ -20,26 +20,19 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.AudioFileFormat.Type;
 
 import org.apache.log4j.Logger;
-import org.tramper.doc.DocumentEvent;
-import org.tramper.doc.DocumentListener;
-import org.tramper.doc.Sound;
-import org.tramper.doc.SimpleDocument;
-import org.tramper.doc.Target;
-import org.tramper.player.MediaPlayer;
 import org.tramper.player.PlayEvent;
 import org.tramper.player.PlayException;
 import org.tramper.player.PlayListener;
-import org.tramper.ui.Renderer;
-import org.tramper.ui.RenderingException;
+import org.tramper.player.Player;
 
 
 /**
  * Music player (au, wav, aif, mp3 and ogg files) using java sound API
  * and third party libraries from JLayer and JCraft.
- * One instance for each play.
+ * Use one instance for each play.
  * @author Paul-Emile
  */
-public class SoundPlayer implements MediaPlayer, Runnable, DocumentListener {
+public class SoundPlayer implements Player, Runnable {
     /** logger */
     private Logger logger = Logger.getLogger(SoundPlayer.class);
     /** line used for the current play */
@@ -60,63 +53,13 @@ public class SoundPlayer implements MediaPlayer, Runnable, DocumentListener {
     private static final int BUFFER_SIZE = 1024;
     /** step for next and previous actions in decoded bytes */
     private static final int STEP = 1000000;
-    /** document currently played */
-    private Sound document;
-    /** target */
-    private Target target;
     
     /**
-     * Instanciate the first available mixer
+     * Instantiates the first available mixer
      */
     public SoundPlayer() throws PlayException {
         super();
         listener = new ArrayList<PlayListener>();
-    }
-
-    /**
-     * 
-     * @see org.tramper.ui.Renderer#render(int)
-     */
-    public void render(int documentPart) throws RenderingException {
-	render(document, target, documentPart);
-    }
-    
-    /**
-     * 
-     * @see org.tramper.ui.Renderer#render(org.tramper.doc.SimpleDocument)
-     */
-    public void render(SimpleDocument document, Target target) throws RenderingException {
-	render(document, target, Renderer.ALL_PART);
-    }
-    
-    /**
-     * Play a document
-     * @param document
-     * @param documentPart
-     * @throws PlayException
-     */
-    public void render(SimpleDocument doc, Target target, int documentPart) throws RenderingException {
-	this.target = target;
-	
-	if (documentPart != Renderer.ALL_PART) {
-	    return;
-	}
-	
-        if (!(doc instanceof Sound)) {
-            throw new RenderingException("wrong document class");
-        }
-        if (document != null) {
-            document.removeDocumentListener(this);
-        }
-        document = (Sound)doc;
-        document.addDocumentListener(this);
-        
-        URL url = document.getUrl();
-        try {
-	    play(url);
-	} catch (PlayException e) {
-	    throw new RenderingException(e);
-	}
     }
 
     /**
@@ -128,12 +71,10 @@ public class SoundPlayer implements MediaPlayer, Runnable, DocumentListener {
 	AudioInputStream encodedStream = null;
         try {
             encodedStream = AudioSystem.getAudioInputStream(audioUrl);
-        }
-        catch (UnsupportedAudioFileException e) {
+        } catch (UnsupportedAudioFileException e) {
             logger.error("Audio url format unsupported", e);
             throw new PlayException();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             logger.error("url "+audioUrl+" unavailable", e);
             throw new PlayException();
         }
@@ -676,16 +617,6 @@ public class SoundPlayer implements MediaPlayer, Runnable, DocumentListener {
 
     /**
      * 
-     * @return
-     */
-    public List<String> getRenderings() {
-        List<String> renderings = new ArrayList<String>();
-        renderings.add("document");
-        return renderings;
-    }
-    
-    /**
-     * 
      * @param encodedStream
      * @return
      */
@@ -717,52 +648,6 @@ public class SoundPlayer implements MediaPlayer, Runnable, DocumentListener {
      */
     public void setLoop(boolean loop) {
         this.loop = loop;
-    }
-
-    /**
-     * @return document.
-     */
-    public Sound getDocument() {
-        return this.document;
-    }
-
-    /**
-     * 
-     * @see org.tramper.ui.Renderer#isActive()
-     */
-    public boolean isActive() {
-	return document.isActive();
-    }
-
-    /**
-     * 
-     * @param event
-     */
-    public void documentActivated(DocumentEvent event) {
-    }
-
-    /**
-     * 
-     * @param event
-     */
-    public void documentDeactivated(DocumentEvent event) {
-    }
-    
-    /**
-     * Stop the current clip if necessary
-     * @see java.lang.Object#finalize()
-     */
-    protected void finalize() throws Throwable {
-        this.stop();
-        bufferedDecodedStream.close();
-        super.finalize();
-    }
-
-    public boolean isDocumentSupported(SimpleDocument document) {
-	if (document instanceof Sound) {
-	    return true;
-	}
-	return false;
     }
 
     public boolean isExtensionSupported(String extension) {
@@ -798,5 +683,15 @@ public class SoundPlayer implements MediaPlayer, Runnable, DocumentListener {
 	    return true;
 	}
 	return false;
+    }
+
+    /**
+     * Stop the current play and close the input stream.
+     * @see java.lang.Object#finalize()
+     */
+    protected void finalize() throws Throwable {
+        this.stop();
+        bufferedDecodedStream.close();
+        super.finalize();
     }
 }

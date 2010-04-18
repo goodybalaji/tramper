@@ -24,7 +24,6 @@ import org.apache.xpath.XPathAPI;
 import org.tramper.doc.Feed;
 import org.tramper.doc.FeedItem;
 import org.tramper.doc.Link;
-import org.tramper.doc.Sound;
 import org.tramper.doc.SimpleDocument;
 import org.tramper.doc.WebPage;
 import org.tramper.parser.Parser;
@@ -208,7 +207,6 @@ public class RssParser implements Parser {
                 
                 Node enclosureNode =  XPathAPI.selectSingleNode(itemNode, "enclosure");
                 if (enclosureNode != null) {
-                    Sound aMedia = new Sound();
                     Node urlNode = XPathAPI.selectSingleNode(enclosureNode, "@url");
                     if (urlNode == null) {
                         //RDF attribute :
@@ -217,6 +215,8 @@ public class RssParser implements Parser {
                     String urlString = urlNode.getNodeValue();
                     try {
                         URL aUrl = new URL(urlString);
+                        Link aLink = new Link();
+                        SimpleDocument aMedia = new SimpleDocument();
                         aMedia.setUrl(aUrl);
                         String pathname = aUrl.getPath();
                         int slashIndex = pathname.lastIndexOf("/");
@@ -226,17 +226,20 @@ public class RssParser implements Parser {
                         aMedia.setMimeType(typeNode.getNodeValue());
                         Node lengthNode = XPathAPI.selectSingleNode(enclosureNode, "@length");
                         if (lengthNode != null) {
+                            String lengthValue = lengthNode.getNodeValue();
                             try {
-                                int length = Integer.parseInt(lengthNode.getNodeValue().trim());
+                                long length = Long.parseLong(lengthValue.trim());
                                 aMedia.setLength(length);
-                            }
-                            catch (NumberFormatException e) {
-                                logger.warn("bad media length : "+lengthNode.getNodeValue());
+                            } catch (NumberFormatException e) {
+                                logger.warn("bad media length : "+lengthValue);
                             }
                         }
-                        item.addMedia(aMedia);
-                    }
-                    catch (MalformedURLException e) {
+                        aLink.setLinkedDocument(aMedia);
+                        aLink.setLinkingDocument(feed);
+                        aLink.setRelation("enclosure");
+                        aLink.setNumber(linkNumber++);
+                        item.addLink(aLink);
+                    } catch (MalformedURLException e) {
                         logger.warn("bad enclosure url", e);
                     }
                 }
@@ -294,16 +297,14 @@ public class RssParser implements Parser {
                         aLink.setRelation("alternate");
                         aLink.setNumber(linkNumber++);
                         item.addLink(aLink);
-                    }
-                    catch (MalformedURLException e) {
+                    } catch (MalformedURLException e) {
                         logger.warn("bad link url", e);
                     }
                 }
                 
                 feed.addItem(item);
             }
-        }
-        catch (TransformerException e) {
+        } catch (TransformerException e) {
             logger.error("XPath error", e);
             throw new ParsingException("Error when reading the RSS document");
         }

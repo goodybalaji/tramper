@@ -14,7 +14,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.swing.Action;
-import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.EnhancedIcon;
 import javax.swing.Icon;

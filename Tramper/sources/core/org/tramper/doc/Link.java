@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 public class Link extends SpeakableItem {
     /** linking document wearing the link to the linked document */
     protected SimpleDocument linkingDocument;
-    /** linked document being pointed by the link weared by the linking document */
+    /** linked document being pointed by the link wore by the linking document */
     protected SimpleDocument linkedDocument;
     /** relation type between the 2 documents */
     protected String relation;

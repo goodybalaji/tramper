@@ -1,16 +1,13 @@
 package org.tramper.player;
 
 import java.io.File;
-import java.util.List;
-
-import org.tramper.doc.SimpleDocument;
-import org.tramper.ui.Renderer;
+import java.net.URL;
 
 /**
  * Player
  * @author Paul-Emile
  */
-public interface Player extends Renderer {
+public interface Player extends Musician {
     /**
      * Redirect the output into a file
      * @param aFile file where to save document
@@ -21,83 +18,23 @@ public interface Player extends Renderer {
      */
     public void setOutput();
     /**
-     * pause the play
+     * Play a media from an URL
+     * @param anUrl
+     * @exception PlayException 
      */
-    public void pause();
+    public void play(URL anUrl) throws PlayException;
     /**
-     * resume the play
+     * Play a media from an URL and wait for it's ending
+     * @param anUrl
+     * @exception PlayException 
      */
-    public void resume();
+    public void playAndWait(URL anUrl) throws PlayException;
     /**
-     * stop the play
+     * Play a media in a loop
+     * @param aStream
+     * @exception PlayException 
      */
-    public void stop();
-    /** 
-     * read the next speakable 
-     */
-    public void next();
-    /** 
-     * read the previous speakable 
-     */
-    public void previous();
-    /**
-     * is the player running?
-     * @return true if running, false otherwise
-     */
-    public boolean isRunning();
-    /**
-     * is the player paused?
-     * @return true if paused, false otherwise
-     */
-    public boolean isPaused();
-    /**
-     * get the volume 
-     * @return volume
-     */
-    public int getVolume() throws PlayException;
-
-    /**
-     * Set the volume 
-     * @param volume
-     */
-    public void setVolume(int volume);
-
-    /**
-     * get the speed 
-     * @return speed
-     */
-    public int getSpeed() throws PlayException;
-
-    /**
-     * Set the speed 
-     * @param speed
-     */
-    public void setSpeed(int speed);
-
-    /**
-     * add a play listener
-     * @param listener
-     */
-    public void addPlayListener(PlayListener listener);
-    
-    /**
-     * remove a play listener
-     * @param listener
-     */
-    public void removePlayListener(PlayListener listener);
-    
-    /**
-     * 
-     * @return
-     */
-    public List<String> getRenderings();
-    
-    /**
-     * 
-     * @param document
-     * @return
-     */
-    public boolean isDocumentSupported(SimpleDocument document);
+    public void playLoop(URL anUrl) throws PlayException;
     
     /**
      * 

@@ -1,7 +1,7 @@
 package org.tramper.image;
 
 import java.awt.Image;
-import java.awt.image.BufferedImage;
+import java.awt.Toolkit;
 import java.awt.image.ImageObserver;
 import java.awt.image.PixelGrabber;
 import java.io.File;
@@ -20,20 +20,13 @@ import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
 
 import org.apache.log4j.Logger;
-import org.tramper.doc.DocumentEvent;
-import org.tramper.doc.DocumentListener;
-import org.tramper.doc.ImageDocument;
-import org.tramper.doc.SimpleDocument;
-import org.tramper.doc.Target;
 import org.tramper.player.PlayEvent;
 import org.tramper.player.PlayException;
 import org.tramper.player.PlayListener;
 import org.tramper.player.Player;
-import org.tramper.ui.Renderer;
-import org.tramper.ui.RenderingException;
 
 /**
- * Read the pixels of the image and translate them in midi notes with the following rules :
+ * Reads the pixels of the image and translate them in midi notes with the following rules :
  * <ul>
  * <li>pixel's x-coordinate is translated in balance</li>
  * <li>pixel's brightness is translated in pitch</li>
@@ -41,7 +34,7 @@ import org.tramper.ui.RenderingException;
  * </ul>
  * @author Paul-Emile
  */
-public class ImagePlayer implements Player, Runnable, DocumentListener {
+public class ImagePlayer implements Player, Runnable {
     /** logger */
     private static Logger logger = Logger.getLogger(ImagePlayer.class);
     /** play listeners list */
@@ -54,8 +47,8 @@ public class ImagePlayer implements Player, Runnable, DocumentListener {
     private PixelGrabber pg;
     /** paused */
     private boolean paused;
-    /** document currently played */
-    private ImageDocument document;
+    /** image to play */
+    private Image image; 
     /** pause */
     private int pause = 100;
     /** skip the current pixel's row */
@@ -64,8 +57,6 @@ public class ImagePlayer implements Player, Runnable, DocumentListener {
     private MidiChannel channel;
     /** current channel index */
     private int channelIndex;
-    /** target */
-    private Target target;
     
     /**
      * 
@@ -86,16 +77,32 @@ public class ImagePlayer implements Player, Runnable, DocumentListener {
         	}
             }
         } catch (MidiUnavailableException e) {
-            //should never arrives as long as there is Sun java sound implementation or tritonus
+            //should never arrives as long as there is Sun java sound implementation or Tritonus
             logger.error("no available midi device : "+e.getMessage());
         }
     }
-    
+
     /**
-     * @see org.tramper.player.MediaPlayer#play(java.net.URL)
+     * 
+     * @see java.lang.Runnable#run()
+     */
+    public void run() {
+	try {
+	    playAndWait(image);
+	} catch (PlayException e) {
+	    logger.error(e.getMessage(), e);
+	}
+    }
+
+    /**
+     * 
+     * @param anUrl
+     * @throws PlayException
      */
     public void play(URL anUrl) throws PlayException {
-        //Image img = Toolkit.getDefaultToolkit().getImage(anUrl);
+        image = Toolkit.getDefaultToolkit().getImage(anUrl);
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
     /**
@@ -104,15 +111,44 @@ public class ImagePlayer implements Player, Runnable, DocumentListener {
      * @throws PlayException
      */
     public void playAndWait(URL anUrl) throws PlayException {
-        //Image img = Toolkit.getDefaultToolkit().getImage(anUrl);
+        image = Toolkit.getDefaultToolkit().getImage(anUrl);
+        Thread thread = new Thread(this);
+        thread.start();
+        try {
+	    thread.join();
+	} catch (InterruptedException e) {
+	    logger.warn("image player interrupted when waiting for the play");
+	}
     }
     
     /**
-     * Grab the pixel of the image and fullfil the midi sequence
+     * 
+     * @param anUrl
+     * @throws PlayException
+     */
+    public void playLoop(URL anUrl) throws PlayException {
+        image = Toolkit.getDefaultToolkit().getImage(anUrl);
+        Thread thread = new Thread(this);
+        thread.start();
+    }
+
+    /**
+     * 
+     * @param anImage
+     * @throws PlayException
+     */
+    public void play(Image anImage) throws PlayException {
+        image = anImage;
+        Thread thread = new Thread(this);
+        thread.start();
+    }
+    
+    /**
+     * Grab the pixel of the image and fulfill the midi sequence
      * @param img image to play
      * @throws PlayException
      */
-    protected void play(Image img) throws PlayException {
+    protected void playAndWait(Image img) throws PlayException {
         this.stopped = false;
         
         //Grab the pixels first
@@ -334,7 +370,8 @@ public class ImagePlayer implements Player, Runnable, DocumentListener {
     }
 
     /**
-     * @see org.tramper.player.MediaPlayer#isRunning()
+     * 
+     * @see org.tramper.player.Player#isRunning()
      */
     public boolean isRunning() {
 	return !stopped;
@@ -443,85 +480,10 @@ public class ImagePlayer implements Player, Runnable, DocumentListener {
         }
     }
 
-    public List<String> getRenderings() {
-	List<String> renderings = new ArrayList<String>();
-	renderings.add("document");
-	return renderings;
-    }
-
     public void setOutput(File aFile) {
     }
 
     public void setOutput() {
-    }
-
-    public void render(SimpleDocument document, Target target) throws RenderingException {
-	render(document, target, Renderer.ALL_PART);
-    }
-
-    public void render(int documentPart) throws RenderingException {
-	render(document, target, documentPart);
-    }
-
-    public void render(SimpleDocument doc, Target target, int documentPart) throws RenderingException {
-	this.target = target;
-	if (documentPart != Renderer.ALL_PART) {
-	    return;
-	}
-	
-        if (!(doc instanceof ImageDocument)) {
-            throw new RenderingException("wrong document class");
-        }
-
-        if (document != null) {
-            document.removeDocumentListener(this);
-        }
-        doc.addDocumentListener(this);
-	document = (ImageDocument)doc;
-
-        Thread thread = new Thread(this);
-        thread.start();
-    }
-
-    /**
-     * 
-     * @see java.lang.Runnable#run()
-     */
-    public void run() {
-	BufferedImage img = document.getImage();
-	try {
-	    play(img);
-	} catch (PlayException e) {
-	    logger.error(e.getMessage(), e);
-	}
-    }
-
-    /**
-     * @return document.
-     */
-    public ImageDocument getDocument() {
-        return this.document;
-    }
-
-    /**
-     * 
-     * @see org.tramper.ui.Renderer#isActive()
-     */
-    public boolean isActive() {
-	return document.isActive();
-    }
-
-    public void documentActivated(DocumentEvent event) {
-    }
-
-    public void documentDeactivated(DocumentEvent event) {
-    }
-
-    public boolean isDocumentSupported(SimpleDocument document) {
-	if (document instanceof ImageDocument) {
-	    return true;
-	}
-	return false;
     }
 
     public boolean isExtensionSupported(String extension) {

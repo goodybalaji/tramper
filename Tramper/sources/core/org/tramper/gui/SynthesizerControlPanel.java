@@ -22,7 +22,6 @@ import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.EnhancedIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -82,10 +81,6 @@ public class SynthesizerControlPanel extends JPanel implements SynthesisListener
     private JLabel pitchRangeLabelMin;
     /**  */
     private JLabel pitchRangeLabelMax;
-    /**  */
-    private JLabel stepByStepLabel;
-    /** Step by step checkbox */
-    private JCheckBox stepByStepBox;
     /** Output label */
     private JLabel outputLabel;
     /** Output choice */
@@ -230,28 +225,17 @@ public class SynthesizerControlPanel extends JPanel implements SynthesisListener
         pitchRangeSlide.addChangeListener(this);
         enginePropPanel.add(pitchRangeSlide);
 
-        stepByStepLabel = new JLabel(label.getString("javaspeaker.stepByStep"));
-        enginePropPanel.add(stepByStepLabel);
-
-        stepByStepBox = new JCheckBox();
-        stepByStepBox.setName("stepByStep");
-        stepByStepBox.setActionCommand("stepByStep");
-        stepByStepBox.addChangeListener(this);
-        stepByStepBox.setHorizontalTextPosition(JCheckBox.LEFT);
-        enginePropPanel.add(stepByStepBox);
-
         enginePropPanel.add(Box.createGlue());
         enginePropPanel.add(Box.createGlue());
         
         SpringUtilities.makeCompactGrid(enginePropPanel, //parent
-                8, 2, //rows, cols
+                7, 2, //rows, cols
                 3, 3,  //initX, initY
                 5, 5); //xPad, yPad
         
         this.add(enginePropPanel, BorderLayout.CENTER);
-
         if (UserInterfaceFactory.isAudioUserInterfaceInstanciated()) {
-            Player currentPlayer = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer();
+            Player currentPlayer = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer().getPrincipal();
             if (currentPlayer instanceof SpeechSynthesizer) {
                 setControlValues((SpeechSynthesizer)currentPlayer);
             } else {
@@ -282,8 +266,6 @@ public class SynthesizerControlPanel extends JPanel implements SynthesisListener
             displayVoices(voices);
             VoiceDesc voiceDesc = aSpeechSynthesizer.getVoiceDesc();
             selectVoice(voiceDesc);
-            
-            stepByStepBox.setSelected(aSpeechSynthesizer.isStepByStep());
 	}
     }
 
@@ -296,7 +278,6 @@ public class SynthesizerControlPanel extends JPanel implements SynthesisListener
 	listVoices.setEnabled(enabled);
 	pitchSlide.setEnabled(enabled);
 	pitchRangeSlide.setEnabled(enabled);
-	stepByStepBox.setEnabled(enabled);
 	listOutput.setEnabled(enabled);
 	fileChooserButton.setEnabled(enabled);
     }
@@ -317,7 +298,6 @@ public class SynthesizerControlPanel extends JPanel implements SynthesisListener
         pitchRangeLabelMin.setText(label.getString("javaspeaker.pitchRateLabel.min"));
         pitchRangeLabelMax.setText(label.getString("javaspeaker.pitchRateLabel.max"));
         outputLabel.setText(label.getString("javaspeaker.output"));
-        stepByStepLabel.setText(label.getString("javaspeaker.stepByStep"));
     }
 
     /**
@@ -471,18 +451,12 @@ public class SynthesizerControlPanel extends JPanel implements SynthesisListener
      */
     public void stateChanged(ChangeEvent event) {
         if (UserInterfaceFactory.isAudioUserInterfaceInstanciated()) {
-            Player currentPlayer = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer();
+            Player currentPlayer = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer().getPrincipal();
             if (currentPlayer instanceof SpeechSynthesizer) {
         	SpeechSynthesizer synthesizer = (SpeechSynthesizer)currentPlayer;
         	Component source = (Component)event.getSource();
         	String name = source.getName();
-        	if (name.equals("stepByStep")) {
-                    JCheckBox checkbox = (JCheckBox) source;
-                    boolean selected = checkbox.isSelected();
-                    if (synthesizer != null) {
-                	synthesizer.setStepByStep(selected);
-                    }
-        	} else if (name.equals("pitchSlide")) {
+        	if (name.equals("pitchSlide")) {
         	    JSlider slider = (JSlider) source;
                     if (!slider.getValueIsAdjusting()) {
                         int value = slider.getValue();
@@ -520,7 +494,7 @@ public class SynthesizerControlPanel extends JPanel implements SynthesisListener
      */
     public void itemStateChanged(ItemEvent event) {
         if (UserInterfaceFactory.isAudioUserInterfaceInstanciated()) {
-            Player currentPlayer = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer();
+            Player currentPlayer = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer().getPrincipal();
             if (currentPlayer instanceof SpeechSynthesizer) {
         	SpeechSynthesizer synthesizer = (SpeechSynthesizer)currentPlayer;
         	Component source = (Component) event.getSource();
@@ -590,7 +564,7 @@ public class SynthesizerControlPanel extends JPanel implements SynthesisListener
                     OutputListCellRenderer renderer = (OutputListCellRenderer)listOutput.getRenderer();
                     renderer.setFile(aFile);
                     if (UserInterfaceFactory.isAudioUserInterfaceInstanciated()) {
-                        Player currentPlayer = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer();
+                        Player currentPlayer = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer().getPrincipal();
                         if (currentPlayer instanceof SpeechSynthesizer) {
                             ((SpeechSynthesizer)currentPlayer).setOutput(aFile);
                         }

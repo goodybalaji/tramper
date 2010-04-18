@@ -38,7 +38,6 @@ public class FeedItem extends DocumentItem {
     public FeedItem() {
         super();
         links = new ArrayList<Link>();
-        media = new ArrayList<Sound>();
     }
 
     /**

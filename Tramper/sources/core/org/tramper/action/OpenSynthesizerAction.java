@@ -10,8 +10,8 @@ import javax.swing.Icon;
 import org.tramper.ui.UserInterfaceFactory;
 
 /**
- * @author Paul-Emile
  * 
+ * @author Paul-Emile
  */
 public class OpenSynthesizerAction extends AbstractAction {
     /** OpenSynthesizerAction.java long */

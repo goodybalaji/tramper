@@ -20,7 +20,6 @@ import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
 import org.tramper.doc.Link;
-import org.tramper.doc.Sound;
 import org.tramper.doc.SimpleDocument;
 import org.tramper.doc.WebPage;
 import org.tramper.doc.WebPageItem;
@@ -211,29 +210,10 @@ public abstract class AbstractHtmlParser implements Parser {
                         Link aLink = new Link();
                         aLink.setLinkedDocument(aDocument);
                         aLink.setLinkingDocument(doc);
-                        if (linkRel.equalsIgnoreCase("alternate")) {
-                            aLink.setRelation(linkRel);
-                        }
-                        else if (linkRel.equalsIgnoreCase("next")) {
-                            aLink.setRelation(linkRel);
-                        }
-                        else if (linkRel.equalsIgnoreCase("home")) {
-                            aLink.setRelation(linkRel);
-                        }
-                        else if (linkRel.equalsIgnoreCase("help")) {
-                            aLink.setRelation(linkRel);
-                        }
-                        else if (linkRel.equalsIgnoreCase("prev")) {
+                        if (linkRel.equalsIgnoreCase("prev")) {
                             aLink.setRelation("previous");
-                        }
-                        else if (linkRel.equalsIgnoreCase("index")) {
+                        } else {
                             aLink.setRelation(linkRel);
-                        }
-                        else if (linkRel.equalsIgnoreCase("glossary")) {
-                            aLink.setRelation(linkRel);
-                        }
-                        else {
-                            continue;
                         }
                         doc.addLink(aLink);
                     }
@@ -434,10 +414,19 @@ public abstract class AbstractHtmlParser implements Parser {
                 } catch (MalformedURLException e) {
                     logger.warn("Bad A href: "+linkUrl);
                 }
-                aDocument.setTitle(linkTitle);
+
                 aLink = new Link();
+                String linkRelation = ((Element)node).getAttribute("rel");
+                if (linkRelation != null && !linkRelation.equals("")) {
+                    if (linkRelation.equalsIgnoreCase("prev")) {
+                        aLink.setRelation("previous");
+                    } else {
+                        aLink.setRelation(linkRelation);
+                    }
+                }
+                
+                aDocument.setTitle(linkTitle);
                 aLink.setId(linkId);
-                //aLink.setRelation("related");
                 aLink.setLinkedDocument(aDocument);
                 aLink.setLinkingDocument(doc);
                 aLink.setNumber(linkNumber++);
@@ -466,13 +455,18 @@ public abstract class AbstractHtmlParser implements Parser {
                 String mediaSrc = ((Element)node).getAttribute("src");
                 try {
                     URL anUrl = completeUrl(mediaSrc, baseUrl, hostUrl);
-                    Sound aMedia = new Sound();
+                    SimpleDocument aMedia = new SimpleDocument();
                     aMedia.setUrl(anUrl);
                     String mediaTitle = ((Element)node).getAttribute("title");
                     if (mediaTitle != null) {
                         aMedia.setTitle(mediaTitle);
                     }
-                    item.addMedia(aMedia);
+                    Link mediaLink = new Link();
+                    mediaLink.setLinkedDocument(aMedia);
+                    mediaLink.setLinkingDocument(doc);
+                    mediaLink.setRelation("enclosure");
+                    mediaLink.setNumber(linkNumber++);
+                    item.addLink(mediaLink);
                 } catch (MalformedURLException e) {
                     //skip the media creation if bad url
                     logger.error(e.getMessage());
@@ -481,13 +475,18 @@ public abstract class AbstractHtmlParser implements Parser {
                 String mediaSrc = ((Element)node).getAttribute("src");
                 try {
                     URL anUrl = completeUrl(mediaSrc, baseUrl, hostUrl);
-                    Sound aMedia = new Sound();
+                    SimpleDocument aMedia = new SimpleDocument();
                     aMedia.setUrl(anUrl);
                     String mediaTitle = ((Element)node).getAttribute("title");
                     if (mediaTitle != null) {
                         aMedia.setTitle(mediaTitle);
                     }
-                    item.addMedia(aMedia);
+                    Link mediaLink = new Link();
+                    mediaLink.setLinkedDocument(aMedia);
+                    mediaLink.setLinkingDocument(doc);
+                    mediaLink.setRelation("enclosure");
+                    mediaLink.setNumber(linkNumber++);
+                    item.addLink(mediaLink);
                 }
                 catch (MalformedURLException e) {
                     //skip the media creation if bad url
@@ -497,7 +496,7 @@ public abstract class AbstractHtmlParser implements Parser {
                 String mediaSrc = ((Element)node).getAttribute("data");
                 try {
                     URL anUrl = completeUrl(mediaSrc, baseUrl, hostUrl);
-                    Sound aMedia = new Sound();
+                    SimpleDocument aMedia = new SimpleDocument();
                     aMedia.setUrl(anUrl);
                     String mediaType = ((Element)node).getAttribute("type");
                     if (mediaType != null) {
@@ -507,7 +506,12 @@ public abstract class AbstractHtmlParser implements Parser {
                     if (mediaTitle != null) {
                         aMedia.setTitle(mediaTitle);
                     }
-                    item.addMedia(aMedia);
+                    Link mediaLink = new Link();
+                    mediaLink.setLinkedDocument(aMedia);
+                    mediaLink.setLinkingDocument(doc);
+                    mediaLink.setRelation("enclosure");
+                    mediaLink.setNumber(linkNumber++);
+                    item.addLink(mediaLink);
                 } catch (MalformedURLException e) {
                     //skip the media creation if bad url
                     logger.error(e.getMessage());
@@ -517,9 +521,10 @@ public abstract class AbstractHtmlParser implements Parser {
             else if (nodeName.equals("param")) {
                 String paramName = ((Element)node).getAttribute("name");
                 String paramValue = ((Element)node).getAttribute("value");
-                List<Sound> media = item.getMedia();
-                if (media.size() > 0) {
-                    Sound lastMedia = media.get(media.size()-1);
+                List<Link> links = item.getLinks();
+                if (links.size() > 0) {
+                    Link lastLink = links.get(links.size()-1);
+                    SimpleDocument lastMedia = lastLink.getLinkedDocument();
                     if (paramName.equalsIgnoreCase("src")) {
                         URL mediaUrl = lastMedia.getUrl();
                         if (mediaUrl == null) {
@@ -530,11 +535,8 @@ public abstract class AbstractHtmlParser implements Parser {
                                 logger.warn("Bad media url: "+mediaUrl);
                             }
                         }
+                    } else if (paramName.equalsIgnoreCase("autoplay") || paramName.equalsIgnoreCase("autoStart")) {
                     }
-                    /*else if (paramName.equalsIgnoreCase("autoplay") || paramName.equalsIgnoreCase("autoStart")) {
-                        //we remove the auto-start parameter because the user must be able to do that himself
-                        node.getParentNode().removeChild(node);
-                    }*/
                 }
             }
             //others elements are ignored

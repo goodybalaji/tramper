@@ -30,7 +30,6 @@ public class OutlineItem extends DocumentItem implements TreeNode {
     public OutlineItem(Outline tree) {
 	this.tree = tree;
         children = new ArrayList<OutlineItem>();
-        media = new ArrayList<Sound>();
         links = new ArrayList<Link>();
     }
 

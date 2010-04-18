@@ -8,8 +8,6 @@ package org.tramper.doc;
 public class Sound extends SimpleDocument {
     /** id */
     protected String id;
-    /** length in bytes */
-    protected long length;
     /** duration in microsecond */
     protected long duration;
     /** album */
@@ -20,20 +18,6 @@ public class Sound extends SimpleDocument {
      */
     public Sound() {
         super();
-    }
-
-    /**
-     * @return length.
-     */
-    public long getLength() {
-        return this.length;
-    }
-
-    /**
-     * @param length length 
-     */
-    public void setLength(long length) {
-        this.length = length;
     }
 
     /**

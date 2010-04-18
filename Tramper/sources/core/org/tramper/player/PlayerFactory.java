@@ -7,7 +7,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.log4j.Logger;
-import org.tramper.doc.SimpleDocument;
 import org.tramper.synthesizer.JSAPISpeechSynthesizer;
 import org.tramper.synthesizer.SpeechSynthesizer;
 import org.tramper.synthesizer.SynthesisException;
@@ -43,32 +42,6 @@ public class PlayerFactory {
      */
     public static SpeechSynthesizer getSpeechSynthesizer() throws PlayException {
         return speechSynthesizer;
-    }
-    
-    /**
-     * return the right player following the given document
-     * @param document document
-     * @return a player
-     * @throws PlayException
-     */
-    public static Player getPlayerByDocument(SimpleDocument document) throws PlayException {
-	lock.lock();
-	playerLoader.reload();
-	Iterator<Player> playerIterator = playerLoader.iterator();
-	while (playerIterator.hasNext()) {
-	    try {
-		Player aPlayer = playerIterator.next();
-        	if (aPlayer.isDocumentSupported(document)) {
-        	    lock.unlock();
-        	    return aPlayer;
-        	}
-	    } catch (ServiceConfigurationError e) {
-		logger.error("Error when loading a service provider", e);
-	    }
-	}
-        lock.unlock();
-        logger.error("Unknown document: "+document);
-        throw new PlayException("Unknown document: "+document);
     }
     
     /**

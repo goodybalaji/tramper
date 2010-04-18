@@ -189,20 +189,19 @@ public class Feed extends MarkupDocument implements Serializable, TableModel, Li
      * @see javax.swing.table.TableModel#getColumnClass(int)
      */
     public Class<?> getColumnClass(int columnIndex) {
-        if (columnIndex == 0)
+        if (columnIndex == 0) {
             return String.class;
-        else if (columnIndex == 1)
+        } else if (columnIndex == 1) {
             return String.class;
-        else if (columnIndex == 2)
+        } else if (columnIndex == 2) {
             return List.class;
-        else if (columnIndex == 3)
-            return List.class;
-        else if (columnIndex == 4)
+        } else if (columnIndex == 3) {
             return Date.class;
-        else if (columnIndex == 5)
+        } else if (columnIndex == 4) {
             return Date.class;
-        else
+        } else {
             return null;
+        }
     }
 
     /**
@@ -210,7 +209,7 @@ public class Feed extends MarkupDocument implements Serializable, TableModel, Li
      * @see javax.swing.table.TableModel#getColumnCount()
      */
     public int getColumnCount() {
-        return 6;
+        return 5;
     }
 
     /**
@@ -219,20 +218,19 @@ public class Feed extends MarkupDocument implements Serializable, TableModel, Li
      */
     public String getColumnName(int columnIndex) {
         ResourceBundle label = ResourceBundle.getBundle("label");
-        if (columnIndex == 0)
+        if (columnIndex == 0) {
             return label.getString("javaspeaker.title");
-        else if (columnIndex == 1)
+        } else if (columnIndex == 1) {
             return label.getString("javaspeaker.category");
-        else if (columnIndex == 2)
+        } else if (columnIndex == 2) {
             return label.getString("javaspeaker.links");
-        else if (columnIndex == 3)
-            return label.getString("javaspeaker.media");
-        else if (columnIndex == 4)
+        } else if (columnIndex == 3) {
             return label.getString("javaspeaker.item.publication");
-        else if (columnIndex == 5)
+        } else if (columnIndex == 4) {
             return label.getString("javaspeaker.item.modification");
-        else
+        } else {
             return "";
+        }
     }
 
     /**
@@ -249,28 +247,27 @@ public class Feed extends MarkupDocument implements Serializable, TableModel, Li
      */
     public Object getValueAt(int rowIndex, int columnIndex) {
         FeedItem item = (FeedItem)items.get(rowIndex);
-        if (columnIndex == 0)
+        if (columnIndex == 0) {
             return item.getTitle();
-        else if (columnIndex == 1)
+        } else if (columnIndex == 1) {
             return item.getCategory();
-        else if (columnIndex == 2)
+        } else if (columnIndex == 2) {
             return item.getLinks();
-        else if (columnIndex == 3)
-            return item.getMedia();
-        else if (columnIndex == 4)
+        } else if (columnIndex == 3) {
             return item.getPublicationDate();
-        else if (columnIndex == 5)
+        } else if (columnIndex == 4) {
             return item.getUpdateDate();
-        else
+        } else {
             return null;
+        }
     }
 
     /**
-     * Columns 3 and 4 (links and media) are editable in JTable
+     * Column 2 (links) is editable in JTable
      * @see javax.swing.table.TableModel#isCellEditable(int, int)
      */
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-	if (columnIndex == 2 || columnIndex == 3) {
+	if (columnIndex == 2) {
 	    return true;
 	} else {
 	    return false;
@@ -283,18 +280,17 @@ public class Feed extends MarkupDocument implements Serializable, TableModel, Li
      */
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         FeedItem item = (FeedItem)items.get(rowIndex);
-        if (columnIndex == 0)
+        if (columnIndex == 0) {
             item.setTitle((String)aValue);
-        else if (columnIndex == 1)
+        } else if (columnIndex == 1) {
             item.setCategory((String)aValue);
-        else if (columnIndex == 2)
+        } else if (columnIndex == 2) {
             item.setLink((List<Link>)aValue);
-        else if (columnIndex == 3)
-            item.setMedia((List<Sound>)aValue);
-        else if (columnIndex == 4)
+        } else if (columnIndex == 3) {
             item.setPublicationDate((Date)aValue);
-        else if (columnIndex == 5)
+        } else if (columnIndex == 4) {
             item.setUpdateDate((Date)aValue);
+        }
     }
 
     /**

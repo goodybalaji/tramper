@@ -13,14 +13,7 @@ public class LoaderFactory {
     private static List<LoaderFactoryListener> loaderFactoryListener = new ArrayList<LoaderFactoryListener>();
     
     /**
-     * 
-     */
-    public LoaderFactory() {
-        super();
-    }
-
-    /**
-     * Instanciate a new loader 
+     * Instantiates a new loader 
      * @param className
      * @return a loader
      */

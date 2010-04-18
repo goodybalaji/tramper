@@ -21,6 +21,7 @@ import java.awt.event.MouseListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineMetrics;
 import java.awt.geom.Point2D;
+import java.awt.geom.RoundRectangle2D;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -152,12 +153,12 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
     public void paint(Graphics g) {
 	Graphics2D g2d = (Graphics2D)g;
 	Dimension miniatureSize = getSize();
+	marginWidth = 2;
 
 	// choose the colors of the title, its background and the borders
 	Color titleBackground = null;
 	Color titleForeground = null;
 	if (document.isActive()) {
-	    marginWidth = 1;
 	    titleBackground = UIManager.getColor("TextField.selectionBackground");
 	    if (titleBackground == null) {
 		titleBackground = UIManager.getColor("textHighlight");
@@ -167,7 +168,6 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 		titleForeground = UIManager.getColor("textHighlightText");
 	    }
 	} else {
-	    marginWidth = 4;
 	    titleBackground = UIManager.getColor("TextField.background");
 	    if (titleBackground == null) {
 		titleBackground = UIManager.getColor("text");
@@ -177,11 +177,13 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 		titleForeground = UIManager.getColor("textText");
 	    }
 	}
-	Color borderColor = titleBackground;
+	Color innerBorder = titleBackground;
+	Color outerBorder = titleForeground;
 
 	g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-	g2d.setClip(marginWidth, marginWidth, miniatureSize.width - 2*marginWidth, miniatureSize.height - 2*marginWidth);
+	
+	RoundRectangle2D.Float roundRect = new RoundRectangle2D.Float(marginWidth, marginWidth, miniatureSize.width - 2*marginWidth, miniatureSize.height - 2*marginWidth, 10, 10);
+	g2d.setClip(roundRect);
 	
 	Body body = miniaturised.getBody();
 	body.paintMiniature(g2d, miniatureSize, mouseOn);
@@ -238,14 +240,19 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 	int titleY = miniatureSize.height - (int)(metrics.getDescent() + metrics.getLeading() + marginWidth);
 	g2d.drawString(title, titleX, titleY);
 	
-	// draw border
-	g2d.setColor(borderColor);
-        g2d.setStroke(new BasicStroke(borderWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
-        int borderX = marginWidth;
-        int borderY = marginWidth;
-        int borderShapeWidth = miniatureSize.width - 2*marginWidth;
-        int borderShapeHeight = miniatureSize.height - 2*marginWidth;
-	g2d.drawRect(borderX, borderY, borderShapeWidth, borderShapeHeight);
+	// draw double-lines border
+        g2d.setStroke(new BasicStroke(borderWidth/2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
+
+        roundRect.width -= 1;
+        roundRect.height -= 1;
+	g2d.setColor(outerBorder);
+        g2d.draw(roundRect);
+        roundRect.x += borderWidth/2;
+        roundRect.y += borderWidth/2;
+        roundRect.width -= borderWidth;
+        roundRect.height -= borderWidth;
+        g2d.setColor(innerBorder);
+        g2d.draw(roundRect);
 
 	g2d.setClip(null);
 	

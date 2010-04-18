@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.tramper.player.Player;
+import org.tramper.conductor.Conductor;
 import org.tramper.ui.UserInterfaceFactory;
 
 /**
@@ -40,12 +40,12 @@ public class TogglePausePlayAction extends AbstractAction {
      */
     public void actionPerformed(ActionEvent e) {
 	if (UserInterfaceFactory.isAudioUserInterfaceInstanciated()) {
-            Player aPlayer = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer();
-            if (aPlayer != null) {
-                if (aPlayer.isPaused()) {
-                    aPlayer.resume();
+	    Conductor aConductor = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer();
+            if (aConductor != null) {
+                if (aConductor.isPaused()) {
+                    aConductor.resume();
                 } else {
-                    aPlayer.pause();
+                    aConductor.pause();
                 }
             }
 	}
