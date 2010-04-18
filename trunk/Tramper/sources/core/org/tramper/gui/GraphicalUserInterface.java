@@ -72,10 +72,13 @@ import org.tramper.action.TogglePausePlayAction;
 import org.tramper.action.TogglePlayAction;
 import org.tramper.aui.AUIEvent;
 import org.tramper.aui.AUIListener;
+import org.tramper.conductor.Conductor;
+import org.tramper.conductor.MarkupConductor;
 import org.tramper.doc.History;
 import org.tramper.doc.Library;
 import org.tramper.doc.LibraryEvent;
 import org.tramper.doc.LibraryListener;
+import org.tramper.doc.MarkupDocument;
 import org.tramper.doc.SimpleDocument;
 import org.tramper.doc.Target;
 import org.tramper.gui.viewer.Viewer;
@@ -605,7 +608,7 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	}
 	return null;
     }
-
+    
     /**
      * 
      */
@@ -1131,21 +1134,21 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
      * @param event
      */
     public void playerAdded(AUIEvent event) {
-	Player addedPlayer = event.getPlayer();
-	SimpleDocument addedPlayerDoc = addedPlayer.getDocument();
+	Conductor addedConductor = event.getConductor();
+	SimpleDocument addedPlayerDoc = addedConductor.getDocument();
 	
 	Component[] viewers = primaryPanel.getComponents();
 	for (Component viewer : viewers) {
             SimpleDocument doc = ((Viewer)viewer).getDocument();
             if (addedPlayerDoc.equals(doc)) {
-                addedPlayer.addPlayListener((Viewer)viewer);
+        	addedConductor.addPlayListener((Viewer)viewer);
             }
 	}
 	viewers = secondaryPanel.getComponents();
 	for (Component viewer : viewers) {
             SimpleDocument doc = ((Viewer)viewer).getDocument();
             if (addedPlayerDoc.equals(doc)) {
-                addedPlayer.addPlayListener((Viewer)viewer);
+        	addedConductor.addPlayListener((Viewer)viewer);
             }
 	}
     }
@@ -1155,21 +1158,21 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
      * @param event
      */
     public void playerRemoved(AUIEvent event) {
-	Player removedPlayer = event.getPlayer();
-	SimpleDocument removedPlayerDoc = removedPlayer.getDocument();
+	Conductor removedConductor = event.getConductor();
+	SimpleDocument removedPlayerDoc = removedConductor.getDocument();
 	
 	Component[] viewers = primaryPanel.getComponents();
 	for (Component viewer : viewers) {
             SimpleDocument doc = ((Viewer)viewer).getDocument();
             if (removedPlayerDoc.equals(doc)) {
-        	removedPlayer.removePlayListener((Viewer)viewer);
+        	removedConductor.removePlayListener((Viewer)viewer);
             }
 	}
 	viewers = secondaryPanel.getComponents();
 	for (Component viewer : viewers) {
             SimpleDocument doc = ((Viewer)viewer).getDocument();
             if (removedPlayerDoc.equals(doc)) {
-        	removedPlayer.removePlayListener((Viewer)viewer);
+        	removedConductor.removePlayListener((Viewer)viewer);
             }
 	}
     }
@@ -1179,19 +1182,20 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
      * @see org.tramper.aui.AUIListener#playerActivated(org.tramper.aui.AUIEvent)
      */
     public void playerActivated(AUIEvent event) {
-	final Player activatedPlayer = event.getPlayer();
+	final Conductor activatedConductor = event.getConductor();
         if (playerPanel != null) {
             SwingUtilities.invokeLater(new Runnable() {
 	        public void run() {
-	            playerPanel.setControlValues(activatedPlayer);
+	            playerPanel.setControlValues(activatedConductor);
 	        }
 	    });
         }
-        if (activatedPlayer instanceof SpeechSynthesizer) {
+        final Player principal = activatedConductor.getPrincipal();
+        if (principal instanceof SpeechSynthesizer) {
             if (speakerPanel != null) {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
-    	            	speakerPanel.setControlValues((SpeechSynthesizer)activatedPlayer);
+    	            	speakerPanel.setControlValues((SpeechSynthesizer)principal);
                     }
                 });
             }
@@ -1203,7 +1207,7 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
      * @see org.tramper.aui.AUIListener#playerDeactivated(org.tramper.aui.AUIEvent)
      */
     public void playerDeactivated(AUIEvent event) {
-	Player deactivatedPlayer = event.getPlayer();
+	Conductor deactivatedPlayer = event.getConductor();
 	if (deactivatedPlayer != null) {
             if (playerPanel != null) {
                 deactivatedPlayer.removePlayListener(playerPanel);
@@ -1213,9 +1217,10 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
                     }
                 });
             }
-            if (deactivatedPlayer instanceof SpeechSynthesizer) {
+            Player principal = deactivatedPlayer.getPrincipal();
+            if (principal instanceof SpeechSynthesizer) {
                 if (speakerPanel != null) {
-                    ((SpeechSynthesizer)deactivatedPlayer).removeSpeechListener(speakerPanel);
+                    ((SpeechSynthesizer)principal).removeSpeechListener(speakerPanel);
                     SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
                             speakerPanel.setEnabled(false);

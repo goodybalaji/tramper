@@ -19,7 +19,6 @@ import javax.swing.border.EmptyBorder;
 
 import org.tramper.doc.FeedItem;
 import org.tramper.doc.Link;
-import org.tramper.doc.Sound;
 import org.tramper.doc.SimpleDocument;
 import org.tramper.gui.IconFactory;
 
@@ -100,7 +99,7 @@ public class FeedItemListCellRenderer extends JPanel implements ListCellRenderer
         for (int i=0; i<links.size(); i++) {
             Link link = links.get(i);
             String relation = link.getRelation();
-            if ("via".equals(relation)) {
+            if ("via".equals(relation) || "enclosure".equals(relation)) {
                 found = true;
         	SimpleDocument linkedDoc = link.getLinkedDocument();
         	String mimeType = linkedDoc.getMimeType();
@@ -109,24 +108,10 @@ public class FeedItemListCellRenderer extends JPanel implements ListCellRenderer
                 if (title == null) {
                     text = linkedDoc.getTitle();
                 }
-                //text = "<html>" + text + "<sup style='color: red'>("+link.getNumber()+")</sup></html>";
                 break;
             }
         }
         
-        if (!found) {
-            List<Sound> medias = item.getMedia();
-            for (int i=0; i<medias.size(); i++) {
-                found = true;
-                Sound media = medias.get(i);
-                String mimeType = media.getMimeType();
-                Icon icon = IconFactory.getIconByMimeType(mimeType);
-                titleLabel.setIcon(icon);
-                if (title == null) {
-                    text = media.getTitle();
-                }
-            }
-        }
         titleLabel.setText(text);
         
         if (!found) {

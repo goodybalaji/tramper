@@ -10,6 +10,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.JPanel;
 
@@ -89,29 +90,17 @@ public class VideoBody extends JPanel implements Body, VideoRendererListener, Mo
 	g2d.setColor(getBackground());
 	g2d.fillRect(0, 0, bodyWidth, bodyHeight);
 	
+	// paint the video in normal size centered in the panel
 	Rectangle normalVideoSize = new Rectangle(0, 0, videoWidth, videoHeight);
-	
 	g2d.translate((bodyWidth - videoWidth)/2, (bodyHeight - videoHeight)/2);
-
 	videoRenderCtrl.paintVideo(g2d, normalVideoSize, normalVideoSize);
-	//videoRenderCtrl.paintVideoFrame(g2d, rect);
-	
-	/*Color highlightColor = UIManager.getColor("textHighlight");
-	
-	GradientPaint gradientLeftOut = new GradientPaint(-10, 0, new Color(0, 0, 0, 0), 0, 0, highlightColor);
-	g2d.setPaint(gradientLeftOut);
-	g2d.fillRect(-10, 0, 10, frameSize.height);
-	
-	GradientPaint gradientRightOut = new GradientPaint(frameSize.width, 0, highlightColor, frameSize.width + 10, 0, new Color(0, 0, 0, 0));
-	g2d.setPaint(gradientRightOut);
-	g2d.fillRect(frameSize.width, 0, 10, frameSize.height);*/
-
+	//videoRenderCtrl.paintVideoFrame(g2d, normalVideoSize);
 
 	g2d.translate(0, videoHeight);
-
-	Rectangle halfVideoSize = new Rectangle(0, videoHeight/2, videoWidth, videoHeight/2);
 	
+	// paint the reflected reverted half video
 	g2d.setComposite(AlphaComposite.SrcOver.derive(0.5f));
+	Rectangle halfVideoSize = new Rectangle(0, videoHeight/2, videoWidth, videoHeight/2);
 	AffineTransform currentTransform = g2d.getTransform();
 	AffineTransform flipTransform = new AffineTransform(1, 0, 0, -1, 0, videoHeight);
 	g2d.transform(flipTransform);
@@ -121,20 +110,14 @@ public class VideoBody extends JPanel implements Body, VideoRendererListener, Mo
 	//g2d.scale(1/0.75, 1/0.75);
 	//g2d.rotate(-Math.PI, videoWidth/2, videoHeight/2);
 	g2d.setTransform(currentTransform);
-	g2d.setComposite(AlphaComposite.SrcOver.derive(1.0f));
-
-	/*GradientPaint gradientLeftIn = new GradientPaint(0, 0, Color.BLACK, 10, 0, new Color(0, 0, 0, 0));
-	g2d.setPaint(gradientLeftIn);
-	g2d.fillRect(0, 0, 10, frameSize.height);
 	
-	GradientPaint gradientRightIn = new GradientPaint(frameSize.width - 10, 0, new Color(0, 0, 0, 0), frameSize.width, 0, Color.BLACK);
+	// paint the transparent layer for reflected half video
+	g2d.setComposite(AlphaComposite.SrcOver.derive(1.0f));
+	GradientPaint gradientRightIn = new GradientPaint(0, 0, new Color(0, 0, 0, 0), 0, videoHeight/2, getBackground());
 	g2d.setPaint(gradientRightIn);
-	g2d.fillRect(frameSize.width - 10, 0, 10, frameSize.height);*/
-
-	GradientPaint gradientRightIn = new GradientPaint(0, 0, new Color(0, 0, 0, 0), 0, videoHeight/2, this.getBackground());
-	g2d.setPaint(gradientRightIn);
-	g2d.fillRect(0, 0, videoWidth, videoHeight/2);
-
+	Rectangle2D.Float transparentLayer = new Rectangle2D.Float(0, 0, videoWidth, videoHeight/2);
+	g2d.fill(transparentLayer);
+	
 	g2d.translate(0, -videoHeight);
 	
 	g2d.translate(-(bodyWidth - videoWidth)/2, -(bodyHeight - videoHeight)/2);

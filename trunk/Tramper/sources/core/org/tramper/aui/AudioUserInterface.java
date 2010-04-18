@@ -9,12 +9,13 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
+import org.tramper.conductor.Conductor;
+import org.tramper.conductor.ConductorFactory;
 import org.tramper.doc.Library;
 import org.tramper.doc.LibraryEvent;
 import org.tramper.doc.LibraryListener;
 import org.tramper.doc.SimpleDocument;
 import org.tramper.doc.Target;
-import org.tramper.player.MediaPlayer;
 import org.tramper.player.PlayException;
 import org.tramper.player.Player;
 import org.tramper.player.PlayerFactory;
@@ -31,8 +32,8 @@ import org.tramper.ui.UserInterfaceFactory;
 public class AudioUserInterface implements UserInterface, LibraryListener {
     /** logger */
     private Logger logger = Logger.getLogger(AudioUserInterface.class);
-    /** document's players */
-    protected Map<Target, Player> docPlayers;
+    /** document's conductor */
+    protected Map<Target, Conductor> conductorByTarget;
     /** audio user interface listeners list */
     private List<AUIListener> auiListener = new ArrayList<AUIListener>();
     
@@ -40,7 +41,7 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
      * 
      */
     public AudioUserInterface() {
-	docPlayers = new HashMap<Target, Player>();
+	conductorByTarget = new HashMap<Target, Conductor>();
         //load the recognizer
         try {
             SpeechRecognizerFactory.getSpeechRecognizer();
@@ -68,7 +69,7 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
     public boolean confirmMessage(String msgKey, Object[] params) {
         URL url = getClass().getResource("/org/fingon/question.wav");
         try {
-            MediaPlayer soundPlayer = (MediaPlayer)PlayerFactory.getPlayerByExtension("wav");
+            Player soundPlayer = PlayerFactory.getPlayerByExtension("wav");
             soundPlayer.play(url);
         } catch (PlayException e) {
             logger.error(e.getMessage(), e);
@@ -95,7 +96,7 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
     public void raiseInfo(String msgKey) {
         URL url = getClass().getResource("/org/fingon/Balloon.wav");
         try {
-            MediaPlayer soundPlayer = (MediaPlayer)PlayerFactory.getPlayerByExtension("wav");
+            Player soundPlayer = PlayerFactory.getPlayerByExtension("wav");
             soundPlayer.play(url);
         } catch (PlayException e) {
             logger.error(e.getMessage(), e);
@@ -118,7 +119,7 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
     public void raiseWarning(String msgKey) {
         URL url = getClass().getResource("/org/fingon/Exclamation.wav");
         try {
-            MediaPlayer soundPlayer = (MediaPlayer)PlayerFactory.getPlayerByExtension("wav");
+            Player soundPlayer = PlayerFactory.getPlayerByExtension("wav");
             soundPlayer.play(url);
         } catch (PlayException e) {
             logger.error(e.getMessage(), e);
@@ -141,7 +142,7 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
     public void raiseError(String msgKey) {
         URL urlError = getClass().getResource("/org/fingon/error.wav");
         try {
-            MediaPlayer soundPlayer = (MediaPlayer)PlayerFactory.getPlayerByExtension("wav");
+            Player soundPlayer = PlayerFactory.getPlayerByExtension("wav");
             soundPlayer.play(urlError);
         } catch (PlayException e) {
             logger.error(e.getMessage(), e);
@@ -163,22 +164,22 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
      * @param target the target where to render the document
      */
     public void renderDocument(SimpleDocument document, Target target) {
-	Player docPlayer = null;
+	Conductor aConductor = null;
         try {
-            docPlayer = PlayerFactory.getPlayerByDocument(document);
-            docPlayer.render(document, target);
+            aConductor = ConductorFactory.getConductorByDocument(document);
+            aConductor.render(document, target);
         } catch (Exception e) {
-            logger.error("unable to get a player for the document "+document);
+            logger.error("unable to get a conductor for the document "+document);
             List<UserInterface> allUI = UserInterfaceFactory.getAllUserInterfaces();
             for (UserInterface anUI : allUI) {
         	anUI.raiseError("noplayer");
             }
             return;
         }
-        docPlayers.put(target, docPlayer);
+        conductorByTarget.put(target, aConductor);
         
         AUIEvent event = new AUIEvent(this);
-        event.setPlayer(docPlayer);
+        event.setConductor(aConductor);
         firePlayerAddedEvent(event);
     }
 
@@ -186,10 +187,10 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
      * 
      * @see org.tramper.ui.UserInterface#getActiveRenderer()
      */
-    public Player getActiveRenderer() {
-	for (Player player : docPlayers.values()) {
-	    if (player.isActive()) {
-		return player;
+    public Conductor getActiveRenderer() {
+	for (Conductor aConductor : conductorByTarget.values()) {
+	    if (aConductor.isActive()) {
+		return aConductor;
 	    }
 	}
 	return null;
@@ -197,11 +198,11 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
 
     /**
      * 
-     * @param target the target where the player is supposed to be
-     * @return the player
+     * @param target the target where the conductor is supposed to be
+     * @return the conductor
      */
-    public Player getPlayer(Target target) {
-	return docPlayers.get(target);
+    public Conductor getPlayer(Target target) {
+	return conductorByTarget.get(target);
     }
     
     /**
@@ -239,14 +240,14 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
      * @param target 
      */
     public void removePlayer(Target target) {
-	Player removedPlayer = docPlayers.remove(target);
-	if (removedPlayer != null) {
-	    if (removedPlayer.isRunning()) {
-		removedPlayer.stop();
+	Conductor removedConductor = conductorByTarget.remove(target);
+	if (removedConductor != null) {
+	    if (removedConductor.isRunning()) {
+		removedConductor.stop();
 	    }
     
             AUIEvent auiEvent = new AUIEvent(this);
-            auiEvent.setPlayer(removedPlayer);
+            auiEvent.setConductor(removedConductor);
             firePlayerRemovedEvent(auiEvent);
 	}
     }
@@ -256,10 +257,10 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
      * @see org.tramper.doc.LibraryListener#documentActivated(org.tramper.doc.LibraryEvent)
      */
     public void documentActivated(LibraryEvent event) {
-	Player activatedPlayer = docPlayers.get(event.getTarget());
-	if (activatedPlayer != null) {
+	Conductor activatedConductor = conductorByTarget.get(event.getTarget());
+	if (activatedConductor != null) {
             AUIEvent auiEvent = new AUIEvent(this);
-            auiEvent.setPlayer(activatedPlayer);
+            auiEvent.setConductor(activatedConductor);
             firePlayerActivatedEvent(auiEvent);
 	}
     }
@@ -269,10 +270,10 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
      * @see org.tramper.doc.LibraryListener#documentDeactivated(org.tramper.doc.LibraryEvent)
      */
     public void documentDeactivated(LibraryEvent event) {
-	Player deactivatedPlayer = docPlayers.get(event.getTarget());
-	if (deactivatedPlayer != null) {
+	Conductor deactivatedConductor = conductorByTarget.get(event.getTarget());
+	if (deactivatedConductor != null) {
             AUIEvent auiEvent = new AUIEvent(this);
-            auiEvent.setPlayer(deactivatedPlayer);
+            auiEvent.setConductor(deactivatedConductor);
             firePlayerDeactivatedEvent(auiEvent);
 	}
     }

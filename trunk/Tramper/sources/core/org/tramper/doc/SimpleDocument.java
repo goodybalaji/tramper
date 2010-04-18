@@ -1,6 +1,7 @@
 package org.tramper.doc;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * A simple document.
@@ -17,6 +18,10 @@ public class SimpleDocument extends TextDocument {
     protected String copyright;
     /** creation date */
     protected Date creationDate;
+    /** Speakable items list */
+    protected List<DocumentItem> items;
+    /** length in bytes */
+    protected long length;
     
     /**
      * 
@@ -94,5 +99,27 @@ public class SimpleDocument extends TextDocument {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
-    
+
+    /**
+     * Returns the items of the document
+     * @return
+     */
+    public List<DocumentItem> getItems() {
+        return items;
+    }
+
+    /**
+     * @return length.
+     */
+    public long getLength() {
+        return this.length;
+    }
+
+    /**
+     * @param length length 
+     */
+    public void setLength(long length) {
+        this.length = length;
+    }
+
 }

@@ -1,10 +1,14 @@
 package org.tramper.gui;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +43,10 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
     private Logger logger = Logger.getLogger(ViewerControlPanel.class);
     /**  */
     private Map<Loader, LoadingViewer> loadingViewers;
+    /** rescaled background image */
+    private BufferedImage rescaledImage;
+    /** background image */
+    private BufferedImage backgroundImage;
 
     public ViewerControlPanel(GraphicalUserInterface main) {
 	loadingViewers = new HashMap<Loader, LoadingViewer>();
@@ -52,6 +60,33 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
 	for (Viewer viewer : viewers) {
 	    addMiniature(viewer);
 	}
+
+	URL backgroundUrl = this.getClass().getResource("images/blue_ice.jpg");
+	try {
+	    backgroundImage = ImageIO.read(backgroundUrl);
+	    rescaledImage = new BufferedImage(backgroundImage.getWidth(), backgroundImage.getHeight(), backgroundImage.getType());
+	    rescaleImage();
+	} catch (Exception e) {}
+    }
+    
+    /**
+     * @see javax.swing.JPanel#updateUI()
+     */
+    @Override
+    public void updateUI() {
+	super.updateUI();
+	rescaleImage();
+    }
+
+    private void rescaleImage() {
+	if (backgroundImage != null) {
+	    Color backgroundColor = this.getBackground();
+	    float redOffset = backgroundColor.getRed() - 128;
+	    float greenOffset = backgroundColor.getGreen() - 128;
+	    float blueOffset = backgroundColor.getBlue() - 128;
+	    RescaleOp op = new RescaleOp(new float[]{1f, 1f, 1f}, new float[]{redOffset, greenOffset, blueOffset}, null);
+	    op.filter(backgroundImage, rescaledImage);
+	}
     }
     
     /**
@@ -60,15 +95,16 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
     @Override
     protected void paintComponent(Graphics g) {
 	super.paintComponent(g);
-	URL backgroundUrl = this.getClass().getResource("images/background-miniatures.png");
 	Dimension dimPanel = this.getSize();
 	Graphics2D g2d = (Graphics2D)g;
-	try {
-	    BufferedImage backgroundImage = ImageIO.read(backgroundUrl);
-	    int imageWidth = backgroundImage.getWidth();
-	    int imageHeight = backgroundImage.getHeight();
-	    g2d.drawImage(backgroundImage, dimPanel.width - imageWidth, dimPanel.height - imageHeight, this);
-	} catch (Exception e) {}
+	Composite currentComposite = g2d.getComposite();
+	g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+	if (rescaledImage != null) {
+	    int imageWidth = rescaledImage.getWidth();
+	    int imageHeight = rescaledImage.getHeight();
+	    g2d.drawImage(rescaledImage, dimPanel.width - imageWidth, dimPanel.height - imageHeight, this);
+	}
+	g2d.setComposite(currentComposite);
     }
 
     public void addMiniature(Viewer viewer) {

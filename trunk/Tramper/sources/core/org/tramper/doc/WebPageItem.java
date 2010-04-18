@@ -21,7 +21,6 @@ public class WebPageItem extends DocumentItem {
      */
     public WebPageItem() {
         content = new StringBuffer();
-        media = new ArrayList<Sound>();
         links = new ArrayList<Link>();
     }
     

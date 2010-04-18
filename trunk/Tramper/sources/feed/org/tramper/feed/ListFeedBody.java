@@ -33,7 +33,6 @@ import org.tramper.doc.Feed;
 import org.tramper.doc.FeedItem;
 import org.tramper.doc.Library;
 import org.tramper.doc.Link;
-import org.tramper.doc.Sound;
 import org.tramper.doc.SimpleDocument;
 import org.tramper.doc.Target;
 import org.tramper.gui.IconFactory;
@@ -193,25 +192,14 @@ public class ListFeedBody extends JSplitPane implements Body, MouseListener, Hyp
 	    if (clickCount == 2) {
 		FeedItem selectedItem = (FeedItem)feedList.getSelectedValue();
 		if (selectedItem != null) {
-		    boolean viaLinkFound = false;
 		    List<Link> links = selectedItem.getLinks();
 		    for (int i=0; i<links.size(); i++) {
 			Link link = links.get(i);
 			String relation = link.getRelation();
-			if ("via".equals(relation)) {
-			    viaLinkFound = true;
+			if ("via".equals(relation) || "enclosure".equals(relation)) {
 			    URL url = link.getLinkedDocument().getUrl();
 			    Loader loader = LoaderFactory.getLoader();
 			    loader.download(url.toString(), new Target(Library.PRIMARY_FRAME, null));
-			}
-		    }
-		    if (!viaLinkFound) {
-			List<Sound> medias = selectedItem.getMedia();
-			for (Sound media : medias) {
-			    viaLinkFound = true;
-			    URL mediaUrl = media.getUrl();
-			    Loader loader = LoaderFactory.getLoader();
-			    loader.download(mediaUrl.toString(), new Target(Library.PRIMARY_FRAME, null));
 			}
 		    }
 		}
@@ -304,34 +292,6 @@ public class ListFeedBody extends JSplitPane implements Body, MouseListener, Hyp
             summarize.append("</p>");
         }
         
-        List<Sound> media = selectedItem.getMedia();
-        for (int i=0; i<media.size(); i++) {
-            Sound aMedia = media.get(i);
-            String mimeType = aMedia.getMimeType();
-            summarize.append("<a href='");
-            summarize.append(aMedia.getUrl().toString());
-            summarize.append("'><img src='");
-            URL urlImg = IconFactory.getIconUrlByMimeType(mimeType);
-            summarize.append(urlImg.toString());
-            summarize.append("' border='0'>&nbsp;");
-            summarize.append(aMedia.getTitle());
-            summarize.append("</a>");
-            summarize.append("<br>");
-            summarize.append("<div style='color: #888888; margin-left: 15px'>");
-            if (mimeType != null) {
-                summarize.append(mimeType);
-                summarize.append(" - ");
-            }
-            long length = aMedia.getLength();
-            if (length > 0) {
-                NumberFormat nbFormat = NumberFormat.getIntegerInstance();
-                summarize.append(nbFormat.format(length/1000));
-                ResourceBundle rb = ResourceBundle.getBundle("label");
-                summarize.append(rb.getString("javaspeaker.unit.kilobyte"));
-            }
-            summarize.append("</div>");
-        }
-
         List<Link> links = selectedItem.getLinks();
         for (int i=0; i<links.size(); i++) {
             Link aLink = links.get(i);
@@ -354,6 +314,18 @@ public class ListFeedBody extends JSplitPane implements Body, MouseListener, Hyp
             String relation = aLink.getRelation();
             String displayableRelation = label.getString("javaspeaker.menu."+relation);
             summarize.append(displayableRelation);
+            if (mimeType != null) {
+                summarize.append(" - ");
+                summarize.append(mimeType);
+            }
+            long length = aDocument.getLength();
+            if (length > 0) {
+                NumberFormat nbFormat = NumberFormat.getIntegerInstance();
+                summarize.append(nbFormat.format(length/1000));
+                ResourceBundle rb = ResourceBundle.getBundle("label");
+                summarize.append(" - ");
+                summarize.append(rb.getString("javaspeaker.unit.kilobyte"));
+            }
             summarize.append("</div>");
         }
         

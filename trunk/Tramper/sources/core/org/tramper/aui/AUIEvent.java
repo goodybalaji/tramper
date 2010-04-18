@@ -2,7 +2,7 @@ package org.tramper.aui;
 
 import java.util.EventObject;
 
-import org.tramper.player.Player;
+import org.tramper.conductor.Conductor;
 
 /**
  * 
@@ -11,8 +11,8 @@ import org.tramper.player.Player;
 public class AUIEvent extends EventObject {
     /** AUIEvent.java long */
     private static final long serialVersionUID = -6770708041346880960L;
-    /** player */
-    private Player player;
+    /** conductor */
+    private Conductor conductor;
 
     /**
      * 
@@ -23,17 +23,17 @@ public class AUIEvent extends EventObject {
     }
 
     /**
-     * @return player.
+     * @return conductor.
      */
-    public Player getPlayer() {
-        return this.player;
+    public Conductor getConductor() {
+        return this.conductor;
     }
 
     /**
-     * @param player player 
+     * @param conductor conductor 
      */
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setConductor(Conductor conductor) {
+        this.conductor = conductor;
     }
 
 }

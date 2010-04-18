@@ -6,17 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.tramper.doc.DocumentEvent;
-import org.tramper.doc.DocumentListener;
-import org.tramper.doc.SimpleDocument;
-import org.tramper.doc.Target;
-import org.tramper.doc.Video;
-import org.tramper.player.MediaPlayer;
 import org.tramper.player.PlayEvent;
 import org.tramper.player.PlayException;
 import org.tramper.player.PlayListener;
-import org.tramper.ui.Renderer;
-import org.tramper.ui.RenderingException;
+import org.tramper.player.Player;
 
 import com.sun.media.jmc.MediaProvider;
 import com.sun.media.jmc.control.AudioControl;
@@ -31,15 +24,11 @@ import com.sun.media.jmc.type.ContainerType.Container;
  * Video player using Java Media Component (JMC), from JavaFX.
  * @author Paul-Emile
  */
-public class VideoPlayer implements MediaPlayer, DocumentListener, MediaStateListener {
+public class VideoPlayer implements Player, MediaStateListener {
     /** logger */
     private Logger logger = Logger.getLogger(VideoPlayer.class);
     /** play listeners list */
     private List<PlayListener> listener;
-    /** document currently played */
-    private Video document;
-    /** target */
-    private Target target;
     /** media provider */
     private MediaProvider mediaProvider;
     /** audio control */
@@ -56,71 +45,62 @@ public class VideoPlayer implements MediaPlayer, DocumentListener, MediaStateLis
     }
 
     /**
-     * @see org.tramper.ui.Renderer#render(int)
-     */
-    public void render(int documentPart) throws RenderingException {
-	render(document, target, documentPart);
-    }
-
-    /**
-     * @see org.tramper.ui.Renderer#render(org.tramper.doc.SimpleDocument, org.tramper.doc.Target)
-     */
-    public void render(SimpleDocument doc, Target target) throws RenderingException {
-	render(doc, target, Renderer.ALL_PART);
-    }
-
-    /**
-     * @see org.tramper.ui.Renderer#render(org.tramper.doc.SimpleDocument, org.tramper.doc.Target, int)
-     */
-    public void render(SimpleDocument doc, Target target, int documentPart) throws RenderingException {
-	this.target = target;
-	
-	if (documentPart != Renderer.ALL_PART) {
-	    return;
-	}
-	
-        if (!(doc instanceof Video)) {
-            logger.error("The video player received a non video document: "+doc);
-            throw new RenderingException("wrong document class");
-        }
-        if (document != null) {
-            document.removeDocumentListener(this);
-        }
-        document = (Video)doc;
-        document.addDocumentListener(this);
-        
-        mediaProvider = document.getMediaProvider();
-        audioCtrl = mediaProvider.getControl(AudioControl.class);
-        videoCtrl = mediaProvider.getControl(VideoControl.class);
-        videoCtrl.setResizeBehavior(ResizeBehavior.None);
-        
-        mediaProvider.addMediaStateListener(this);
-	mediaProvider.setRepeating(false);
-	mediaProvider.setMediaTime(0.0);
-	mediaProvider.play();
-    }
-
-    /**
      * @see org.tramper.player.MediaPlayer#play(java.net.URL)
      */
     public void play(URL anUrl) throws PlayException {
-	mediaProvider.setRepeating(false);
-	mediaProvider.play();
+	try {
+	    mediaProvider = new MediaProvider(anUrl.toURI());
+	    mediaProvider.setRepeating(false);
+	    mediaProvider.play();
+	} catch (Exception e) {
+	    logger.error(e.getMessage(), e);
+	    throw new PlayException();
+	}
     }
 
     /**
      * @see org.tramper.player.MediaPlayer#playAndWait(java.net.URL)
      */
     public void playAndWait(URL anUrl) throws PlayException {
-	mediaProvider.setRepeating(false);
-	mediaProvider.play();
+	try {
+	    mediaProvider = new MediaProvider(anUrl.toURI());
+	    mediaProvider.setRepeating(false);
+	    double duration = mediaProvider.getDuration();
+	    mediaProvider.play();
+	    Thread.sleep((long)duration*1000);
+	} catch (Exception e) {
+	    logger.error(e.getMessage(), e);
+	    throw new PlayException();
+	}
     }
 
     /**
      * @see org.tramper.player.MediaPlayer#playLoop(java.net.URL)
      */
     public void playLoop(URL anUrl) throws PlayException {
-	mediaProvider.setRepeating(true);
+	try {
+	    mediaProvider = new MediaProvider(anUrl.toURI());
+            mediaProvider.setRepeating(true);
+            mediaProvider.play();
+	} catch (Exception e) {
+	    logger.error(e.getMessage(), e);
+	    throw new PlayException();
+	}
+    }
+
+    /**
+     * 
+     * @param aMediaProvider
+     * @throws PlayException
+     */
+    public void play(MediaProvider aMediaProvider) throws PlayException {
+	mediaProvider = aMediaProvider;
+        audioCtrl = mediaProvider.getControl(AudioControl.class);
+        videoCtrl = mediaProvider.getControl(VideoControl.class);
+        videoCtrl.setResizeBehavior(ResizeBehavior.None);
+        
+        mediaProvider.addMediaStateListener(this);
+	mediaProvider.setRepeating(false);
 	mediaProvider.play();
     }
 
@@ -233,15 +213,6 @@ public class VideoPlayer implements MediaPlayer, DocumentListener, MediaStateLis
     }
 
     /**
-     * @see org.tramper.player.Player#getRenderings()
-     */
-    public List<String> getRenderings() {
-        List<String> renderings = new ArrayList<String>();
-        renderings.add("document");
-        return renderings;
-    }
-
-    /**
      * @see org.tramper.player.Player#getSpeed()
      */
     public int getSpeed() throws PlayException {
@@ -331,39 +302,6 @@ public class VideoPlayer implements MediaPlayer, DocumentListener, MediaStateLis
      * @see org.tramper.player.Player#setOutput()
      */
     public void setOutput() {
-    }
-
-    /**
-     * @see org.tramper.ui.Renderer#getDocument()
-     */
-    public SimpleDocument getDocument() {
-	return document;
-    }
-
-    /**
-     * @see org.tramper.ui.Renderer#isActive()
-     */
-    public boolean isActive() {
-	return document.isActive();
-    }
-
-    /**
-     * @see org.tramper.doc.DocumentListener#documentActivated(org.tramper.doc.DocumentEvent)
-     */
-    public void documentActivated(DocumentEvent event) {
-    }
-
-    /**
-     * @see org.tramper.doc.DocumentListener#documentDeactivated(org.tramper.doc.DocumentEvent)
-     */
-    public void documentDeactivated(DocumentEvent event) {
-    }
-
-    public boolean isDocumentSupported(SimpleDocument document) {
-	if (document instanceof Video) {
-	    return true;
-	}
-	return false;
     }
 
     public boolean isExtensionSupported(String extension) {

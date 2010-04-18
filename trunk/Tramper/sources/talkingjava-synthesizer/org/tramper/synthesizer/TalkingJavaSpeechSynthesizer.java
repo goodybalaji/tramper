@@ -45,7 +45,6 @@ public class TalkingJavaSpeechSynthesizer extends JSAPISpeechSynthesizer {
 	AudioFileSink fileSink = new AudioFileSink(aFile, fmt, type);
 	try {
 	    audioMgr.setSink(fileSink);
-	    skipMedia = true;
 	} catch (IOException e) {
 	    logger.error(e);
 	}
@@ -59,7 +58,6 @@ public class TalkingJavaSpeechSynthesizer extends JSAPISpeechSynthesizer {
 	CGAudioManager audioMgr = (CGAudioManager)synthe.getAudioManager();
 	try {
 	    audioMgr.setSink(null);
-	    skipMedia = false;
 	} catch (IOException e) {
 	    logger.error(e);
 	}

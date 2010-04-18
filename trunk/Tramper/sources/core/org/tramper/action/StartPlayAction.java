@@ -1,13 +1,12 @@
 package org.tramper.action;
 
 import java.awt.event.ActionEvent;
-import java.util.List;
 
 import javax.swing.AbstractAction;
 
+import org.tramper.conductor.Conductor;
 import org.tramper.ui.Renderer;
 import org.tramper.ui.RenderingException;
-import org.tramper.ui.UserInterface;
 import org.tramper.ui.UserInterfaceFactory;
 
 /**
@@ -42,12 +41,13 @@ public class StartPlayAction extends AbstractAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-	List<UserInterface> ui = UserInterfaceFactory.getAllUserInterfaces();
-	for (UserInterface anUi : ui) {
-	    Renderer renderer = anUi.getActiveRenderer();
-	    try {
-		renderer.render(Renderer.ALL_PART);
-            } catch (RenderingException ex) {}
+	if (UserInterfaceFactory.isAudioUserInterfaceInstanciated()) {
+	    Conductor aConductor = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer();
+            if (aConductor != null) {
+                try {
+                    aConductor.render(Renderer.ALL_PART);
+                } catch (RenderingException ex) {}
+            }
 	}
     }
 }

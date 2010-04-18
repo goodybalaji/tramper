@@ -19,8 +19,6 @@ public abstract class MarkupDocument extends SimpleDocument {
     protected Icon icon;
     /** links to related documents */
     protected transient List<Link> links;
-    /** Speakable items list */
-    protected transient List<DocumentItem> items;
 
     /**
      * 
@@ -108,14 +106,6 @@ public abstract class MarkupDocument extends SimpleDocument {
     public void addLink(Link aLink) {
         if (this.links.contains(aLink) == false)
             this.links.add(aLink);
-    }
-    
-    /**
-     * Returns the items of the feed
-     * @return
-     */
-    public List<DocumentItem> getItems() {
-        return items;
     }
     
     /**

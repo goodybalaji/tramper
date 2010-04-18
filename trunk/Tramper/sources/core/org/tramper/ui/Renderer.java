@@ -4,8 +4,8 @@ import org.tramper.doc.SimpleDocument;
 import org.tramper.doc.Target;
 
 /**
+ * Renders a document into something sensible for human being.
  * @author Paul-Emile
- * 
  */
 public interface Renderer {
     /** all document part */
@@ -41,4 +41,11 @@ public interface Renderer {
      * @return true if the renderer has an active document, false otherwise
      */
     public boolean isActive();
+    /**
+     * 
+     * @param document
+     * @return
+     */
+    public boolean isDocumentSupported(SimpleDocument document);
+    
 }

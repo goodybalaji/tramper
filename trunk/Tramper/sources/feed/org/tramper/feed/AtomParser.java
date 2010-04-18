@@ -30,7 +30,6 @@ import org.tramper.doc.DocumentItem;
 import org.tramper.doc.Feed;
 import org.tramper.doc.FeedItem;
 import org.tramper.doc.Link;
-import org.tramper.doc.Sound;
 import org.tramper.doc.SimpleDocument;
 import org.tramper.parser.Parser;
 import org.tramper.parser.ParsingException;
@@ -371,46 +370,7 @@ public class AtomParser implements Parser {
                         item.setCategory(aText);
                 }
                 
-                Node enclosureNode =  XPathAPI.selectSingleNode(itemNode, "link[@rel='enclosure']");
-                if (enclosureNode != null) {
-                    Sound aMedia = new Sound();
-                    Node urlNode = XPathAPI.selectSingleNode(enclosureNode, "@href");
-                    if (urlNode != null) {
-                        String encodedUrl = urlNode.getNodeValue();
-                        try {
-                            URL aUrl = new URL(encodedUrl);
-                            aMedia.setUrl(aUrl);
-                            Node titleNode = XPathAPI.selectSingleNode(enclosureNode, "@title");
-                            if (titleNode != null) {
-                                aMedia.setTitle(titleNode.getNodeValue());
-                            } else {
-                                String path = aUrl.getPath();
-                                int slashIndex = path.lastIndexOf("/");
-                                String filename = path.substring(slashIndex+1);
-                                aMedia.setTitle(filename);
-                            }
-                            Node typeNode = XPathAPI.selectSingleNode(enclosureNode, "@type");
-                            if (typeNode != null) {
-                                aMedia.setMimeType(typeNode.getNodeValue());
-                            }
-                            Node lengthNode = XPathAPI.selectSingleNode(enclosureNode, "@length");
-                            if (lengthNode != null) {
-                                try {
-                                    int length = Integer.parseInt(lengthNode.getNodeValue().trim());
-                                    aMedia.setLength(length);
-                                } catch (NumberFormatException e) {
-                                    logger.warn("bad enclosure length : "+lengthNode.getNodeValue(), e);
-                                }
-                            }
-                            item.addMedia(aMedia);
-                        }
-                        catch (MalformedURLException e) {
-                            logger.warn("bad enclosure url", e);
-                        }
-                    }
-                }
-                
-                linkList =  XPathAPI.selectNodeList(itemNode, "link[@rel='via' or @rel='next' or @rel='previous' or @rel='related' or @rel='alternate' or @rel='comments' or @rel='service.post' or @rel='service.edit']");
+                linkList =  XPathAPI.selectNodeList(itemNode, "link");
                 if (linkList != null) {
                     for (int j=0; j<linkList.getLength(); j++) {
                         Node linkNode = linkList.item(j);
@@ -436,19 +396,27 @@ public class AtomParser implements Parser {
                                     String filename = path.substring(slashIndex+1);
                                     aDocument.setTitle(filename);
                                 }
-                                
+                                Node lengthNode = XPathAPI.selectSingleNode(linkNode, "@length");
+                                if (lengthNode != null) {
+                            	String lengthValue = lengthNode.getNodeValue();
+                                    try {
+                                        long length = Long.parseLong(lengthValue.trim());
+                                        aDocument.setLength(length);
+                                    } catch (NumberFormatException e) {
+                                        logger.warn("bad enclosure length : "+lengthValue, e);
+                                    }
+                                }
                                 Link aLink = new Link();
-                                aLink.setLinkedDocument(aDocument);
-                                aLink.setLinkingDocument(feed);
-                                aLink.setNumber(linkNumber++);
                                 Node relationNode = XPathAPI.selectSingleNode(linkNode, "@rel");
                                 if (relationNode != null) {
                                     aLink.setRelation(relationNode.getNodeValue());
                                 }
                                 
+                                aLink.setLinkedDocument(aDocument);
+                                aLink.setLinkingDocument(feed);
+                                aLink.setNumber(linkNumber++);
                                 item.addLink(aLink);
-                            }
-                            catch (MalformedURLException e) {
+                            } catch (MalformedURLException e) {
                                 logger.warn("bad link url", e);
                             }
                         }
@@ -456,8 +424,7 @@ public class AtomParser implements Parser {
                 }
                 feed.addItem(item);
             }
-        }
-        catch (TransformerException e) {
+        } catch (TransformerException e) {
             logger.error("XPath error", e);
             throw new ParsingException("Error when reading the Atom document");
         }
@@ -644,33 +611,11 @@ public class AtomParser implements Parser {
                 if (linkUrl != null) {
                     linkElem.setAttribute("href", linkUrl.toString());
                 }
+                long linkLength = aDocument.getLength();
+                if (linkLength != 0) {
+                    linkElem.setAttribute("length", String.valueOf(linkLength));
+                }
                 title = aDocument.getTitle();
-                if (title != null) {
-                    linkElem.setAttribute("title", title);
-                }
-            }
-            
-            List<Sound> medias = item.getMedia();
-            for (int j=0; j<medias.size(); j++) {
-                Sound mediaDocument = medias.get(j);
-                Element linkElem = docSource.createElement("link");
-                entryElem.appendChild(linkElem);
-                
-                linkElem.setAttribute("rel", "enclosure");
-
-                String type = mediaDocument.getMimeType();
-                if (type != null) {
-                    linkElem.setAttribute("type", type);
-                }
-                URL mediaUrl = mediaDocument.getUrl();
-                if (mediaUrl != null) {
-                    linkElem.setAttribute("href", mediaUrl.toString());
-                }
-                long length = mediaDocument.getLength();
-                if (length > 0) {
-                    linkElem.setAttribute("length", String.valueOf(length));
-                }
-                title = mediaDocument.getTitle();
                 if (title != null) {
                     linkElem.setAttribute("title", title);
                 }

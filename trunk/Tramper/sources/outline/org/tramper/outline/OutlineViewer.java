@@ -6,7 +6,7 @@ import java.awt.Component;
 import javax.swing.SwingUtilities;
 
 import org.tramper.doc.Outline;
-import org.tramper.doc.TextDocument;
+import org.tramper.doc.SimpleDocument;
 import org.tramper.gui.viewer.Viewer;
 import org.tramper.player.PlayEvent;
 
@@ -133,9 +133,10 @@ public class OutlineViewer extends Viewer {
 
     /**
      * 
-     * @see org.tramper.gui.viewer.Viewer#isDocumentSupported(org.tramper.doc.TextDocument)
+     * @param aDocument
+     * @return
      */
-    public boolean isDocumentSupported(TextDocument aDocument) {
+    public boolean isDocumentSupported(SimpleDocument aDocument) {
 	if (aDocument instanceof Outline) {
 	    return true;
 	}

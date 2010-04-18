@@ -15,10 +15,15 @@ import org.tramper.player.Player;
  */
 public interface SpeechSynthesizer extends Player {
     /** 
-     * Speak some text
+     * Puts the text in the text to speak queue and returns immediatly.
      * @param text 
      */
     public void play(String text);
+    /** 
+     * Puts the text in the text to speak queue and wait for it to be spoken.
+     * @param text 
+     */
+    public void playAndWait(String text);
     /**
      * load engine and default voice
      */
@@ -79,16 +84,6 @@ public interface SpeechSynthesizer extends Player {
      * 
      * @return
      */
-    public boolean isStepByStep();
-    /**
-     * 
-     * @param stepByStep
-     */
-    public void setStepByStep(boolean stepByStep);
-    /**
-     * 
-     * @return
-     */
     public float getPitch();
     /**
      * 
@@ -105,4 +100,10 @@ public interface SpeechSynthesizer extends Player {
      * @param pitchRange
      */
     public void setPitchRange(float pitchRange);
+    /**
+     * 
+     * @param locale
+     * @return
+     */
+    public boolean matchEngineLanguage(Locale locale);
 }

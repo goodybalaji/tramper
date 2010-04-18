@@ -16,7 +16,6 @@ import org.tramper.doc.DocumentEvent;
 import org.tramper.doc.DocumentListener;
 import org.tramper.doc.SimpleDocument;
 import org.tramper.doc.Target;
-import org.tramper.doc.TextDocument;
 
 
 /**
@@ -107,7 +106,7 @@ public abstract class Viewer extends JPanel implements Renderer, PlayListener, D
     
     /**
      * 
-     * @see org.tramper.gui.viewer.Viewer#setActive(boolean)
+     * @param active
      */
     public void setActive(boolean active) {
 	Color highLightColor = null;
@@ -133,21 +132,24 @@ public abstract class Viewer extends JPanel implements Renderer, PlayListener, D
     }
 
     /**
-     * @see org.tramper.gui.viewer.Viewer#getTarget()
+     * 
+     * @return
      */
     public Target getTarget() {
 	return target;
     }
 
     /**
-     * @see org.tramper.gui.viewer.Viewer#getBody()
+     * 
+     * @return
      */
     public Body getBody() {
 	return body;
     }
 
     /**
-     * @see org.tramper.gui.viewer.Viewer#setBody(java.awt.Component)
+     * 
+     * @param newBody
      */
     public void setBody(Component newBody) {
 	this.remove((Component)body);
@@ -169,13 +171,6 @@ public abstract class Viewer extends JPanel implements Renderer, PlayListener, D
     public void setHeaderVisible(boolean visible) {
 	header.setVisible(visible);
     }
-    
-    /**
-     * 
-     * @param document
-     * @return
-     */
-    public abstract boolean isDocumentSupported(TextDocument aDocument);
     
     /**
      * 

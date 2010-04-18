@@ -9,7 +9,7 @@ import com.sun.media.jmc.MediaProvider;
  * @author Paul-Emile
  */
 public class Video extends SimpleDocument {
-    /** duration in  */
+    /** duration in seconds */
     private double duration;
     /** Frame size in pixels */
     private Dimension frameSize;

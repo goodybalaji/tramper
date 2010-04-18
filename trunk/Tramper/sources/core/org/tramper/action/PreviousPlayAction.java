@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.tramper.player.Player;
+import org.tramper.conductor.Conductor;
 import org.tramper.ui.UserInterfaceFactory;
 
 /**
@@ -41,9 +41,9 @@ public class PreviousPlayAction extends AbstractAction {
      */
     public void actionPerformed(ActionEvent e) {
 	if (UserInterfaceFactory.isAudioUserInterfaceInstanciated()) {
-            Player aPlayer = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer();
-            if (aPlayer != null) {
-                aPlayer.previous();
+	    Conductor aConductor = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer();
+            if (aConductor != null) {
+                aConductor.previous();
             }
 	}
     }

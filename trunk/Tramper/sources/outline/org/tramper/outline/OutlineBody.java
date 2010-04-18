@@ -47,6 +47,8 @@ public class OutlineBody extends JScrollPane implements Body, MouseListener, Tre
         outlineTree.setRowHeight(25);
         outlineTree.addMouseListener(this);
         outlineTree.addTreeSelectionListener(this);
+        OutlineItemTreeCellRenderer outlineRenderer = new OutlineItemTreeCellRenderer();
+        outlineTree.setCellRenderer(outlineRenderer);
         outlineTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         this.setViewportView(outlineTree);
     }
@@ -60,8 +62,6 @@ public class OutlineBody extends JScrollPane implements Body, MouseListener, Tre
 	}
 	document = (Outline)doc;
 	this.target = target;
-        OutlineItemTreeCellRenderer outlineRenderer = new OutlineItemTreeCellRenderer();
-        outlineTree.setCellRenderer(outlineRenderer);
         outlineTree.setModel(document);
         long index = document.getIndex();
         selectItem((int)index);

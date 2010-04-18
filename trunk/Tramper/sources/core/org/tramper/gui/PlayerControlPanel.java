@@ -14,7 +14,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -32,10 +31,10 @@ import org.tramper.action.PreviousPlayAction;
 import org.tramper.action.ResumePlayAction;
 import org.tramper.action.StartPlayAction;
 import org.tramper.action.StopPlayAction;
+import org.tramper.conductor.Conductor;
 import org.tramper.player.PlayEvent;
 import org.tramper.player.PlayException;
 import org.tramper.player.PlayListener;
-import org.tramper.player.Player;
 import org.tramper.recognizer.RecognitionEvent;
 import org.tramper.recognizer.RecognitionException;
 import org.tramper.recognizer.RecognitionListener;
@@ -251,9 +250,9 @@ public class PlayerControlPanel extends JPanel implements PlayListener, ChangeLi
         this.add(aboutButton);
 
         if (UserInterfaceFactory.isAudioUserInterfaceInstanciated()) {
-            Player currentPlayer = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer();
-            if (currentPlayer != null) {
-                setControlValues(currentPlayer);
+            Conductor currentConductor = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer();
+            if (currentConductor != null) {
+                setControlValues(currentConductor);
             } else {
         	setEnabled(false);
             }
@@ -529,16 +528,16 @@ public class PlayerControlPanel extends JPanel implements PlayListener, ChangeLi
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider)e.getSource();
 	if (UserInterfaceFactory.isAudioUserInterfaceInstanciated()) {
-            Player aPlayer = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer();
-            if (aPlayer != null) {
+            Conductor aConductor = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer();
+            if (aConductor != null) {
                 if (!source.getValueIsAdjusting()) {
                     int value = source.getValue();
                     String name = source.getName();
                     if (name.equals("speedSlider")) {
-                        aPlayer.setSpeed(value);
+                	aConductor.setSpeed(value);
                     }
                     else if (name.equals("volumeSlider")) {
-                        aPlayer.setVolume(value);
+                	aConductor.setVolume(value);
                     }
                 }
             }
@@ -546,14 +545,14 @@ public class PlayerControlPanel extends JPanel implements PlayListener, ChangeLi
     }
 
     /**
-     * Set or reset the controls values from the player's states.
-     * @param aPlayer
+     * Set or reset the controls values from the conductor's states.
+     * @param aConductor
      */
-    public void setControlValues(Player aPlayer) {
-        aPlayer.addPlayListener(this);
+    public void setControlValues(Conductor aConductor) {
+	aConductor.addPlayListener(this);
         
-        boolean paused = aPlayer.isPaused();
-        boolean running = aPlayer.isRunning();
+        boolean paused = aConductor.isPaused();
+        boolean running = aConductor.isRunning();
         if (paused) {
             startButton.setVisible(false);
             startButton.setEnabled(false);
@@ -593,8 +592,8 @@ public class PlayerControlPanel extends JPanel implements PlayListener, ChangeLi
         speedSlider.setEnabled(true);
         
         try {
-            volumeSlider.setValue(aPlayer.getVolume());
-            speedSlider.setValue(aPlayer.getSpeed());
+            volumeSlider.setValue(aConductor.getVolume());
+            speedSlider.setValue(aConductor.getSpeed());
         } catch (PlayException e) {
             logger.warn("error when setting volume and speed values: "+e.getMessage());
         }

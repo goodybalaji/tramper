@@ -82,7 +82,6 @@ public class FreeTTSSpeechSynthesizer extends JSAPISpeechSynthesizer {
 	Voice currentVoice = syntheProp.getVoice();
 	com.sun.speech.freetts.Voice freettsVoice = ((FreeTTSVoice) currentVoice).getVoice();
 	freettsVoice.setAudioPlayer(singleFile);
-	skipMedia = true;
     }
 
     /**
@@ -96,7 +95,6 @@ public class FreeTTSSpeechSynthesizer extends JSAPISpeechSynthesizer {
 	singleFile.close();
 	JavaStreamingAudioPlayer streamAudio = new JavaStreamingAudioPlayer();
 	freettsVoice.setAudioPlayer(streamAudio);
-	skipMedia = false;
     }
 
 }
