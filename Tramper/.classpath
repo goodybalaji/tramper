@@ -58,10 +58,8 @@
 	<classpathentry exported="true" kind="lib" path="lib/jmactritonusspi.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jogg-0.0.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jorbis-0.0.15.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jspeex.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jl1.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tritonus_jorbis-0.3.6.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/tritonus_gsm-0.3.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ICOReader-1.04.jar"/>
 	<classpathentry kind="src" output="classes/audio" path="sources/audio"/>
 	<classpathentry kind="src" output="classes/fingon" path="sources/fingon"/>
