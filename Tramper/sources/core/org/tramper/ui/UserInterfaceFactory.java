@@ -4,12 +4,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.apache.log4j.Logger;
-import org.fingon.FingonLookAndFeel;
 import org.tramper.aui.AudioUserInterface;
 import org.tramper.gui.GUIConfig;
 import org.tramper.gui.GraphicalUserInterface;
@@ -28,8 +28,18 @@ public class UserInterfaceFactory {
     private static GraphicalUserInterface gui;
     
     static {
-	// add the auxiliary "look and feel" for assistive technology
-	UIManager.addAuxiliaryLookAndFeel(new FingonLookAndFeel());
+	// add the auxiliary look and feel for assistive technology
+	try {
+	    Class<?> auxiliaryLaFClass = Class.forName("org.fingon.FingonLookAndFeel");
+	    Object auxiliaryLaF = auxiliaryLaFClass.newInstance();
+	    UIManager.addAuxiliaryLookAndFeel((LookAndFeel)auxiliaryLaF);
+	} catch (ClassNotFoundException e1) {
+	    logger.info("no Fingon auxiliary look and feel class in classpath");
+	} catch (InstantiationException e) {
+	    logger.error(e);
+	} catch (IllegalAccessException e) {
+	    logger.error(e);
+	}
 	
 	// for Quaqua look and feel only
 	System.setProperty("Quaqua.sizeStyle","small");
