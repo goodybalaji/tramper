@@ -25,7 +25,6 @@ import org.tramper.doc.Feed;
 import org.tramper.doc.FeedItem;
 import org.tramper.doc.Link;
 import org.tramper.doc.SimpleDocument;
-import org.tramper.doc.WebPage;
 import org.tramper.parser.Parser;
 import org.tramper.parser.ParsingException;
 import org.w3c.dom.*;
@@ -284,7 +283,7 @@ public class RssParser implements Parser {
                 if (linkNode != null) {
                     try {
                         URL aUrl = new URL(linkNode.getNodeValue());
-                        WebPage aMedia = new WebPage();
+                        SimpleDocument aMedia = new SimpleDocument();
                         aMedia.setUrl(aUrl);
                         aMedia.setMimeType("text/html");
                         String pathname = aUrl.getPath();

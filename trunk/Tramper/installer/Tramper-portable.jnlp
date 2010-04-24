@@ -10,26 +10,43 @@
             <desktop/>
             <menu submenu="Tramper"/>
         </shortcut>
-        <related-content href="readme.html">
+        <related-content href="Readme.txt">
             <title>Instructions</title>
         </related-content>
         <association extensions="rss" mime-type="application/rss+xml"/>
         <association extensions="rdf" mime-type="application/rdf+xml"/>
         <association extensions="atom" mime-type="application/atom+xml"/>
         <association extensions="opml" mime-type="text/x-opml"/>
+        <association extensions="html" mime-type="text/html"/>
         <offline-allowed />
     </information>
     <resources>
-    	<j2se version="1.5+" href="http://java.sun.com/products/autodl/j2se" max-heap-size="512m"/>
+    	<j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se" max-heap-size="512m"/>
         <jar href="Tramper.jar"/>
+        <jar href="audio.jar"/>
+        <jar href="browser.jar"/>
+        <jar href="feed.jar"/>
+        <jar href="fingon.jar"/>
+        <jar href="freetts-synthesizer.jar"/>
+        <jar href="image.jar"/>
+        <jar href="jsapi-synthesizer.jar"/>
+        <jar href="outline.jar"/>
+        <jar href="sphinx-recognizer.jar"/>
+        <jar href="video.jar"/>
+        <jar href="webPage.jar"/>
         <jar href="cmu_us_kal.jar"/>
         <jar href="cmudict04.jar"/>
         <jar href="cmulex.jar"/>
         <jar href="cobra.jar"/>
         <jar href="en_us.jar"/>
+        <jar href="freetts-jsapi10.jar"/>
         <jar href="freetts.jar"/>
+        <jar href="ICOReader-1.04.jar"/>
         <jar href="jdic.jar"/>
         <jar href="jl1.0.jar"/>
+        <jar href="jmacdecoder.jar"/>
+        <jar href="jmactritonusspi.jar"/>
+        <jar href="jmc.jar"/>
         <jar href="jogg-0.0.7.jar"/>
         <jar href="jorbis-0.0.15.jar"/>
         <jar href="js.jar"/>
@@ -37,24 +54,25 @@
         <jar href="log4j-1.2.4.jar"/>
         <jar href="mp3spi1.9.4.jar"/>
         <jar href="nekohtml.jar"/>
-        <jar href="nimrodlf-1.0b.jar"/>
+        <jar href="quaqua.jar"/>
         <jar href="serializer.jar"/>
         <jar href="sphinx4.jar"/>
-        <jar href="substance.jar"/>
+        <jar href="substance-lite.jar"/>
+        <jar href="tritonus_jorbis-0.3.6.jar"/>
         <jar href="tritonus_share-0.3.6.jar"/>
-        <jar href="vorbisspi1.0.2.jar"/>
         <jar href="WSJ_8gau_13dCep_16k_40mel_130Hz_6800Hz.jar"/>
         <jar href="xalan.jar"/>
         <jar href="xercesImpl.jar"/>
         <jar href="xml-apis.jar"/>
-        <jar href="quaqua.jar"/>
-        <jar href="a03-laf_4.0.3.jar"/>
     </resources>
     <resources os="Windows">
-        <nativelib href="windows/x86/jdic.dll"/>
-        <nativelib href="windows/x86/tray.dll"/>
         <nativelib href="windows/x86/IeEmbed.exe"/>
+        <nativelib href="windows/x86/jdic.dll"/>
+        <nativelib href="windows/x86/jmc.dll"/>
         <nativelib href="windows/x86/MozEmbed.exe"/>
+        <nativelib href="windows/x86/msvcp71.dll"/>
+        <nativelib href="windows/x86/msvcr71.dll"/>
+        <nativelib href="windows/x86/tray.dll"/>
         <jar href="windows/jdic_stub.jar"/>
     </resources>
     <resources os="Mac OS X">
