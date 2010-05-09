@@ -23,7 +23,7 @@
      terminal="false"
      KdeSubstUID="false">
      
-     <createForPack name="Audio browser"/>
+     <createForPack name="browser"/>
    </shortcut>
    
   <shortcut
@@ -44,7 +44,7 @@
 	terminal="false"
 	deSubstUID="false">
 
-    <createForPack name="Audio browser"/>
+    <createForPack name="browser"/>
   </shortcut>
   <!-- 
    <shortcut
