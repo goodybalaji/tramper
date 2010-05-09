@@ -24,8 +24,12 @@ public class FingonProgressBarUI extends ProgressBarUI implements PropertyChange
     private static Logger logger = Logger.getLogger(FingonProgressBarUI.class);
     /** music player */
     private SoundPlayer soundPlayer;
-    /** sound to play url */
-    private URL soundUrl;
+    /** music for indeterminate state */
+    private URL indeterminateMusicUrl;
+    /** sound for intermediate determinate state */
+    private URL intermediateDeterminateUrl;
+    /** sound for final determinate state */
+    private URL finalDeterminateUrl;
     
     public FingonProgressBarUI() {
 	try {
@@ -51,7 +55,9 @@ public class FingonProgressBarUI extends ProgressBarUI implements PropertyChange
     public void installUI(JComponent c) {
 	JProgressBar progress = (JProgressBar)c;
 	progress.addPropertyChangeListener(this);
-	soundUrl = (URL)UIManager.get("ProgressBarUI.backgroundMusic");
+	indeterminateMusicUrl = (URL)UIManager.get("ProgressBarUI.backgroundMusic");
+	intermediateDeterminateUrl = (URL)UIManager.get("ProgressBarUI.intermediateSound");
+	finalDeterminateUrl = (URL)UIManager.get("ProgressBarUI.finalSound");
     }
 
     /**
@@ -71,18 +77,38 @@ public class FingonProgressBarUI extends ProgressBarUI implements PropertyChange
 	JProgressBar progressBar = (JProgressBar)evt.getSource();
 	String prop = evt.getPropertyName();
         if ("indeterminate".equals(prop)) {
-            if (progressBar.isIndeterminate()) {
-        	// start playing music
-        	try {
-		    soundPlayer.playLoop(soundUrl);
-		} catch (PlayException e) {
-		    logger.error(e.getMessage(), e);
-		}
-            } else {
-        	// stop playing music
-                soundPlayer.stop();
+            if (soundPlayer != null) {
+                if (progressBar.isIndeterminate()) {
+                    // start playing music
+                    try {
+                	soundPlayer.playLoop(indeterminateMusicUrl);
+                    } catch (PlayException e) {
+                	logger.error(e.getMessage(), e);
+                    }
+                } else {
+                    // stop playing music
+                    soundPlayer.stop();
+                }
             }
             progressBar.repaint();
+        } else if ("value".equals(prop)) {
+            if (soundPlayer != null) {
+                if (!progressBar.isIndeterminate()) {
+                    int newValue = progressBar.getValue();
+                    int max = progressBar.getMaximum();
+                    int frameCount = 10;
+                    float step = max/frameCount;
+                    try {
+                	if (newValue == max) {
+                	    soundPlayer.play(finalDeterminateUrl);
+                	} else if (newValue%step == 0) {
+                	    soundPlayer.play(intermediateDeterminateUrl);
+                	}
+                    } catch (PlayException e) {
+                	logger.error(e.getMessage(), e);
+                    }
+                }
+            }
         }
     }
 }
