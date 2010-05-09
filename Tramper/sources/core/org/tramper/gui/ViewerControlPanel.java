@@ -61,7 +61,7 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
 	    addMiniature(viewer);
 	}
 
-	URL backgroundUrl = this.getClass().getResource("images/blue_ice.jpg");
+	URL backgroundUrl = this.getClass().getResource("images/blue_ice.png");
 	try {
 	    backgroundImage = ImageIO.read(backgroundUrl);
 	    rescaledImage = new BufferedImage(backgroundImage.getWidth(), backgroundImage.getHeight(), backgroundImage.getType());
@@ -81,10 +81,13 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
     private void rescaleImage() {
 	if (backgroundImage != null) {
 	    Color backgroundColor = this.getBackground();
-	    float redOffset = backgroundColor.getRed() - 128;
-	    float greenOffset = backgroundColor.getGreen() - 128;
-	    float blueOffset = backgroundColor.getBlue() - 128;
-	    RescaleOp op = new RescaleOp(new float[]{1f, 1f, 1f}, new float[]{redOffset, greenOffset, blueOffset}, null);
+	    float redScale = (float)(backgroundColor.getRed())/255f;
+	    float greenScale = (float)(backgroundColor.getGreen())/255f;
+	    float blueScale = (float)(backgroundColor.getBlue())/255f;
+	    float redOffset = 0;
+	    float greenOffset = 0;
+	    float blueOffset = 0;
+	    RescaleOp op = new RescaleOp(new float[]{redScale, greenScale, blueScale}, new float[]{redOffset, greenOffset, blueOffset}, null);
 	    op.filter(backgroundImage, rescaledImage);
 	}
     }
@@ -98,7 +101,7 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
 	Dimension dimPanel = this.getSize();
 	Graphics2D g2d = (Graphics2D)g;
 	Composite currentComposite = g2d.getComposite();
-	g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+	g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
 	if (rescaledImage != null) {
 	    int imageWidth = rescaledImage.getWidth();
 	    int imageHeight = rescaledImage.getHeight();

@@ -112,12 +112,6 @@ public class CompactProgressBarUI extends BasicProgressBarUI {
 	    }
 	    Arc2D.Float anArc = new Arc2D.Float(ellipseBoundary, startingAngle, angularExtent-10, Arc2D.PIE);
 	    g2d.fill(anArc);
-	    /*if (i < animationIndex) {
-		g2d.setColor(backgroundHighlight.brighter());
-	    } else {
-		g2d.setColor(foregroundHighlight.darker());
-	    }
-	    g2d.draw(anArc);*/
 	}
 
 	g2d.setColor(progressBar.getParent().getBackground());
