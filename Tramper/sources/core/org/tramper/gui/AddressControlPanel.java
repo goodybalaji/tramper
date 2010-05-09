@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.EnhancedIcon;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.tramper.action.LoadCurrentPrimaryTargetAction;
@@ -233,8 +234,17 @@ public class AddressControlPanel extends JPanel implements ActionListener {
      * set a new url in the textfield
      * @param newUrl
      */
-    public void setUrl(String newUrl) {
-        this.urlTextField.setText(newUrl);
+    public void setUrl(final String newUrl) {
+	Runnable r = new Runnable() {
+	    public void run() {
+	        urlTextField.setText(newUrl);
+	    }
+	};
+	if (SwingUtilities.isEventDispatchThread()) {
+	    r.run();
+	} else {
+	    SwingUtilities.invokeLater(r);
+	}
     }
 
     /**

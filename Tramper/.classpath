@@ -76,5 +76,6 @@
 	<classpathentry kind="src" output="classes/feed" path="sources/feed"/>
 	<classpathentry kind="src" output="classes/webPage" path="sources/webPage"/>
 	<classpathentry kind="lib" path="archives/fingon.jar" sourcepath="sources/fingon"/>
+	<classpathentry kind="lib" path="lib/trident.jar"/>
 	<classpathentry kind="output" path="classes/core"/>
 </classpath>

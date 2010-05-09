@@ -6,6 +6,7 @@ import java.awt.Component;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
@@ -109,10 +110,9 @@ public abstract class Viewer extends JPanel implements Renderer, PlayListener, D
      * @param active
      */
     public void setActive(boolean active) {
-	Color highLightColor = null;
 	Border border = null;
 	if (active) {
-	    highLightColor = UIManager.getColor("TextField.selectionBackground");
+	    Color highLightColor = UIManager.getColor("TextField.selectionBackground");
 	    if (highLightColor == null) {
 		highLightColor = UIManager.getColor("textHighlight");
 	    }
@@ -120,7 +120,17 @@ public abstract class Viewer extends JPanel implements Renderer, PlayListener, D
 	} else {
             border = BorderFactory.createEmptyBorder(2, 2, 2, 2);
 	}
-	this.setBorder(border);
+	final Border activeBorder = border;
+	Runnable r = new Runnable() {
+	    public void run() {
+		setBorder(activeBorder);
+	    }
+	};
+	if (SwingUtilities.isEventDispatchThread()) {
+	    r.run();
+	} else {
+	    SwingUtilities.invokeLater(r);
+	}
     }
 
     /**

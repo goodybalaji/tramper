@@ -1104,16 +1104,34 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
             CardLayout panelLayout = (CardLayout)secondaryPanel.getLayout();
             panelLayout.show(secondaryPanel, tab);
             currentSecondaryTarget = activatedTarget;
-            if (viewersArea.getDividerLocation() == 0) {
-                viewersArea.setDividerLocation(0.3);
-            }
+            Runnable r = new Runnable() {
+	        public void run() {
+	            if (viewersArea.getDividerLocation() == 0) {
+	        	viewersArea.setDividerLocation(0.3);
+	            }
+	        }
+	    };
+	    if (SwingUtilities.isEventDispatchThread()) {
+		r.run();
+	    } else {
+		SwingUtilities.invokeLater(r);
+	    }
         } else {
             CardLayout panelLayout = (CardLayout)primaryPanel.getLayout();
             panelLayout.show(primaryPanel, tab);
             currentPrimaryTarget = activatedTarget;
-            if (viewersArea.getDividerLocation() >= viewersArea.getMaximumDividerLocation()) {
-                viewersArea.setDividerLocation(0.3);
-            }
+            Runnable r = new Runnable() {
+	        public void run() {
+	            if (viewersArea.getDividerLocation() >= viewersArea.getMaximumDividerLocation()) {
+	                viewersArea.setDividerLocation(0.3);
+	            }
+	        }
+	    };
+	    if (SwingUtilities.isEventDispatchThread()) {
+		r.run();
+	    } else {
+		SwingUtilities.invokeLater(r);
+	    }
         }
         // display the document's url in the address bar
         if (addressPanel != null) {
