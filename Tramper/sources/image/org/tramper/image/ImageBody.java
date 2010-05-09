@@ -103,20 +103,25 @@ public class ImageBody extends JScrollPane implements Body, MouseListener {
      * @see org.tramper.gui.viewer.Body#paintMiniature(java.awt.Graphics2D, java.awt.Dimension, boolean)
      */
     public void paintMiniature(Graphics2D g2d, Dimension miniatureSize, boolean mouseOver) {
-	Dimension documentSize = progress.getSize();
 	int imageWidth = document.getImage().getWidth();
+	int imageHeight = document.getImage().getHeight();
 	
 	double scale = (double)miniatureSize.width/(double)imageWidth;
 	if (scale > 1) {
 	    scale = 1.0;
 	}
 	g2d.scale(scale, scale);
-	g2d.translate(-(documentSize.width - miniatureSize.width)/2*scale, -(documentSize.height - miniatureSize.height)/2*scale);
-	
-	progress.paint(g2d);
+	int x = (miniatureSize.width - imageWidth)/2;
+	if (x < 0) {
+	    x = 0;
+	}
+	int y = (miniatureSize.height - imageHeight)/2;
+	if (y < 0) {
+	    y = 0;
+	}
+	g2d.drawImage(document.getImage(), null, x, y);
 
-	// reset scale, translation
-	g2d.translate((documentSize.width - miniatureSize.width)/2*scale, (documentSize.height - miniatureSize.height)/2*scale);
+	// reset scale
 	g2d.scale(1/scale, 1/scale);
     }
 }
