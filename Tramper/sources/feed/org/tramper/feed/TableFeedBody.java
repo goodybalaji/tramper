@@ -159,14 +159,11 @@ public class TableFeedBody extends JSplitPane implements Body, MouseListener, Ke
         TableColumn descColumn = model.getColumn(2);
         descColumn.setCellRenderer(linkCellRenderer);
         descColumn.setCellEditor(linkCellEditor);
-        descColumn = model.getColumn(3);
-        descColumn.setCellRenderer(linkCellRenderer);
-        descColumn.setCellEditor(linkCellEditor);
         
         DateTableCellRenderer dateCellRenderer = new DateTableCellRenderer();
-        descColumn = model.getColumn(4);
+        descColumn = model.getColumn(3);
         descColumn.setCellRenderer(dateCellRenderer);
-        descColumn = model.getColumn(5);
+        descColumn = model.getColumn(4);
         descColumn.setCellRenderer(dateCellRenderer);
 
         this.initColumnSizes(feedTable);
