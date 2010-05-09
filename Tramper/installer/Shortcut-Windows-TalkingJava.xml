@@ -19,7 +19,7 @@
     startMenu="yes"
     startup="no">
 
-    <createForPack name="Audio browser"/>
+    <createForPack name="browser"/>
   </shortcut>
 
   <shortcut
@@ -37,7 +37,7 @@
     startMenu="no"
     startup="no">
 
-    <createForPack name="Audio browser"/>
+    <createForPack name="browser"/>
   </shortcut>
   <!-- 
   <shortcut

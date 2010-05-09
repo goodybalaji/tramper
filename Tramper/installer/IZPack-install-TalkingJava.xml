@@ -58,8 +58,8 @@
         We specify here our packs.
     -->
     <packs>
-        <pack name="Audio browser" required="yes">
-            <description>The audio media browser</description>            <file src="sources/core/speech.properties" targetdir="$USER_HOME"/>
+        <pack name="browser" required="yes">
+            <description>The media browser, the core features</description>            <file src="sources/core/speech.properties" targetdir="$USER_HOME"/>
             <file src="soundbank.gm" targetdir="$INSTALL_PATH"/>
             <file src="GUIConfig.properties" targetdir="$INSTALL_PATH"/>            <file os="windows" src="shortPathNameFormat.vbs" targetdir="$INSTALL_PATH"/>
             <file src="installer/Readme.txt" targetdir="$INSTALL_PATH"/>
