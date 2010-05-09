@@ -185,6 +185,11 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 	RoundRectangle2D.Float roundRect = new RoundRectangle2D.Float(marginWidth, marginWidth, miniatureSize.width - 2*marginWidth, miniatureSize.height - 2*marginWidth, 10, 10);
 	g2d.setClip(roundRect);
 	
+	// paint the background, if the viewer is not wide enough for the miniature
+	g2d.setPaint(getBackground());
+	g2d.fillRect(0, 0, getWidth(), getHeight());
+	
+	// paint he miniature itself
 	Body body = miniaturised.getBody();
 	body.paintMiniature(g2d, miniatureSize, mouseOn);
 
