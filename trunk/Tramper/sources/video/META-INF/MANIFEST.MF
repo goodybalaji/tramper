@@ -1,8 +1,10 @@
 Manifest-Version: 1.0 
 Created-By: 1.6.0_11 (Sun Microsystems Inc.) 
 Extension-Name: tramper.video
+Specification-Title: Video Viewer and Player 
 Specification-Vendor: Paul-Emile Veuve
 Specification-Version: 1.0 
+Implementation-Title: Video Viewer and Player 
 Implementation-Vendor-Id: paul-emile.veuve@gmail.com 
 Implementation-Vendor: Paul-Emile Veuve 
 Implementation-Version: 1.0
