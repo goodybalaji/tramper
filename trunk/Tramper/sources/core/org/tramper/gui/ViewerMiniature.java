@@ -31,6 +31,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.tramper.action.RemoveDocumentAction;
@@ -320,12 +321,30 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
     }
 
     public void documentActivated(DocumentEvent event) {
-	detailButton.setVisible(true);
+	Runnable r = new Runnable() {
+	    public void run() {
+		detailButton.setVisible(true);
+	    }
+	};
+	if (SwingUtilities.isEventDispatchThread()) {
+	    r.run();
+	} else {
+	    SwingUtilities.invokeLater(r);
+	}
 	this.repaint();
     }
 
     public void documentDeactivated(DocumentEvent event) {
-	detailButton.setVisible(false);
+	Runnable r = new Runnable() {
+	    public void run() {
+		detailButton.setVisible(false);
+	    }
+	};
+	if (SwingUtilities.isEventDispatchThread()) {
+	    r.run();
+	} else {
+	    SwingUtilities.invokeLater(r);
+	}
 	this.repaint();
     }
 
