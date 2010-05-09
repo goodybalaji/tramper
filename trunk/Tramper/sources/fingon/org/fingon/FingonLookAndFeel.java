@@ -31,6 +31,8 @@ public class FingonLookAndFeel extends LookAndFeel {
 	uiDefaults.put("CheckBoxUI", "org.fingon.FingonButtonUI");
 
 	UIManager.put("ProgressBarUI.backgroundMusic", getClass().getResource("Le seigneur des anneaux - Le retour du roi[1]_chapter60-01.mp3"));
+	UIManager.put("ProgressBarUI.intermediateSound", getClass().getResource("Default.wav"));
+	UIManager.put("ProgressBarUI.finalSound", getClass().getResource("new Mail.wav"));
 	uiDefaults.put("ProgressBarUI", "org.fingon.FingonProgressBarUI");
 
 	UIManager.put("OptionPane.informationSound", getClass().getResource("Balloon.wav"));
