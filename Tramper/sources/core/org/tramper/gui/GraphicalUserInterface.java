@@ -73,12 +73,10 @@ import org.tramper.action.TogglePlayAction;
 import org.tramper.aui.AUIEvent;
 import org.tramper.aui.AUIListener;
 import org.tramper.conductor.Conductor;
-import org.tramper.conductor.MarkupConductor;
 import org.tramper.doc.History;
 import org.tramper.doc.Library;
 import org.tramper.doc.LibraryEvent;
 import org.tramper.doc.LibraryListener;
-import org.tramper.doc.MarkupDocument;
 import org.tramper.doc.SimpleDocument;
 import org.tramper.doc.Target;
 import org.tramper.gui.viewer.Viewer;
@@ -184,10 +182,16 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	BorderLayout frameLayout = new BorderLayout(2, 2);
 	this.getContentPane().setLayout(frameLayout);
 	
+	int viewersAreaOrientation = guiConfig.getOrientation();
+	
 	miniaturesViewersArea = new JSplitPane();
 	miniaturesViewersArea.setOneTouchExpandable(false);
 	miniaturesViewersArea.setContinuousLayout(true);
-	miniaturesViewersArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
+	if (viewersAreaOrientation == JSplitPane.HORIZONTAL_SPLIT) {
+	    miniaturesViewersArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
+	} else {
+	    miniaturesViewersArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+	}
 	miniaturesViewersArea.setDividerSize(4);
 	miniaturesViewersArea.setDividerLocation(75);
         //the bottom component (the viewers) takes the extra space
@@ -195,7 +199,7 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	this.getContentPane().add(miniaturesViewersArea, BorderLayout.CENTER);
 
 	viewersArea = new ViewerSplitPane();
-	viewersArea.setOrientation(guiConfig.getOrientation());
+	viewersArea.setOrientation(viewersAreaOrientation);
 	miniaturesViewersArea.setRightComponent(viewersArea);
 	
 	primaryPanel = new JPanel();
@@ -209,6 +213,11 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	viewersArea.setLeftComponent(secondaryPanel);
 
 	miniaturePanel = new ViewerControlPanel(this);
+	if (viewersAreaOrientation == JSplitPane.HORIZONTAL_SPLIT) {
+	    miniaturePanel.horizontalLayout();
+	} else {
+	    miniaturePanel.verticalLayout();
+	}
 	miniaturesViewersArea.setLeftComponent(miniaturePanel);
 	
         
@@ -1331,14 +1340,14 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	    event.setDisplay(DisplayEvent.VERTICAL);
 	}
 	fireDisplayEvent(event);
-	/*orientation = miniaturesViewersArea.getOrientation();
+	orientation = miniaturesViewersArea.getOrientation();
 	if (orientation == JSplitPane.VERTICAL_SPLIT) {
 	    miniaturesViewersArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 	    miniaturePanel.verticalLayout();
 	} else {
 	    miniaturesViewersArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
 	    miniaturePanel.horizontalLayout();
-	}*/
+	}
     }
 
     private void fireDisplayEvent(DisplayEvent event) {
