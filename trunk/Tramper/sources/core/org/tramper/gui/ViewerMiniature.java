@@ -272,7 +272,7 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
      */
     @Override
     public Dimension getMinimumSize() {
-	return new Dimension(58, 44);
+	return new Dimension(70, 45);
     }
 
     /**
