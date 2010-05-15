@@ -1,12 +1,14 @@
 package org.tramper.gui;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.net.URL;
@@ -19,6 +21,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 import org.tramper.doc.Library;
@@ -43,10 +46,6 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
     private Logger logger = Logger.getLogger(ViewerControlPanel.class);
     /**  */
     private Map<Loader, LoadingViewer> loadingViewers;
-    /** rescaled background image */
-    private BufferedImage rescaledImage;
-    /** background image */
-    private BufferedImage backgroundImage;
 
     public ViewerControlPanel(GraphicalUserInterface main) {
 	loadingViewers = new HashMap<Loader, LoadingViewer>();
@@ -60,36 +59,6 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
 	for (Viewer viewer : viewers) {
 	    addMiniature(viewer);
 	}
-
-	URL backgroundUrl = this.getClass().getResource("images/blue_ice.png");
-	try {
-	    backgroundImage = ImageIO.read(backgroundUrl);
-	    rescaledImage = new BufferedImage(backgroundImage.getWidth(), backgroundImage.getHeight(), backgroundImage.getType());
-	    rescaleImage();
-	} catch (Exception e) {}
-    }
-    
-    /**
-     * @see javax.swing.JPanel#updateUI()
-     */
-    @Override
-    public void updateUI() {
-	super.updateUI();
-	rescaleImage();
-    }
-
-    private void rescaleImage() {
-	if (backgroundImage != null) {
-	    Color backgroundColor = this.getBackground();
-	    float redScale = (float)(backgroundColor.getRed())/255f;
-	    float greenScale = (float)(backgroundColor.getGreen())/255f;
-	    float blueScale = (float)(backgroundColor.getBlue())/255f;
-	    float redOffset = 0;
-	    float greenOffset = 0;
-	    float blueOffset = 0;
-	    RescaleOp op = new RescaleOp(new float[]{redScale, greenScale, blueScale}, new float[]{redOffset, greenOffset, blueOffset}, null);
-	    op.filter(backgroundImage, rescaledImage);
-	}
     }
     
     /**
@@ -100,14 +69,28 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
 	super.paintComponent(g);
 	Dimension dimPanel = this.getSize();
 	Graphics2D g2d = (Graphics2D)g;
-	Composite currentComposite = g2d.getComposite();
-	g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
-	if (rescaledImage != null) {
-	    int imageWidth = rescaledImage.getWidth();
-	    int imageHeight = rescaledImage.getHeight();
-	    g2d.drawImage(rescaledImage, dimPanel.width - imageWidth, dimPanel.height - imageHeight, this);
+
+	g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	Color titleBackground = UIManager.getColor("TextField.selectionBackground");
+	if (titleBackground == null) {
+	    titleBackground = UIManager.getColor("textHighlight");
 	}
-	g2d.setComposite(currentComposite);
+	g2d.setPaint(titleBackground);
+	
+	int startx = -dimPanel.height;
+	int starty = 0;
+	int endx = 0;
+	int endy = dimPanel.height;
+	float lineWidth = 1;
+	double angle = 0;
+	while (startx < dimPanel.width) {
+	    lineWidth = (float)(3*(Math.sin(angle) + 1));
+	    g2d.setStroke(new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+	    startx += 3*lineWidth;
+	    endx += 3*lineWidth;
+	    g2d.drawLine(startx, starty, endx, endy);
+	    angle += 0.2;
+	}
     }
 
     public void addMiniature(Viewer viewer) {
