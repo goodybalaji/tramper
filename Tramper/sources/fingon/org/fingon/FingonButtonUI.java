@@ -87,11 +87,9 @@ public class FingonButtonUI extends ButtonUI implements ActionListener, FocusLis
 	String text = componentGainingFocus.getText();
 	boolean selected = componentGainingFocus.isSelected();
 	if (text != null && !text.equals("")) {
-            try {
-                SpeechSynthesizer synthesizer = PlayerFactory.getSpeechSynthesizer();
-                synthesizer.play(text);
-            } catch (PlayException ex) {
-            }
+            SpeechSynthesizer synthesizer = PlayerFactory.getSpeechSynthesizer();
+            synthesizer.stop();
+            synthesizer.play(text);
 	} else {
             try {
         	SoundPlayer player = (SoundPlayer)PlayerFactory.getPlayerByExtension("wav");

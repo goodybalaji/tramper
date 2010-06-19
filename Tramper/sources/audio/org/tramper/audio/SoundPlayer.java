@@ -188,7 +188,7 @@ public class SoundPlayer implements Player, Runnable {
             fireVolumeChangedEvent(volumeEvent);
         }
         catch (PlayException e) {
-            logger.info("can't fire volume control changed");
+            logger.debug("can't fire volume control changed");
         }
         
         try {
@@ -198,7 +198,7 @@ public class SoundPlayer implements Player, Runnable {
             fireSampleRateChangedEvent(sampleRateEvent);
         }
         catch (PlayException e1) {
-            logger.info("can't fire sample rate control changed");
+            logger.debug("can't fire sample rate control changed");
         }
 
 	PlayEvent event = new PlayEvent(this);
@@ -476,10 +476,10 @@ public class SoundPlayer implements Player, Runnable {
             float currentRate = sampleRateControl.getValue();
             return (int)(currentRate*50/naturalRate);
         } catch (IllegalArgumentException e) {
-            logger.warn("sample rate control unsupported");
+            logger.debug("sample rate control unsupported");
             throw new PlayException();
         } catch (NullPointerException e) {
-            logger.warn("no current line");
+            logger.debug("no current line");
             throw new PlayException();
         }
     }
@@ -497,7 +497,7 @@ public class SoundPlayer implements Player, Runnable {
                     float newRate = speed*naturalRate/50;
                     sampleRateControl.setValue(newRate);
                 } catch (IllegalArgumentException e) {
-                    logger.warn("sample rate control unsupported or illegal value ("+speed+")");
+                    logger.debug("sample rate control unsupported or illegal value ("+speed+")");
                 }
             }
         }
@@ -621,7 +621,7 @@ public class SoundPlayer implements Player, Runnable {
      * @return
      */
     public AudioFormat decodeFormat(AudioFormat encodedFormat) {
-        logger.info("encoded audio format: encoding="+encodedFormat.getEncoding()+",sample rate="+encodedFormat.getSampleRate()+",channels="+encodedFormat.getChannels());
+        logger.debug("encoded audio format: encoding="+encodedFormat.getEncoding()+",sample rate="+encodedFormat.getSampleRate()+",channels="+encodedFormat.getChannels());
         
         AudioFormat decodedFormat = new AudioFormat(
             AudioFormat.Encoding.PCM_SIGNED, 	// Encoding to use

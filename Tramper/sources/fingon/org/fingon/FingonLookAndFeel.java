@@ -40,6 +40,12 @@ public class FingonLookAndFeel extends LookAndFeel {
 	UIManager.put("OptionPane.warningSound", getClass().getResource("Exclamation.wav"));
 	UIManager.put("OptionPane.errorSound", getClass().getResource("error.wav"));
 	uiDefaults.put("OptionPaneUI", "org.fingon.FingonOptionPaneUI");
+
+	uiDefaults.put("ListUI", "org.fingon.FingonListUI");
+
+	UIManager.put("Tree.expandedSound", getClass().getResource("Connect.wav"));
+	UIManager.put("Tree.collapsedSound", getClass().getResource("Disconnect.wav"));
+	uiDefaults.put("TreeUI", "org.fingon.FingonTreeUI");
     }
 
     /**
