@@ -40,7 +40,7 @@ public class PlayerFactory {
      * Returns the current speech synthesizer
      * @return
      */
-    public static SpeechSynthesizer getSpeechSynthesizer() throws PlayException {
+    public static SpeechSynthesizer getSpeechSynthesizer() {
         return speechSynthesizer;
     }
     

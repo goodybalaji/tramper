@@ -112,9 +112,7 @@ public class FingonOptionPaneUI extends BasicOptionPaneUI implements ComponentLi
         } catch (PlayException e1) {}
         
 	Object message = optionPane.getMessage();
-        try {
-            SpeechSynthesizer synthesizer = PlayerFactory.getSpeechSynthesizer();
-            synthesizer.play(message.toString());
-        } catch (PlayException ex) {}
+        SpeechSynthesizer synthesizer = PlayerFactory.getSpeechSynthesizer();
+        synthesizer.play(message.toString());
     }
 }

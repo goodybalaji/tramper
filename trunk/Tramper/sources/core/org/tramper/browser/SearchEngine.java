@@ -131,4 +131,12 @@ public class SearchEngine {
     protected void setResearchUrlPattern(String researchUrlPattern) {
         this.researchUrlPattern = researchUrlPattern;
     }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+	return name;
+    }
 }

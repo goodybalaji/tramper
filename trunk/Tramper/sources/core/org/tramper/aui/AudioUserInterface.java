@@ -75,18 +75,13 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
             logger.error(e.getMessage(), e);
         }
 
-        try {
-	    SpeechSynthesizer synthe = PlayerFactory.getSpeechSynthesizer();
-            ResourceBundle bundle = ResourceBundle.getBundle("label");
-            String message = bundle.getString("javaspeaker.message." + msgKey);
-            MessageFormat msgFormat = new MessageFormat(message);
-            String formatedMsg = msgFormat.format(params);
-            synthe.play(formatedMsg);
-            return true;
-        } catch (PlayException e) {
-            logger.error(e.getMessage(), e);
-            return false;
-        }
+	SpeechSynthesizer synthe = PlayerFactory.getSpeechSynthesizer();
+        ResourceBundle bundle = ResourceBundle.getBundle("label");
+        String message = bundle.getString("javaspeaker.message." + msgKey);
+        MessageFormat msgFormat = new MessageFormat(message);
+        String formatedMsg = msgFormat.format(params);
+        synthe.play(formatedMsg);
+        return true;
     }
     
     /**
@@ -102,14 +97,10 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
             logger.error(e.getMessage(), e);
         }
 
-        try {
-	    SpeechSynthesizer synthe = PlayerFactory.getSpeechSynthesizer();
-            ResourceBundle bundle = ResourceBundle.getBundle("label");
-            String message = bundle.getString("javaspeaker.message." + msgKey);
-            synthe.play(message);
-        } catch (PlayException e) {
-            logger.error(e.getMessage(), e);
-        }
+	SpeechSynthesizer synthe = PlayerFactory.getSpeechSynthesizer();
+        ResourceBundle bundle = ResourceBundle.getBundle("label");
+        String message = bundle.getString("javaspeaker.message." + msgKey);
+        synthe.play(message);
     }
 
     /**
@@ -125,14 +116,10 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
             logger.error(e.getMessage(), e);
         }
 
-        try {
-	    SpeechSynthesizer synthe = PlayerFactory.getSpeechSynthesizer();
-            ResourceBundle bundle = ResourceBundle.getBundle("label");
-            String message = bundle.getString("javaspeaker.message." + msgKey);
-            synthe.play(message);
-        } catch (PlayException e) {
-            logger.error(e.getMessage(), e);
-        }
+	SpeechSynthesizer synthe = PlayerFactory.getSpeechSynthesizer();
+        ResourceBundle bundle = ResourceBundle.getBundle("label");
+        String message = bundle.getString("javaspeaker.message." + msgKey);
+        synthe.play(message);
     }
 
     /**
@@ -148,14 +135,10 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
             logger.error(e.getMessage(), e);
         }
         
-        try {
-	    SpeechSynthesizer synthe = PlayerFactory.getSpeechSynthesizer();
-            ResourceBundle bundle = ResourceBundle.getBundle("label");
-            String message = bundle.getString("javaspeaker.message." + msgKey);
-            synthe.play(message);
-        } catch (PlayException e) {
-            logger.error(e.getMessage(), e);
-        }
+	SpeechSynthesizer synthe = PlayerFactory.getSpeechSynthesizer();
+        ResourceBundle bundle = ResourceBundle.getBundle("label");
+        String message = bundle.getString("javaspeaker.message." + msgKey);
+        synthe.play(message);
     }
 
     /**

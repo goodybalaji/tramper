@@ -12,7 +12,6 @@ import javax.swing.plaf.basic.BasicTextUI;
 import javax.swing.text.JTextComponent;
 
 import org.tramper.player.PlayerFactory;
-import org.tramper.player.PlayException;
 import org.tramper.synthesizer.SpeechSynthesizer;
 
 /**
@@ -75,13 +74,11 @@ public class FingonTextFieldUI extends BasicTextUI implements KeyListener, Caret
 	if (mark != dot) {
 	    JTextComponent textComponent = (JTextComponent)e.getSource();
 	    String selectedText = textComponent.getSelectedText();
-	    try {
-    	    	SpeechSynthesizer synthesizer = PlayerFactory.getSpeechSynthesizer();
-    	    	synthesizer.stop();
-    	    	if (selectedText != null) {
-            	    synthesizer.play(selectedText);
-    	    	}
-	    } catch (PlayException ex) {}
+    	    SpeechSynthesizer synthesizer = PlayerFactory.getSpeechSynthesizer();
+    	    if (selectedText != null) {
+        	synthesizer.stop();
+                synthesizer.play(selectedText);
+    	    }
 	}
     }
 
@@ -95,12 +92,9 @@ public class FingonTextFieldUI extends BasicTextUI implements KeyListener, Caret
 	char typedChar = e.getKeyChar();
 	typedString = typedString + typedChar;
 	if (typedChar == ' ') {
-	    try {
-	        SpeechSynthesizer synthesizer = PlayerFactory.getSpeechSynthesizer();
-	        synthesizer.stop();
-	        synthesizer.play(typedString);
-	    } catch (PlayException ex) {
-	    }
+	    SpeechSynthesizer synthesizer = PlayerFactory.getSpeechSynthesizer();
+	    synthesizer.stop();
+	    synthesizer.play(typedString);
 	    typedString = "";
 	}
     }
