@@ -95,6 +95,7 @@ public class PlayerControlPanel extends JPanel implements PlayListener, ChangeLi
      * @param main
      */
     public PlayerControlPanel(GraphicalUserInterface main) {
+        this.setOpaque(true);
 	BoxLayout panelLayout = new BoxLayout(this, BoxLayout.X_AXIS);
 	this.setLayout(panelLayout);
 	

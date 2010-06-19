@@ -194,7 +194,7 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 	Body body = miniaturised.getBody();
 	body.paintMiniature(g2d, miniatureSize, mouseOn);
 
-	// draw a spot light to the top left corner if the mouse is over the miniature
+	// draw a halo around the miniature if the mouse is over the miniature
 	if (mouseOn) {
 	    Color extenalColor = new Color(230, 230, 230, 100);
 	    Point2D center = new Point2D.Float(miniatureSize.width/2, miniatureSize.height/2);

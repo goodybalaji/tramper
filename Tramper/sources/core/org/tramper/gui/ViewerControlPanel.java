@@ -1,22 +1,16 @@
 package org.tramper.gui;
 
-import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.awt.image.RescaleOp;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -54,7 +48,9 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
 	BoxLayout panelLayout = new BoxLayout(this, BoxLayout.X_AXIS);
 	this.setLayout(panelLayout);
 
+	this.add(Box.createHorizontalStrut(20));
 	this.add(Box.createGlue());
+	
 	List<Viewer> viewers = main.getRenderers();
 	for (Viewer viewer : viewers) {
 	    addMiniature(viewer);
@@ -86,8 +82,8 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
 	while (startx < dimPanel.width) {
 	    lineWidth = (float)(3*(Math.sin(angle) + 1));
 	    g2d.setStroke(new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-	    startx += 3*lineWidth;
-	    endx += 3*lineWidth;
+	    startx += 5*lineWidth;
+	    endx += 5*lineWidth;
 	    g2d.drawLine(startx, starty, endx, endy);
 	    angle += 0.2;
 	}
