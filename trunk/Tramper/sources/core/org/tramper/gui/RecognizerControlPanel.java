@@ -95,6 +95,7 @@ public class RecognizerControlPanel extends JPanel implements RecognitionListene
      * @param main the main window
      */
     public RecognizerControlPanel(GraphicalUserInterface main) {
+        this.setOpaque(true);
         ResourceBundle label = ResourceBundle.getBundle("label");
         BorderLayout speakerControlPanelLayout = new BorderLayout();
         this.setLayout(speakerControlPanelLayout);

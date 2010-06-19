@@ -50,11 +50,11 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
     private Logger logger = Logger.getLogger(DisplayControlPanel.class);
     /** language list */
     private JComboBox languageList;
-    /** appearence list */
+    /** appearance list */
     private JComboBox appearenceList;
     /** language label */
     private JLabel languageLabel;
-    /** Appareance label */
+    /** Appearance label */
     private JLabel appearenceLabel;
     /** Font size label */
     private JLabel sizeLabel;
@@ -76,25 +76,29 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
     private JToggleButton verticalButton;
     /** full screen mode display button */
     private JButton fullScreenModeButton;
+    /** title panel */
+    private JPanel displayTitlePanel;
     
     /**
      * 
      */
     public DisplayControlPanel(GraphicalUserInterface main) {
+        this.setOpaque(true);
         ResourceBundle label = ResourceBundle.getBundle("label");
         BorderLayout displayControlPanelLayout = new BorderLayout();
         this.setLayout(displayControlPanelLayout);
+        //this.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, this.getForeground()));
         
         //Title bar
-        JPanel displayTitlePanel = new JPanel();
+        displayTitlePanel = new JPanel();
+        displayTitlePanel.setOpaque(true);
+        BoxLayout engineTitleLayout = new BoxLayout(displayTitlePanel, BoxLayout.X_AXIS);
         Color bgColor = displayTitlePanel.getBackground();
-        int newRed = bgColor.getRed()+10 > 255 ? 255 : bgColor.getRed()+10;
-        int newGreen = bgColor.getGreen()+10 > 255 ? 255 : bgColor.getGreen()+10;
-        int newBlue = bgColor.getBlue()+10 > 255 ? 255 : bgColor.getBlue()+10;
+        int newRed = bgColor.getRed()+15 > 255 ? 255 : bgColor.getRed()+15;
+        int newGreen = bgColor.getGreen()+15 > 255 ? 255 : bgColor.getGreen()+15;
+        int newBlue = bgColor.getBlue()+15 > 255 ? 255 : bgColor.getBlue()+15;
         Color newBgColor = new Color(newRed, newGreen, newBlue);
         displayTitlePanel.setBackground(newBgColor);
-        displayTitlePanel.setOpaque(false);
-        BoxLayout engineTitleLayout = new BoxLayout(displayTitlePanel, BoxLayout.X_AXIS);
         displayTitlePanel.setLayout(engineTitleLayout);
 
         Icon displayIcon = new EnhancedIcon(getClass().getResource("images/Display.png"));
@@ -163,6 +167,7 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
 
         JPanel enlargmentPanel = new JPanel();
         enlargmentPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        enlargmentPanel.setOpaque(false);
         enlargmentPanel.setMaximumSize(enlargmentPanel.getPreferredSize());
 
 	BoundedRangeModel enlargementModel = ScaleBoundedRangeModel.getInstance();
@@ -195,6 +200,7 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
         JPanel displayModePanel = new JPanel();
         displayModePanel.setLayout(new BoxLayout(displayModePanel, BoxLayout.X_AXIS));
         displayModePanel.setMaximumSize(displayModePanel.getPreferredSize());
+        displayModePanel.setOpaque(false);
 
         fullScreenModeButton = new JButton(FullScreenAction.getInstance());
         fullScreenModeButton.setIcon(new EnhancedIcon(getClass().getResource("images/fullscreen.png")));
@@ -297,6 +303,14 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
      */
     @Override
     public void updateUI() {
+	if (displayTitlePanel != null) {
+            Color bgColor = displayTitlePanel.getBackground();
+            int newRed = bgColor.getRed()+15 > 255 ? 255 : bgColor.getRed()+15;
+            int newGreen = bgColor.getGreen()+15 > 255 ? 255 : bgColor.getGreen()+15;
+            int newBlue = bgColor.getBlue()+15 > 255 ? 255 : bgColor.getBlue()+15;
+            Color newBgColor = new Color(newRed, newGreen, newBlue);
+            displayTitlePanel.setBackground(newBgColor);
+	}
 	super.updateUI();
     }
 

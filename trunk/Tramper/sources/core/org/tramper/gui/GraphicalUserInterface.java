@@ -23,6 +23,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.FontUIResource;
 
+import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -179,12 +180,13 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
 	// Main window
-	BorderLayout frameLayout = new BorderLayout(2, 2);
+	BorderLayout frameLayout = new BorderLayout(0, 0);
 	this.getContentPane().setLayout(frameLayout);
 	
 	int viewersAreaOrientation = guiConfig.getOrientation();
 	
 	miniaturesViewersArea = new JSplitPane();
+	miniaturesViewersArea.setOpaque(true);
 	miniaturesViewersArea.setOneTouchExpandable(false);
 	miniaturesViewersArea.setContinuousLayout(true);
 	if (viewersAreaOrientation == JSplitPane.HORIZONTAL_SPLIT) {
@@ -880,6 +882,16 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
             setGlassPane(glassPane);
 	}
 	glassPane.setVisible(true);
+	
+	try {
+            Class<?> awtUtilClass = Class.forName("com.sun.awt.AWTUtilities");
+            Method opaqueMethod = awtUtilClass.getMethod("setWindowOpaque", Window.class, Boolean.TYPE);
+            opaqueMethod.invoke(awtUtilClass, this, false);
+            Method opacityMethod = awtUtilClass.getMethod("setWindowOpacity", Window.class, Float.TYPE);
+            opacityMethod.invoke(awtUtilClass, this, 0.95f);
+        } catch (Exception e) {
+            // silently ignore this exception.
+        }
     }
     
     /**
@@ -888,12 +900,27 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
     public void clarify() {
 	final Component glassPane = getGlassPane();
 	if (glassPane instanceof Obfuscator) {
-            SwingUtilities.invokeLater(new Runnable() {
+	    Runnable r = new Runnable() {
 	        public void run() {
 	            glassPane.setVisible(false);
-	        }
-            });
+	       }
+            };
+            if (SwingUtilities.isEventDispatchThread()) {
+        	r.run();
+            } else {
+        	SwingUtilities.invokeLater(r);
+            }
 	}
+
+	try {
+            Class<?> awtUtilClass = Class.forName("com.sun.awt.AWTUtilities");
+            Method opaqueMethod = awtUtilClass.getMethod("setWindowOpaque", Window.class, Boolean.TYPE);
+            opaqueMethod.invoke(awtUtilClass, this, true);
+            Method opacityMethod = awtUtilClass.getMethod("setWindowOpacity", Window.class, Float.TYPE);
+            opacityMethod.invoke(awtUtilClass, this, 1.0f);
+        } catch (Exception e) {
+            // silently ignore this exception.
+        }
     }
 
     /**

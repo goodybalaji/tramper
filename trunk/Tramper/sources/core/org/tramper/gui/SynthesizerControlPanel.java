@@ -87,33 +87,39 @@ public class SynthesizerControlPanel extends JPanel implements SynthesisListener
     private JComboBox listOutput;
     /** file chooser button */
     private JButton fileChooserButton;
+    /** title panel */
+    private JPanel titlePanel;
 
     /**
      * 
      */
     public SynthesizerControlPanel(GraphicalUserInterface main) {
+        this.setOpaque(true);
 	
         ResourceBundle label = ResourceBundle.getBundle("label");
         BorderLayout speakerControlPanelLayout = new BorderLayout();
         this.setLayout(speakerControlPanelLayout);
         
         //Title bar
-        JPanel engineTitlePanel = new JPanel();
-        Color bgColor = engineTitlePanel.getBackground();
-        int newRed = bgColor.getRed()+10 > 255 ? 255 : bgColor.getRed()+10;
-        int newGreen = bgColor.getGreen()+10 > 255 ? 255 : bgColor.getGreen()+10;
-        int newBlue = bgColor.getBlue()+10 > 255 ? 255 : bgColor.getBlue()+10;
+        titlePanel = new JPanel();
+        titlePanel.setOpaque(true);
+        BoxLayout engineTitleLayout = new BoxLayout(titlePanel, BoxLayout.X_AXIS);
+        Color bgColor = titlePanel.getBackground();
+        int newRed = bgColor.getRed()+15 > 255 ? 255 : bgColor.getRed()+15;
+        int newGreen = bgColor.getGreen()+15 > 255 ? 255 : bgColor.getGreen()+15;
+        int newBlue = bgColor.getBlue()+15 > 255 ? 255 : bgColor.getBlue()+15;
         Color newBgColor = new Color(newRed, newGreen, newBlue);
-        engineTitlePanel.setBackground(newBgColor);
-        engineTitlePanel.setOpaque(true);
-        BoxLayout engineTitleLayout = new BoxLayout(engineTitlePanel, BoxLayout.X_AXIS);
-        engineTitlePanel.setLayout(engineTitleLayout);
+        titlePanel.setBackground(newBgColor);
+        titlePanel.setLayout(engineTitleLayout);
         
         Icon engineIcon = new EnhancedIcon(getClass().getResource("images/speaker.png"));
         engineIconLabel = new JLabel(label.getString("synthesizer.name"), engineIcon, JLabel.LEFT);
-        engineTitlePanel.add(engineIconLabel);
+        /*Font titleFont = engineIconLabel.getFont();
+        titleFont = titleFont.deriveFont(titleFont.getSize2D()+2);
+        engineIconLabel.setFont(titleFont);*/
+        titlePanel.add(engineIconLabel);
         
-        engineTitlePanel.add(Box.createHorizontalGlue());
+        titlePanel.add(Box.createHorizontalGlue());
 
         Icon closeIcon = new EnhancedIcon(getClass().getResource("images/Error.png"));
         closeEngineButton = new JButton(closeIcon);
@@ -121,9 +127,9 @@ public class SynthesizerControlPanel extends JPanel implements SynthesisListener
         Insets marginCloseButton = new Insets(0, 0, 0, 0);
         closeEngineButton.setMargin(marginCloseButton);
         closeEngineButton.addActionListener(main);
-        engineTitlePanel.add(closeEngineButton);
+        titlePanel.add(closeEngineButton);
         
-        this.add(engineTitlePanel, BorderLayout.NORTH);
+        this.add(titlePanel, BorderLayout.NORTH);
         
         //engine properties panel
         JPanel enginePropPanel = new JPanel();
@@ -242,6 +248,27 @@ public class SynthesizerControlPanel extends JPanel implements SynthesisListener
         	setEnabled(false);
             }
         }
+    }
+
+    /**
+     * @see javax.swing.JPanel#updateUI()
+     */
+    @Override
+    public void updateUI() {
+	/*if (engineIconLabel != null) {
+            Font titleFont = engineIconLabel.getFont();
+            titleFont = titleFont.deriveFont(titleFont.getSize2D()+2);
+            engineIconLabel.setFont(titleFont);
+	}*/
+	if (titlePanel != null) {
+            Color bgColor = titlePanel.getBackground();
+            int newRed = bgColor.getRed()+15 > 255 ? 255 : bgColor.getRed()+15;
+            int newGreen = bgColor.getGreen()+15 > 255 ? 255 : bgColor.getGreen()+15;
+            int newBlue = bgColor.getBlue()+15 > 255 ? 255 : bgColor.getBlue()+15;
+            Color newBgColor = new Color(newRed, newGreen, newBlue);
+            titlePanel.setBackground(newBgColor);
+	}
+	super.updateUI();
     }
 
     /**

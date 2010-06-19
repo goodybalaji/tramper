@@ -79,7 +79,7 @@ public class AddressControlPanel extends JPanel implements ActionListener {
      * layout components
      */
     public AddressControlPanel() {
-        
+        this.setOpaque(true);
         GridBagLayout addressLayout = new GridBagLayout();
         this.setLayout(addressLayout);
         GridBagConstraints constraint = new GridBagConstraints();
