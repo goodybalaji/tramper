@@ -4,7 +4,7 @@
 	<classpathentry exported="true" kind="lib" path="archives/browser.jar" sourcepath="sources/browser"/>
 	<classpathentry exported="true" kind="lib" path="archives/outline.jar" sourcepath="sources/outline"/>
 	<classpathentry exported="true" kind="lib" path="archives/feed.jar" sourcepath="sources/feed"/>
-	<classpathentry kind="lib" path="archives/audio.jar" sourcepath="sources/audio"/>
+	<classpathentry exported="true" kind="lib" path="archives/audio.jar" sourcepath="sources/audio"/>
 	<classpathentry exported="true" kind="lib" path="archives/video.jar" sourcepath="sources/video"/>
 	<classpathentry exported="true" kind="lib" path="archives/webPage.jar" sourcepath="sources/webPage"/>
 	<classpathentry exported="true" kind="lib" path="archives/image.jar" sourcepath="sources/image"/>
