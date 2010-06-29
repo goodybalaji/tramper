@@ -51,11 +51,11 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
     /** language list */
     private JComboBox languageList;
     /** appearance list */
-    private JComboBox appearenceList;
+    private JComboBox appearanceList;
     /** language label */
     private JLabel languageLabel;
     /** Appearance label */
-    private JLabel appearenceLabel;
+    private JLabel appearanceLabel;
     /** Font size label */
     private JLabel sizeLabel;
     /** close control panel button */
@@ -141,25 +141,25 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
         languageList.addItemListener(this);
         displayPropPanel.add(languageList);
 
-        appearenceLabel = new JLabel();
-        appearenceLabel.setText(label.getString("javaspeaker.appearance"));
-        displayPropPanel.add(appearenceLabel);
+        appearanceLabel = new JLabel();
+        appearanceLabel.setText(label.getString("javaspeaker.appearance"));
+        displayPropPanel.add(appearanceLabel);
 
         LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();
-        appearenceList = new JComboBox(lafs);
-        appearenceList.setEditable(false);
-        appearenceList.setMaximumSize(appearenceList.getPreferredSize());
+        appearanceList = new JComboBox(lafs);
+        appearanceList.setEditable(false);
+        appearanceList.setMaximumSize(appearanceList.getPreferredSize());
         AppearenceListCellRenderer appearenceRenderer = new AppearenceListCellRenderer();
-        appearenceList.setRenderer(appearenceRenderer);
+        appearanceList.setRenderer(appearenceRenderer);
         LookAndFeel laf = UIManager.getLookAndFeel();
         for (int i=0; i<lafs.length; i++) {
             if (lafs[i].getClassName().equals(laf.getClass().getName())) {
-                appearenceList.setSelectedItem(lafs[i]);
+                appearanceList.setSelectedItem(lafs[i]);
                 break;
             }
         }
-        appearenceList.addItemListener(this);
-        displayPropPanel.add(appearenceList);
+        appearanceList.addItemListener(this);
+        displayPropPanel.add(appearanceList);
 
         sizeLabel = new JLabel();
         sizeLabel.setText(label.getString("javaspeaker.enlargement"));
@@ -257,7 +257,7 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
         
         displayIconLabel.setText(label.getString("display.name"));
         languageLabel.setText(label.getString("javaspeaker.listEnginesLabel"));
-        appearenceLabel.setText(label.getString("javaspeaker.appearance"));
+        appearanceLabel.setText(label.getString("javaspeaker.appearance"));
         sizeLabel.setText(label.getString("javaspeaker.enlargement"));
         plusButton.setToolTipText(TooltipManager.createTooltip("enlarge"));
         minusButton.setToolTipText(TooltipManager.createTooltip("reduce"));
@@ -282,9 +282,9 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
                 Locale.setDefault(selectedLocale);
                 main.relocalize();
             }
-        } else if (source == appearenceList) {
+        } else if (source == appearanceList) {
             if (stateChange == ItemEvent.SELECTED) {
-                LookAndFeelInfo selectedAppearence = (LookAndFeelInfo)appearenceList.getSelectedItem();
+                LookAndFeelInfo selectedAppearence = (LookAndFeelInfo)appearanceList.getSelectedItem();
                 String lafClassName = selectedAppearence.getClassName();
                 try {
                     UIManager.setLookAndFeel(lafClassName);
