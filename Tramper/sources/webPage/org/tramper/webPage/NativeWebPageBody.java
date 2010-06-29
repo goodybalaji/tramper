@@ -32,11 +32,11 @@ import org.tramper.doc.SimpleDocument;
 import org.tramper.doc.Target;
 import org.tramper.doc.WebPage;
 import org.tramper.doc.WebPageItem;
+import org.tramper.gui.GraphicalUserInterface;
 import org.tramper.gui.viewer.Body;
 import org.tramper.loader.Loader;
 import org.tramper.loader.LoaderFactory;
 import org.tramper.ui.Renderer;
-import org.tramper.ui.UserInterface;
 import org.tramper.ui.UserInterfaceFactory;
 
 /**
@@ -355,11 +355,9 @@ public class NativeWebPageBody extends JPanel implements Body, WebBrowserListene
     }
 
     public void windowClose(WebBrowserEvent arg0) {
-	List<UserInterface> ui = UserInterfaceFactory.getAllUserInterfaces();
+	GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
 	boolean confirmed = false;
-	for (UserInterface anUi : ui) {
-	    confirmed = anUi.confirmMessage("confirmQuit");
-	}
+	confirmed = gui.confirmMessage("confirmQuit");
         if (confirmed) {
             ActionEvent actionEvent = new ActionEvent(this, 0, "quit");
             QuitAction.getInstance().actionPerformed(actionEvent);

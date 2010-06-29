@@ -1,12 +1,9 @@
 package org.tramper.aui;
 
-import java.net.URL;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 import org.tramper.conductor.Conductor;
@@ -16,12 +13,9 @@ import org.tramper.doc.LibraryEvent;
 import org.tramper.doc.LibraryListener;
 import org.tramper.doc.SimpleDocument;
 import org.tramper.doc.Target;
-import org.tramper.player.PlayException;
-import org.tramper.player.Player;
-import org.tramper.player.PlayerFactory;
+import org.tramper.gui.GraphicalUserInterface;
 import org.tramper.recognizer.RecognitionException;
 import org.tramper.recognizer.SpeechRecognizerFactory;
-import org.tramper.synthesizer.SpeechSynthesizer;
 import org.tramper.ui.UserInterface;
 import org.tramper.ui.UserInterfaceFactory;
 
@@ -52,96 +46,6 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
     }
     
     /**
-     * speak a confirmation message with an appropriate sound.
-     * @param msgKey message key
-     * @return true if confirmed by the user, false otherwise
-     */
-    public boolean confirmMessage(String msgKey) {
-	return confirmMessage(msgKey, new Object[0]);
-    }
-
-    /**
-     * speak a confirmation message with an appropriate sound.
-     * @param msgKey message key
-     * @param params messages optional parameters
-     * @return true if confirmed by the user, false otherwise
-     */
-    public boolean confirmMessage(String msgKey, Object[] params) {
-        URL url = getClass().getResource("/org/fingon/question.wav");
-        try {
-            Player soundPlayer = PlayerFactory.getPlayerByExtension("wav");
-            soundPlayer.play(url);
-        } catch (PlayException e) {
-            logger.error(e.getMessage(), e);
-        }
-
-	SpeechSynthesizer synthe = PlayerFactory.getSpeechSynthesizer();
-        ResourceBundle bundle = ResourceBundle.getBundle("label");
-        String message = bundle.getString("javaspeaker.message." + msgKey);
-        MessageFormat msgFormat = new MessageFormat(message);
-        String formatedMsg = msgFormat.format(params);
-        synthe.play(formatedMsg);
-        return true;
-    }
-    
-    /**
-     * speak a info message with an appropriate sound. 
-     * @param msgKey message key
-     */
-    public void raiseInfo(String msgKey) {
-        URL url = getClass().getResource("/org/fingon/Balloon.wav");
-        try {
-            Player soundPlayer = PlayerFactory.getPlayerByExtension("wav");
-            soundPlayer.play(url);
-        } catch (PlayException e) {
-            logger.error(e.getMessage(), e);
-        }
-
-	SpeechSynthesizer synthe = PlayerFactory.getSpeechSynthesizer();
-        ResourceBundle bundle = ResourceBundle.getBundle("label");
-        String message = bundle.getString("javaspeaker.message." + msgKey);
-        synthe.play(message);
-    }
-
-    /**
-     * speak a warning message with an appropriate sound. 
-     * @param msgKey message key
-     */
-    public void raiseWarning(String msgKey) {
-        URL url = getClass().getResource("/org/fingon/Exclamation.wav");
-        try {
-            Player soundPlayer = PlayerFactory.getPlayerByExtension("wav");
-            soundPlayer.play(url);
-        } catch (PlayException e) {
-            logger.error(e.getMessage(), e);
-        }
-
-	SpeechSynthesizer synthe = PlayerFactory.getSpeechSynthesizer();
-        ResourceBundle bundle = ResourceBundle.getBundle("label");
-        String message = bundle.getString("javaspeaker.message." + msgKey);
-        synthe.play(message);
-    }
-
-    /**
-     * speak an error message with an appropriate sound. 
-     * @param msgKey message key
-     */
-    public void raiseError(String msgKey) {
-        URL urlError = getClass().getResource("/org/fingon/error.wav");
-        try {
-            Player soundPlayer = PlayerFactory.getPlayerByExtension("wav");
-            soundPlayer.play(urlError);
-        } catch (PlayException e) {
-            logger.error(e.getMessage(), e);
-        }
-        
-	SpeechSynthesizer synthe = PlayerFactory.getSpeechSynthesizer();
-        ResourceBundle bundle = ResourceBundle.getBundle("label");
-        String message = bundle.getString("javaspeaker.message." + msgKey);
-        synthe.play(message);
-    }
-
-    /**
      * Starts rendering the document at the beginning.
      * @param document the document to render
      * @param target the target where to render the document
@@ -153,10 +57,8 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
             aConductor.render(document, target);
         } catch (Exception e) {
             logger.error("unable to get a conductor for the document "+document);
-            List<UserInterface> allUI = UserInterfaceFactory.getAllUserInterfaces();
-            for (UserInterface anUI : allUI) {
-        	anUI.raiseError("noplayer");
-            }
+            GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
+            gui.raiseError("noplayer");
             return;
         }
         conductorByTarget.put(target, aConductor);

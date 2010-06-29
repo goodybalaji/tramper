@@ -40,7 +40,6 @@ import org.tramper.doc.Target;
 import org.tramper.loader.Loader;
 import org.tramper.loader.LoaderFactory;
 import org.tramper.parser.ParserFactory;
-import org.tramper.ui.UserInterface;
 import org.tramper.ui.UserInterfaceFactory;
 
 /**
@@ -284,7 +283,7 @@ public class AddressControlPanel extends JPanel implements ActionListener {
 		File aFile = fileDialog.getSelectedFile();
 		if (aFile != null) {
 		    boolean accepted = fileDialog.accept(aFile);
-		    List<UserInterface> ui = UserInterfaceFactory.getAllUserInterfaces();
+		    GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
 		    if (accepted) {
 			lastSelectedDir = aFile.getParentFile();
 			try {
@@ -294,14 +293,10 @@ public class AddressControlPanel extends JPanel implements ActionListener {
 			    aLoader.download(urlRef, new Target(Library.PRIMARY_FRAME, null));
 			} catch (Exception e) {
 			    logger.error("bad url", e);
-			    for (UserInterface anUi : ui) {
-				anUi.raiseError("displayFailed");
-			    }
+			    gui.raiseError("displayFailed");
 			}
 		    } else {
-                        for (UserInterface anUi : ui) {
-                            anUi.raiseError("displayFailed");
-                        }
+                        gui.raiseError("displayFailed");
 		    }
 		}
 	    }
