@@ -31,23 +31,23 @@ public class AppearenceListCellRenderer extends JLabel implements ListCellRender
      */
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         LookAndFeelInfo lafi = (LookAndFeelInfo)value;
-        String s = lafi.getName();
-        setText(s);
+        String lafName = lafi.getName();
+        setText(lafName);
         
         URL url = null;
-        if (lafi.getName().equals("Windows")) {
+        if (lafName.equals("Windows")) {
             url = getClass().getResource("images/windows.png");
-        } else if (lafi.getName().equals("Windows Classic")) {
+        } else if (lafName.equals("Windows Classic")) {
             url = getClass().getResource("images/windows.png");
-        } else if (lafi.getName().equals("Mac OS")) {
+        } else if (lafName.equals("Mac OS")) {
             url = getClass().getResource("images/macos.png");
-        } else if (lafi.getName().equals("Quaqua")) {
+        } else if (lafName.equals("Quaqua")) {
             url = getClass().getResource("images/macos.png");
-        } else if (lafi.getName().equals("CDE/Motif")) {
+        } else if (lafName.equals("CDE/Motif")) {
             url = getClass().getResource("images/motif.png");
-        } else if (lafi.getName().equals("GTK+")) {
+        } else if (lafName.equals("GTK+")) {
             url = getClass().getResource("images/linux.png");
-        } else if (lafi.getName().equals("KDE/Liquid")) {
+        } else if (lafName.equals("KDE/Liquid")) {
             url = getClass().getResource("images/kde.png");
         } else if (lafi.getClassName().startsWith("org.jvnet.substance")) {
             url = getClass().getResource("images/substance.png");
