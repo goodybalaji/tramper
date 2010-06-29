@@ -1,6 +1,5 @@
 package org.tramper.ui;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -137,16 +136,19 @@ public class UserInterfaceFactory {
      */
     public static GraphicalUserInterface getGraphicalUserInterface() {
 	if (gui == null) {
-	    try {
-		SwingUtilities.invokeAndWait(new Runnable() {
-		    public void run() {
-    		    	gui = new GraphicalUserInterface();
-		    }
-		});
-	    } catch (InterruptedException e) {
-		logger.error(e.getMessage(), e);
-	    } catch (InvocationTargetException e) {
-		logger.error(e.getMessage(), e);
+	    Runnable r = new Runnable() {
+		public void run() {
+		    gui = new GraphicalUserInterface();
+		}
+	    };
+	    if (SwingUtilities.isEventDispatchThread()) {
+		r.run();
+	    } else {
+		try {
+		    SwingUtilities.invokeAndWait(r);
+		} catch (Exception e) {
+		    logger.error(e.getMessage(), e);
+		}
 	    }
 	}
 	return gui;

@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.LookAndFeel;
+import javax.swing.UIManager;
+
 import org.apache.log4j.Logger;
 import org.tramper.conductor.Conductor;
 import org.tramper.conductor.ConductorFactory;
@@ -228,6 +231,17 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
      * @see org.tramper.ui.UserInterface#unregister()
      */
     public void unregister() {
+	try {
+	    Class<?> auxiliaryLaFClass = Class.forName("org.fingon.FingonLookAndFeel");
+	    Object auxiliaryLaF = auxiliaryLaFClass.newInstance();
+	    UIManager.removeAuxiliaryLookAndFeel((LookAndFeel)auxiliaryLaF);
+	} catch (ClassNotFoundException e1) {
+	    logger.info("no Fingon auxiliary look and feel class in classpath");
+	} catch (InstantiationException e) {
+	    logger.error(e);
+	} catch (IllegalAccessException e) {
+	    logger.error(e);
+	}
 	Library.getInstance().removeLibraryListener(this);
     }
 }

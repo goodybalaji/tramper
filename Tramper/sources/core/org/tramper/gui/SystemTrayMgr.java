@@ -2,6 +2,8 @@ package org.tramper.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
 
 import javax.swing.Action;
@@ -16,15 +18,13 @@ import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import org.tramper.action.QuitAction;
-import org.tramper.action.ToggleAUIAction;
-import org.tramper.action.ToggleGUIAction;
 import org.tramper.ui.UserInterfaceFactory;
 
 /**
  * Display an icon in the system tray (Windows, Mac OS X and Linux).
  * @author Paul-Emile
  */
-public class SystemTrayMgr implements ActionListener, Runnable {
+public class SystemTrayMgr implements ActionListener, ItemListener, Runnable {
     /** tray icon */
     private TrayIcon trayIcon;
     
@@ -43,15 +43,13 @@ public class SystemTrayMgr implements ActionListener, Runnable {
 	ResourceBundle label = ResourceBundle.getBundle("label");
 	
         PopupMenu menu = new PopupMenu(label.getString("javaspeaker.productTitle"));
-        Action toggleGUIAction = ToggleGUIAction.getInstance();
-        CheckboxMenuItem menuItemToggleGUIAction = new CheckboxMenuItem(label.getString("javaspeaker.toggleGUI"));
-        menuItemToggleGUIAction.addActionListener(toggleGUIAction);
-        menuItemToggleGUIAction.setState(true);
+        CheckboxMenuItem menuItemToggleGUIAction = new CheckboxMenuItem(label.getString("disappear"));
+        menuItemToggleGUIAction.setName("disappear");
+        menuItemToggleGUIAction.addItemListener(this);
         menu.add(menuItemToggleGUIAction);
-        Action toggleAUIAction = ToggleAUIAction.getInstance();
-        CheckboxMenuItem menuItemToggleAUIAction = new CheckboxMenuItem(label.getString("javaspeaker.toggleAUI"));
-        menuItemToggleAUIAction.addActionListener(toggleAUIAction);
-        menuItemToggleAUIAction.setState(true);
+        CheckboxMenuItem menuItemToggleAUIAction = new CheckboxMenuItem(label.getString("silence"));
+        menuItemToggleAUIAction.setName("silence");
+        menuItemToggleAUIAction.addItemListener(this);
         menu.add(menuItemToggleAUIAction);
         Action quitAction = QuitAction.getInstance();
         MenuItem menuItemQuitAction = new MenuItem(label.getString("javaspeaker.menu.file.quit"));
@@ -88,6 +86,25 @@ public class SystemTrayMgr implements ActionListener, Runnable {
 	if (UserInterfaceFactory.isGraphicalUserInterfaceInstanciated()) {
 	    GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
 	    gui.toFront();
+	}
+    }
+
+    public void itemStateChanged(ItemEvent e) {
+	int state = e.getStateChange();
+	CheckboxMenuItem item = (CheckboxMenuItem)e.getSource();
+	String name = item.getName();
+	if (name.equals("silence")) {
+	    if (state == ItemEvent.SELECTED && UserInterfaceFactory.isAudioUserInterfaceInstanciated()) {
+		UserInterfaceFactory.removeAudioUserInterface();
+	    } else if (state == ItemEvent.DESELECTED && !UserInterfaceFactory.isAudioUserInterfaceInstanciated()) {
+		UserInterfaceFactory.getAudioUserInterface();
+	    }
+	} else if (name.equals("disappear")) {
+	    if (state == ItemEvent.SELECTED && UserInterfaceFactory.isGraphicalUserInterfaceInstanciated()) {
+		UserInterfaceFactory.removeGraphicalUserInterface();
+	    } else if (state == ItemEvent.DESELECTED && !UserInterfaceFactory.isGraphicalUserInterfaceInstanciated()) {
+		UserInterfaceFactory.getGraphicalUserInterface();
+	    }
 	}
     }
 }
