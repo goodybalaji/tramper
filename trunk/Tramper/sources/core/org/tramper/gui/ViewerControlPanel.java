@@ -26,7 +26,6 @@ import org.tramper.loader.LoaderFactoryEvent;
 import org.tramper.loader.LoaderFactoryListener;
 import org.tramper.loader.LoadingEvent;
 import org.tramper.loader.LoadingListener;
-import org.tramper.ui.UserInterface;
 import org.tramper.ui.UserInterfaceFactory;
 
 /**
@@ -211,10 +210,8 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
 		    loadingViewer.stop();
 		    remove(loadingViewer);
 		    UserInterfaceFactory.getGraphicalUserInterface().validate();
-	            List<UserInterface> ui = UserInterfaceFactory.getAllUserInterfaces();
-	            for (UserInterface anUi : ui) {
-	        	anUi.raiseError("loadingFailed");
-	            }
+	            GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
+	            gui.raiseError("loadingFailed");
 		}
 	    });
 	}

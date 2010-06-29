@@ -7,7 +7,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -24,7 +23,6 @@ import org.tramper.doc.Target;
 import org.tramper.gui.GraphicalUserInterface;
 import org.tramper.loader.Loader;
 import org.tramper.loader.LoaderFactory;
-import org.tramper.ui.UserInterface;
 import org.tramper.ui.UserInterfaceFactory;
 import org.w3c.dom.html2.HTMLElement;
 import org.w3c.dom.html2.HTMLLinkElement;
@@ -78,11 +76,9 @@ public class SpeakableHtmlRendererContext extends SimpleHtmlRendererContext {
      * @see org.lobobrowser.html.HtmlRendererContext#close()
      */
     public void close() {
-	List<UserInterface> ui = UserInterfaceFactory.getAllUserInterfaces();
+	GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
 	boolean confirmed = false;
-	for (UserInterface anUi : ui) {
-	    anUi.confirmMessage("confirmQuit");
-	}
+	gui.confirmMessage("confirmQuit");
         if (confirmed) {
             ActionEvent actionEvent = new ActionEvent(this, 0, "quit");
             QuitAction.getInstance().actionPerformed(actionEvent);

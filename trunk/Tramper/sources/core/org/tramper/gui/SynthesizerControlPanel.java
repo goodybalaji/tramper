@@ -41,7 +41,6 @@ import org.tramper.synthesizer.SynthesisEvent;
 import org.tramper.synthesizer.SynthesisException;
 import org.tramper.synthesizer.SynthesisListener;
 import org.tramper.synthesizer.VoiceDesc;
-import org.tramper.ui.UserInterface;
 import org.tramper.ui.UserInterfaceFactory;
 
 /**
@@ -597,10 +596,8 @@ public class SynthesizerControlPanel extends JPanel implements SynthesisListener
                         }
                     }
                 } else {
-                    List<UserInterface> ui = UserInterfaceFactory.getAllUserInterfaces();
-                    for (UserInterface anUi : ui) {
-                	anUi.raiseError("unsupportedAudio");
-                    }
+                    GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
+                    gui.raiseError("unsupportedAudio");
                     listOutput.setSelectedIndex(0);
                 }
             } else {

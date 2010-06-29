@@ -1,13 +1,13 @@
 package org.fingon;
 
 import java.awt.Graphics;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.net.URL;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicOptionPaneUI;
 
@@ -20,7 +20,7 @@ import org.tramper.synthesizer.SpeechSynthesizer;
  * 
  * @author Paul-Emile
  */
-public class FingonOptionPaneUI extends BasicOptionPaneUI implements ComponentListener {
+public class FingonOptionPaneUI extends BasicOptionPaneUI implements AncestorListener {
     /** the instance common to every component */
     private static FingonOptionPaneUI instance;
     /** information sound URL */
@@ -37,8 +37,8 @@ public class FingonOptionPaneUI extends BasicOptionPaneUI implements ComponentLi
      */
     @Override
     public void installUI(JComponent c) {
-	JOptionPane option = (JOptionPane)c;
-	option.addComponentListener(this);
+	JOptionPane optionPane = (JOptionPane)c;
+	optionPane.addAncestorListener(this);
 	this.installDefaults();
     }
 
@@ -58,8 +58,8 @@ public class FingonOptionPaneUI extends BasicOptionPaneUI implements ComponentLi
      */
     @Override
     public void uninstallUI(JComponent c) {
-	JOptionPane option = (JOptionPane)c;
-	option.removeComponentListener(this);
+	JOptionPane optionPane = (JOptionPane)c;
+	optionPane.removeAncestorListener(this);
     }
 
     /**
@@ -81,17 +81,8 @@ public class FingonOptionPaneUI extends BasicOptionPaneUI implements ComponentLi
     public void update(Graphics g, JComponent c) {
     }
 
-    public void componentHidden(ComponentEvent e) {
-    }
-
-    public void componentMoved(ComponentEvent e) {
-    }
-
-    public void componentResized(ComponentEvent e) {
-    }
-
-    public void componentShown(ComponentEvent e) {
-	JOptionPane optionPane = (JOptionPane)e.getSource();
+    public void ancestorAdded(AncestorEvent event) {
+	JOptionPane optionPane = (JOptionPane)event.getComponent();
 
 	URL soundUrl = null;
         int messageType = optionPane.getMessageType();
@@ -113,6 +104,13 @@ public class FingonOptionPaneUI extends BasicOptionPaneUI implements ComponentLi
         
 	Object message = optionPane.getMessage();
         SpeechSynthesizer synthesizer = PlayerFactory.getSpeechSynthesizer();
+        synthesizer.stop();
         synthesizer.play(message.toString());
+    }
+
+    public void ancestorMoved(AncestorEvent event) {
+    }
+
+    public void ancestorRemoved(AncestorEvent event) {
     }
 }

@@ -40,7 +40,7 @@ import org.tramper.action.RemoveFavoriteAction;
 import org.tramper.action.ResumePlayAction;
 import org.tramper.action.StartPlayAction;
 import org.tramper.action.StopPlayAction;
-import org.tramper.ui.UserInterface;
+import org.tramper.gui.GraphicalUserInterface;
 import org.tramper.ui.UserInterfaceFactory;
 
 import edu.cmu.sphinx.frontend.util.Microphone;
@@ -163,7 +163,7 @@ public class SphinxSpeechRecognizer implements StateListener, SpeechRecognizer, 
      */
     public void run() {
         RuleGrammar ruleGrammar = jsgfGrammar.getRuleGrammar();
-        List<UserInterface> ui = UserInterfaceFactory.getAllUserInterfaces();
+        GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
         
         // the microphone will keep recording until the program exits
         if (microphone.startRecording()) {
@@ -203,9 +203,7 @@ public class SphinxSpeechRecognizer implements StateListener, SpeechRecognizer, 
                         logger.debug("word "+word+" "+wordConf);
                     }
                     boolean confirmed = false;
-                    for (UserInterface anUi : ui) {
-                	anUi.confirmMessage("chooseRecognized", new Object[] {finalResultText});
-                    }
+                    gui.confirmMessage("chooseRecognized", new Object[] {finalResultText});
                     if (confirmed) {
                         //look for possible tag(s) in the results
                         try {

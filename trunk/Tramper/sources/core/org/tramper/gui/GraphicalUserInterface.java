@@ -503,10 +503,8 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	    this.validate();
 	} catch (RenderingException e) {
 	    logger.error("error when rendering " + document);
-            List<UserInterface> ui = UserInterfaceFactory.getAllUserInterfaces();
-            for (UserInterface anUi : ui) {
-        	anUi.raiseError("displayFailed");
-            }
+            GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
+            gui.raiseError("displayFailed");
 	}
     }
     
@@ -1035,10 +1033,8 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	    this.setVisible(true);
 	} catch (Exception e) {
 	    // thrown when switching from Substance to another look and feel
-            List<UserInterface> ui = UserInterfaceFactory.getAllUserInterfaces();
-            for (UserInterface anUi : ui) {
-        	anUi.raiseWarning("badLaF");
-            }
+            GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
+            gui.raiseWarning("badLaF");
             System.exit(1);
 	}
     }

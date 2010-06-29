@@ -22,34 +22,6 @@ public interface UserInterface {
     public Renderer getActiveRenderer();
     /**
      * 
-     * @param msgKey
-     */
-    public void raiseError(String msgKey);
-    /**
-     * 
-     * @param msgKey
-     */
-    public void raiseWarning(String msgKey);
-    /**
-     * 
-     * @param msgKey
-     */
-    public void raiseInfo(String msgKey);
-    /**
-     * 
-     * @param msgKey
-     * @return
-     */
-    public boolean confirmMessage(String msgKey);
-    /**
-     * 
-     * @param msgKey
-     * @param params
-     * @return
-     */
-    public boolean confirmMessage(String msgKey, Object[] params);
-    /**
-     * 
      */
     public void unregister();
 }
