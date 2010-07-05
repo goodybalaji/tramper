@@ -79,9 +79,8 @@ public class VideoBody extends JPanel implements Body, VideoRendererListener, Mo
 	//super.paint(g);
 	Graphics2D g2d = (Graphics2D)g;
 	
-	Dimension frameSize = videoRenderCtrl.getFrameSize();
-	int videoWidth = frameSize.width;
-	int videoHeight = frameSize.height;
+	int videoWidth = videoRenderCtrl.getFrameSize().width;
+	int videoHeight = videoRenderCtrl.getFrameSize().height;
 	int bodyWidth = getWidth();
 	int bodyHeight = getHeight();
 
