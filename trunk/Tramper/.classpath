@@ -62,6 +62,8 @@
 	<classpathentry exported="true" kind="lib" path="lib/tritonus_jorbis-0.3.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ICOReader-1.04.jar"/>
 	<classpathentry kind="src" output="classes/audio" path="sources/audio"/>
+	<classpathentry kind="src" output="classes/synthesizer" path="sources/synthesizer"/>
+	<classpathentry kind="src" output="classes/player" path="sources/player"/>
 	<classpathentry kind="src" output="classes/fingon" path="sources/fingon"/>
 	<classpathentry kind="src" output="classes/jsapi-recognizer" path="sources/jsapi-recognizer"/>
 	<classpathentry kind="src" output="classes/sphinx-recognizer" path="sources/sphinx-recognizer"/>
@@ -77,5 +79,7 @@
 	<classpathentry kind="src" output="classes/webPage" path="sources/webPage"/>
 	<classpathentry kind="lib" path="archives/fingon.jar" sourcepath="sources/fingon"/>
 	<classpathentry kind="lib" path="lib/trident.jar"/>
+	<classpathentry kind="lib" path="archives/player.jar"/>
+	<classpathentry kind="lib" path="archives/synthesizer.jar"/>
 	<classpathentry kind="output" path="classes/core"/>
 </classpath>

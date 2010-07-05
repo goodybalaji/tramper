@@ -58,6 +58,12 @@
 			<packageset dir="sources/browser">
 				<include name="org/tramper/**"/>
 			</packageset>
+			<packageset dir="sources/player">
+				<include name="org/tramper/**"/>
+			</packageset>
+			<packageset dir="sources/synthesizer">
+				<include name="org/tramper/**"/>
+			</packageset>
 			<packageset dir="sources/jsapi-recognizer">
 				<include name="org/tramper/**"/>
 			</packageset>
@@ -100,6 +106,12 @@
 		</jar>
 		<jar destfile="archives/browser.jar" manifest="sources/browser/META-INF/MANIFEST.MF">
 			<fileset dir="classes/browser"/>
+		</jar>
+		<jar destfile="archives/player.jar" manifest="sources/player/META-INF/MANIFEST.MF">
+			<fileset dir="classes/player"/>
+		</jar>
+		<jar destfile="archives/synthesizer.jar" manifest="sources/synthesizer/META-INF/MANIFEST.MF">
+			<fileset dir="classes/synthesizer"/>
 		</jar>
 		<jar destfile="archives/jsapi-recognizer.jar" manifest="sources/jsapi-recognizer/META-INF/MANIFEST.MF">
 			<fileset dir="classes/jsapi-recognizer"/>
