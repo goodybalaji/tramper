@@ -3,7 +3,7 @@ package org.tramper.webPage.css;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.tramper.synthesizer.VoiceDesc;
+import org.fingon.synthesizer.VoiceDesc;
 import org.w3c.dom.css.CSSPrimitiveValue;
 import org.w3c.dom.css.CSSValue;
 import org.w3c.dom.css.CSSValueList;

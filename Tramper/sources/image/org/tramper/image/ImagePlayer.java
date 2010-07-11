@@ -20,10 +20,10 @@ import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
 
 import org.apache.log4j.Logger;
-import org.tramper.player.PlayEvent;
-import org.tramper.player.PlayException;
-import org.tramper.player.PlayListener;
-import org.tramper.player.Player;
+import org.fingon.player.PlayEvent;
+import org.fingon.player.PlayException;
+import org.fingon.player.PlayListener;
+import org.fingon.player.Player;
 
 /**
  * Reads the pixels of the image and translate them in midi notes with the following rules :

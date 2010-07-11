@@ -25,7 +25,7 @@ import org.tramper.doc.WebPage;
 import org.tramper.doc.WebPageItem;
 import org.tramper.parser.Parser;
 import org.tramper.parser.ParsingException;
-import org.tramper.synthesizer.VoiceDesc;
+import org.fingon.synthesizer.VoiceDesc;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

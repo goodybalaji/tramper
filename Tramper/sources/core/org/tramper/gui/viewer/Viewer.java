@@ -10,7 +10,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-import org.tramper.player.PlayListener;
+import org.fingon.player.PlayListener;
 import org.tramper.ui.Renderer;
 import org.tramper.ui.RenderingException;
 import org.tramper.doc.DocumentEvent;

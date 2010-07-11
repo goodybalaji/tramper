@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.tramper.player.PlayEvent;
-import org.tramper.player.PlayException;
-import org.tramper.player.PlayListener;
-import org.tramper.player.Player;
+import org.fingon.player.PlayEvent;
+import org.fingon.player.PlayException;
+import org.fingon.player.PlayListener;
+import org.fingon.player.Player;
 
 import com.sun.media.jmc.MediaProvider;
 import com.sun.media.jmc.control.AudioControl;

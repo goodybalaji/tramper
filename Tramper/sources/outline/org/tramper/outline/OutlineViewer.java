@@ -8,7 +8,7 @@ import javax.swing.SwingUtilities;
 import org.tramper.doc.Outline;
 import org.tramper.doc.SimpleDocument;
 import org.tramper.gui.viewer.Viewer;
-import org.tramper.player.PlayEvent;
+import org.fingon.player.PlayEvent;
 
 /**
  * Outline viewer

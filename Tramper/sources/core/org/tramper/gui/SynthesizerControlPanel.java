@@ -35,12 +35,12 @@ import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 import org.tramper.gui.SaveAudioFileFilter;
-import org.tramper.player.Player;
-import org.tramper.synthesizer.SpeechSynthesizer;
-import org.tramper.synthesizer.SynthesisEvent;
-import org.tramper.synthesizer.SynthesisException;
-import org.tramper.synthesizer.SynthesisListener;
-import org.tramper.synthesizer.VoiceDesc;
+import org.fingon.player.Player;
+import org.fingon.synthesizer.SpeechSynthesizer;
+import org.fingon.synthesizer.SynthesisEvent;
+import org.fingon.synthesizer.SynthesisException;
+import org.fingon.synthesizer.SynthesisListener;
+import org.fingon.synthesizer.VoiceDesc;
 import org.tramper.ui.UserInterfaceFactory;
 
 /**
