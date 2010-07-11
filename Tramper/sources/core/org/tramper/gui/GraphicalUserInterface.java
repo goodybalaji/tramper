@@ -34,6 +34,7 @@ import javax.swing.ActionMap;
 import javax.swing.BoundedRangeModel;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -144,8 +145,10 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	if (UIManager.getLookAndFeel().getSupportsWindowDecorations()) {
 	    this.setUndecorated(true);
 	    this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+	    JDialog.setDefaultLookAndFeelDecorated(true);
 	} else {
 	    this.setUndecorated(false);
+	    JDialog.setDefaultLookAndFeelDecorated(false);
 	}
 	
 	displayListeners = new ArrayList<DisplayListener>();
