@@ -7,10 +7,10 @@ import org.tramper.conductor.Conductor;
 import org.tramper.doc.ImageDocument;
 import org.tramper.doc.SimpleDocument;
 import org.tramper.doc.Target;
-import org.tramper.player.PlayException;
-import org.tramper.player.PlayListener;
-import org.tramper.player.Player;
-import org.tramper.player.PlayerFactory;
+import org.fingon.player.PlayException;
+import org.fingon.player.PlayListener;
+import org.fingon.player.Player;
+import org.fingon.player.PlayerFactory;
 import org.tramper.ui.Renderer;
 import org.tramper.ui.RenderingException;
 

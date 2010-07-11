@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
-import org.tramper.synthesizer.VoiceDesc;
+import org.fingon.synthesizer.VoiceDesc;
 
 /**
  * A speakable item of a speakable document

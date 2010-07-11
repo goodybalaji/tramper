@@ -8,9 +8,11 @@ import javax.speech.synthesis.SynthesizerProperties;
 import javax.speech.synthesis.Voice;
 
 import org.apache.log4j.Logger;
-import org.tramper.player.PlayEvent;
-import org.tramper.player.PlayException;
-import org.tramper.audio.SoundPlayer;
+import org.fingon.player.PlayEvent;
+import org.fingon.player.PlayException;
+import org.fingon.synthesizer.JSAPISpeechSynthesizer;
+import org.fingon.synthesizer.SynthesisException;
+import org.fingon.player.SoundPlayer;
 
 import com.sun.speech.freetts.audio.JavaStreamingAudioPlayer;
 import com.sun.speech.freetts.audio.SingleFileAudioPlayer;

@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import org.tramper.synthesizer.VoiceDesc;
+import org.fingon.synthesizer.VoiceDesc;
 
 
 /**

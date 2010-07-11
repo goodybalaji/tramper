@@ -2,8 +2,8 @@ package org.tramper.conductor;
 
 import org.tramper.doc.SimpleDocument;
 import org.tramper.doc.Target;
-import org.tramper.player.Musician;
-import org.tramper.player.Player;
+import org.fingon.player.Musician;
+import org.fingon.player.Player;
 import org.tramper.ui.Renderer;
 import org.tramper.ui.RenderingException;
 
