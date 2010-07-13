@@ -50,4 +50,12 @@ public class SaveAudioFileFilter extends FileFilter {
         audioLabel = audioLabel.concat(")");
         return audioLabel;
     }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+	return getDescription();
+    }
 }
