@@ -229,9 +229,22 @@ public class OutlineBody extends JScrollPane implements Body, MouseListener, Tre
      * @see org.tramper.gui.viewer.Body#paintMiniature(java.awt.Graphics2D, java.awt.Dimension, boolean)
      */
     public void paintMiniature(Graphics2D g2d, Dimension miniatureSize, boolean mouseOver) {
-	double scale = 0.8;
-	g2d.scale(scale, scale);
+	int treeWidth = outlineTree.getPreferredSize().width;
+	int treeHeight = outlineTree.getPreferredSize().height;
 	
+	double scale = (double)miniatureSize.width/(double)treeWidth;
+	if (scale > 1) {
+	    scale = 1.0;
+	}
+	g2d.scale(scale, scale);
+	int x = (miniatureSize.width - treeWidth)/2;
+	if (x < 0) {
+	    x = 0;
+	}
+	int y = (miniatureSize.height - treeHeight)/2;
+	if (y < 0) {
+	    y = 0;
+	}
 	outlineTree.paint(g2d);
 
 	// reset scale

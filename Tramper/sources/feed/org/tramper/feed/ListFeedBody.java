@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.swing.Icon;
 import javax.swing.JEditorPane;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -351,13 +352,37 @@ public class ListFeedBody extends JSplitPane implements Body, MouseListener, Hyp
     }
 
     public void paintMiniature(Graphics2D g2d, Dimension miniatureSize, boolean mouseOver) {
-	double scale = 0.8;
-	
-	g2d.scale(scale, scale);
-	
-	feedList.paint(g2d);
+	Icon feedIcon = document.getIcon();
+	if (feedIcon != null) {
+	    int iconWidth = feedIcon.getIconWidth();
+	    int iconHeight = feedIcon.getIconHeight();
+	    
+	    double scale = (double)miniatureSize.width/(double)iconWidth;
+	    if (scale > 1) {
+		scale = 1.0;
+	    }
+	    g2d.scale(scale, scale);
+	    int x = (miniatureSize.width - iconWidth)/2;
+	    if (x < 0) {
+		x = 0;
+	    }
+	    int y = (miniatureSize.height - iconHeight)/2;
+	    if (y < 0) {
+		y = 0;
+	    }
+	    feedIcon.paintIcon(this, g2d, x, y);
 
-	// reset scale
-	g2d.scale(1/scale, 1/scale);
+	    // reset scale
+	    g2d.scale(1/scale, 1/scale);
+	} else {
+	    double scale = 0.8;
+        	
+	    g2d.scale(scale, scale);
+        	
+	    feedList.paint(g2d);
+        
+	    // reset scale
+	    g2d.scale(1/scale, 1/scale);
+	}
     }
 }
