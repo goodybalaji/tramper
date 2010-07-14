@@ -3,9 +3,6 @@ package org.tramper;
 import org.tramper.aui.AudioUserInterface;
 import org.tramper.doc.Favorites;
 import org.tramper.doc.History;
-import org.tramper.doc.Library;
-import org.tramper.doc.Outline;
-import org.tramper.doc.Target;
 import org.tramper.gui.GraphicalUserInterface;
 import org.tramper.gui.SystemTrayMgr;
 import org.tramper.ui.UserInterfaceFactory;
@@ -28,7 +25,7 @@ public class Tramper {
 
         //Load the favorites and historic feeds at startup
         History history = History.getInstance();
-        Favorites favorite = Favorites.getInstance();
+        Favorites.getInstance();
 
         //launch the GUI
         GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
@@ -46,7 +43,5 @@ public class Tramper {
 	    } catch (InterruptedException e) {}
         }
         history.loadCurrent();
-        Outline fav = favorite.getFavorites();
-        Library.getInstance().addDocument(fav, new Target(Library.SECONDARY_FRAME, null));
     }
 }
