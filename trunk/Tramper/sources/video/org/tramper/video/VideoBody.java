@@ -153,21 +153,26 @@ public class VideoBody extends JPanel implements Body, VideoRendererListener, Mo
      * @see org.tramper.gui.viewer.Body#paintMiniature(java.awt.Graphics2D, java.awt.Dimension, boolean)
      */
     public void paintMiniature(Graphics2D g2d, Dimension miniatureSize, boolean mouseOver) {
-	int documentWidth = this.getWidth();
-	int documentHeight = this.getHeight();
 	int videoWidth = videoRenderCtrl.getFrameSize().width;
+	int videoHeight = videoRenderCtrl.getFrameSize().height;
 
 	double scale = (double)miniatureSize.width/(double)videoWidth;
 	if (scale > 1) {
 	    scale = 1.0;
 	}
 	g2d.scale(scale, scale);
-	g2d.translate(-(documentWidth - miniatureSize.width)/2*scale, -(documentHeight - miniatureSize.height)/2*scale);
+	int x = (miniatureSize.width - videoWidth)/2;
+	if (x < 0) {
+	    x = 0;
+	}
+	int y = (miniatureSize.height - videoHeight)/2;
+	if (y < 0) {
+	    y = 0;
+	}
+	Rectangle normalVideoSize = new Rectangle(0, 0, videoWidth, videoHeight);
+	videoRenderCtrl.paintVideo(g2d, normalVideoSize, normalVideoSize);
 	
-	this.paint(g2d);
-
-	// reset scale, translation
-	g2d.translate((documentWidth - miniatureSize.width)/2*scale, (documentHeight - miniatureSize.height)/2*scale);
+	// reset scale
 	g2d.scale(1/scale, 1/scale);
     }
 }
