@@ -48,7 +48,7 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
 	BoxLayout panelLayout = new BoxLayout(this, BoxLayout.X_AXIS);
 	this.setLayout(panelLayout);
 
-	this.add(Box.createHorizontalStrut(20));
+	this.add(Box.createHorizontalStrut(15));
 	this.add(Box.createGlue());
 	
 	List<Viewer> viewers = main.getRenderers();
