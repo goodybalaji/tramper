@@ -116,7 +116,7 @@ public class SpeechCSSParser {
 	    CSSStyleSheet sheet = cssParser.parseStyleSheet(source);
 	    rules = parseStyleSheet(sheet);
 	} catch (Exception e) {
-	    logger.warn("Error when parsing the style sheet at " + url);
+	    logger.debug("Error when parsing the style sheet at " + url);
 	} finally {
 	    if (s != null) {
 		try {
