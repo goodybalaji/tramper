@@ -329,6 +329,8 @@ public class RssParser implements Parser {
 	    return true;
 	} else if (mimeType.equalsIgnoreCase("text/xml")) {
 	    return true;
+	} else if (mimeType.equalsIgnoreCase("application/xml")) {
+	    return true;
 	}
 	return false;
     }
