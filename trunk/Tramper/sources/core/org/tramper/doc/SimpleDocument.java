@@ -121,5 +121,12 @@ public class SimpleDocument extends TextDocument {
     public void setLength(long length) {
         this.length = length;
     }
-
+    
+    /**
+     * To be overridden.
+     * @return a category used to organize the documents in the favorites 
+     */
+    public String getFavoriteCategory() {
+	return mimeType.substring(mimeType.indexOf("/")+1);
+    }
 }

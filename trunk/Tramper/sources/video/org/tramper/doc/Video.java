@@ -66,6 +66,14 @@ public class Video extends SimpleDocument {
     }
 
     /**
+     * @see org.tramper.doc.SimpleDocument#getFavoriteCategory()
+     */
+    @Override
+    public String getFavoriteCategory() {
+	return super.getFavoriteCategory();
+    }
+
+    /**
      * @see java.lang.Object#toString()
      */
     @Override
