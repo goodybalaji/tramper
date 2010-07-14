@@ -42,7 +42,7 @@ public class ConductorFactory {
 	    }
 	}
         lock.unlock();
-        logger.error("Unknown document: "+document);
-        throw new ConductException("Unknown document: "+document);
+        logger.debug("Unknown document type "+document);
+        throw new ConductException("Unknown document type "+document);
     }
 }

@@ -11,6 +11,7 @@ import org.tramper.doc.MarkupDocument;
 import org.tramper.doc.SimpleDocument;
 import org.tramper.doc.SpeakableItem;
 import org.tramper.doc.Target;
+import org.tramper.doc.WebPage;
 import org.fingon.player.PlayEvent;
 import org.fingon.player.PlayException;
 import org.fingon.player.PlayListener;
@@ -66,7 +67,7 @@ public class MarkupConductor extends Conductor implements Runnable {
      * @see org.tramper.ui.Renderer#isDocumentSupported(org.tramper.doc.SimpleDocument)
      */
     public boolean isDocumentSupported(SimpleDocument document) {
-	if (document instanceof MarkupDocument) {
+	if (document instanceof WebPage) {
 	    return true;
 	}
 	return false;

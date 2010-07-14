@@ -49,14 +49,14 @@ public class CueBeforeParser implements CSSPropertyParser {
             	    try {
 			uValue = completeUrl(primitiveValue.getStringValue());
 		    } catch (MalformedURLException e) {
-			logger.error(primitiveValue.getStringValue(), e);
+			logger.debug(primitiveValue.getStringValue(), e);
 		    }
             	    break;
             	case CSSPrimitiveValue.CSS_STRING:
             	    try {
 			uValue = completeUrl(primitiveValue.getStringValue());
 		    } catch (MalformedURLException e) {
-			logger.error(primitiveValue.getStringValue(), e);
+			logger.debug(primitiveValue.getStringValue(), e);
 		    }
                     break;
             	case CSSPrimitiveValue.CSS_IDENT: 
@@ -125,9 +125,8 @@ public class CueBeforeParser implements CSSPropertyParser {
                 path = "/";
             }
             baseUrl = hostUrl + path;
-        }
-        catch (MalformedURLException e) {
-            logger.warn(e.getMessage(), e);
+        } catch (MalformedURLException e) {
+            logger.debug(e.getMessage(), e);
             
             Matcher urlMatcher = urlPattern.matcher(url);
             boolean urlMatched = urlMatcher.lookingAt();

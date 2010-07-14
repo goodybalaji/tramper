@@ -323,9 +323,8 @@ public class ListFeedBody extends JSplitPane implements Body, MouseListener, Hyp
             if (length > 0) {
                 NumberFormat nbFormat = NumberFormat.getIntegerInstance();
                 summarize.append(nbFormat.format(length/1000));
-                ResourceBundle rb = ResourceBundle.getBundle("label");
                 summarize.append(" - ");
-                summarize.append(rb.getString("javaspeaker.unit.kilobyte"));
+                summarize.append(label.getString("javaspeaker.unit.kilobyte"));
             }
             summarize.append("</div>");
         }

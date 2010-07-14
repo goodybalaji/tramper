@@ -16,11 +16,9 @@ import org.tramper.doc.LibraryEvent;
 import org.tramper.doc.LibraryListener;
 import org.tramper.doc.SimpleDocument;
 import org.tramper.doc.Target;
-import org.tramper.gui.GraphicalUserInterface;
 import org.tramper.recognizer.RecognitionException;
 import org.tramper.recognizer.SpeechRecognizerFactory;
 import org.tramper.ui.UserInterface;
-import org.tramper.ui.UserInterfaceFactory;
 
 /**
  * Auditory user interface.
@@ -59,9 +57,7 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
             aConductor = ConductorFactory.getConductorByDocument(document);
             aConductor.render(document, target);
         } catch (Exception e) {
-            logger.error("unable to get a conductor for the document "+document);
-            GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
-            gui.raiseError("noplayer");
+            logger.debug("unable to get a conductor for the document type "+document);
             return;
         }
         conductorByTarget.put(target, aConductor);
