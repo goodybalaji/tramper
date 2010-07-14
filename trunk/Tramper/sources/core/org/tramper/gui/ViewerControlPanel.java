@@ -1,12 +1,14 @@
 package org.tramper.gui;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
+import java.awt.MultipleGradientPaint.CycleMethod;
+import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +17,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 import org.tramper.doc.Library;
@@ -66,26 +67,20 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
 	Graphics2D g2d = (Graphics2D)g;
 
 	g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	Color titleBackground = UIManager.getColor("TextField.selectionBackground");
-	if (titleBackground == null) {
-	    titleBackground = UIManager.getColor("textHighlight");
-	}
-	g2d.setPaint(titleBackground);
-	
-	int startx = -dimPanel.height;
-	int starty = 0;
-	int endx = 0;
-	int endy = dimPanel.height;
-	float lineWidth = 1;
-	double angle = 0;
-	while (startx < dimPanel.width) {
-	    lineWidth = (float)(3*(Math.sin(angle) + 1));
-	    g2d.setStroke(new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-	    startx += 5*lineWidth;
-	    endx += 5*lineWidth;
-	    g2d.drawLine(startx, starty, endx, endy);
-	    angle += 0.2;
-	}
+	Color thisBackground = this.getBackground();
+        int newRed = thisBackground.getRed()+15 > 255 ? 255 : thisBackground.getRed()+15;
+        int newGreen = thisBackground.getGreen()+15 > 255 ? 255 : thisBackground.getGreen()+15;
+        int newBlue = thisBackground.getBlue()+15 > 255 ? 255 : thisBackground.getBlue()+15;
+        Color newBgColor = new Color(newRed, newGreen, newBlue);
+
+	Point2D center = new Point2D.Float(dimPanel.width/2, dimPanel.height);
+	float radius = dimPanel.width/4;
+	float[] dist = {0.3f, 1.0f};
+	Color internalColor = new Color(0, 0, 0, 0);
+	Color[] colors = {internalColor, newBgColor};
+	RadialGradientPaint p = new RadialGradientPaint(center, radius, dist, colors, CycleMethod.REFLECT);
+	g2d.setPaint(p);
+	g2d.fillRect(0, 0, dimPanel.width, dimPanel.height);
     }
 
     public void addMiniature(Viewer viewer) {
