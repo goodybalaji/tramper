@@ -178,7 +178,7 @@ public abstract class AbstractHtmlParser implements Parser {
         	            Icon icon = new EnhancedIcon(img);
         	            doc.setIcon(icon);
         		} catch (Exception e) {
-        		    logger.warn("unreadable icon: "+anUrl);
+        		    logger.debug("unreadable icon: "+anUrl);
         		}
                     } else if (linkRel.equalsIgnoreCase("stylesheet")) {
                         if ("text/css".equals(linkType)) {
@@ -219,7 +219,7 @@ public abstract class AbstractHtmlParser implements Parser {
                     }
                 }
             } catch (MalformedURLException e) {
-                logger.error(e.getMessage());
+                logger.debug(e.getMessage());
             }
         }
 
@@ -412,7 +412,7 @@ public abstract class AbstractHtmlParser implements Parser {
                     linkUrl = completeUrl(linkHref, baseUrl, hostUrl);
                     aDocument.setUrl(linkUrl);
                 } catch (MalformedURLException e) {
-                    logger.warn("Bad A href: "+linkUrl);
+                    logger.debug("Bad A href: "+linkUrl);
                 }
 
                 aLink = new Link();
@@ -469,7 +469,7 @@ public abstract class AbstractHtmlParser implements Parser {
                     item.addLink(mediaLink);
                 } catch (MalformedURLException e) {
                     //skip the media creation if bad url
-                    logger.error(e.getMessage());
+                    logger.debug(e.getMessage());
                 }
             } else if (nodeName.equals("bgsound")) {
                 String mediaSrc = ((Element)node).getAttribute("src");
@@ -490,7 +490,7 @@ public abstract class AbstractHtmlParser implements Parser {
                 }
                 catch (MalformedURLException e) {
                     //skip the media creation if bad url
-                    logger.error(e.getMessage());
+                    logger.debug(e.getMessage());
                 }
             } else if (nodeName.equals("object")) {
                 String mediaSrc = ((Element)node).getAttribute("data");
@@ -514,7 +514,7 @@ public abstract class AbstractHtmlParser implements Parser {
                     item.addLink(mediaLink);
                 } catch (MalformedURLException e) {
                     //skip the media creation if bad url
-                    logger.error(e.getMessage());
+                    logger.debug(e.getMessage());
                 }
             }
             //parameters for objects elements
@@ -532,7 +532,7 @@ public abstract class AbstractHtmlParser implements Parser {
                         	mediaUrl = completeUrl(paramValue, baseUrl, hostUrl);
                                 lastMedia.setUrl(mediaUrl);
                             } catch (MalformedURLException e) {
-                                logger.warn("Bad media url: "+mediaUrl);
+                                logger.debug("Bad media url: "+mediaUrl);
                             }
                         }
                     } else if (paramName.equalsIgnoreCase("autoplay") || paramName.equalsIgnoreCase("autoStart")) {

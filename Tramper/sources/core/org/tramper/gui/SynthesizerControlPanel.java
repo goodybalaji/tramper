@@ -34,6 +34,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
+import org.tramper.conductor.Conductor;
 import org.tramper.gui.SaveAudioFileFilter;
 import org.fingon.player.Player;
 import org.fingon.synthesizer.SpeechSynthesizer;
@@ -113,9 +114,6 @@ public class SynthesizerControlPanel extends JPanel implements SynthesisListener
         
         Icon engineIcon = new EnhancedIcon(getClass().getResource("images/speaker.png"));
         engineIconLabel = new JLabel(label.getString("synthesizer.name"), engineIcon, JLabel.LEFT);
-        /*Font titleFont = engineIconLabel.getFont();
-        titleFont = titleFont.deriveFont(titleFont.getSize2D()+2);
-        engineIconLabel.setFont(titleFont);*/
         titlePanel.add(engineIconLabel);
         
         titlePanel.add(Box.createHorizontalGlue());
@@ -240,9 +238,14 @@ public class SynthesizerControlPanel extends JPanel implements SynthesisListener
         
         this.add(enginePropPanel, BorderLayout.CENTER);
         if (UserInterfaceFactory.isAudioUserInterfaceInstanciated()) {
-            Player currentPlayer = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer().getPrincipal();
-            if (currentPlayer instanceof SpeechSynthesizer) {
-                setControlValues((SpeechSynthesizer)currentPlayer);
+            Conductor activeConductor = UserInterfaceFactory.getAudioUserInterface().getActiveRenderer();
+            if (activeConductor != null) {
+                Player currentPlayer = activeConductor.getPrincipal();
+                if (currentPlayer instanceof SpeechSynthesizer) {
+                    setControlValues((SpeechSynthesizer)currentPlayer);
+                } else {
+                    setEnabled(false);
+                }
             } else {
         	setEnabled(false);
             }
@@ -254,11 +257,6 @@ public class SynthesizerControlPanel extends JPanel implements SynthesisListener
      */
     @Override
     public void updateUI() {
-	/*if (engineIconLabel != null) {
-            Font titleFont = engineIconLabel.getFont();
-            titleFont = titleFont.deriveFont(titleFont.getSize2D()+2);
-            engineIconLabel.setFont(titleFont);
-	}*/
 	if (titlePanel != null) {
             Color bgColor = titlePanel.getBackground();
             int newRed = bgColor.getRed()+15 > 255 ? 255 : bgColor.getRed()+15;
