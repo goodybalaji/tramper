@@ -10,6 +10,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.Icon;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -315,12 +316,36 @@ public class TableFeedBody extends JSplitPane implements Body, MouseListener, Ke
     }
 
     public void paintMiniature(Graphics2D g2d, Dimension miniatureSize, boolean mouseOver) {
-	double scale = 0.8;
-	g2d.scale(scale, scale);
-	
-	feedTable.paint(g2d);
+	Icon feedIcon = document.getIcon();
+	if (feedIcon != null) {
+	    int iconWidth = feedIcon.getIconWidth();
+	    int iconHeight = feedIcon.getIconHeight();
+	    
+	    double scale = (double)miniatureSize.width/(double)iconWidth;
+	    if (scale > 1) {
+		scale = 1.0;
+	    }
+	    g2d.scale(scale, scale);
+	    int x = (miniatureSize.width - iconWidth)/2;
+	    if (x < 0) {
+		x = 0;
+	    }
+	    int y = (miniatureSize.height - iconHeight)/2;
+	    if (y < 0) {
+		y = 0;
+	    }
+	    feedIcon.paintIcon(this, g2d, x, y);
 
-	// reset scale
-	g2d.scale(1/scale, 1/scale);
+	    // reset scale
+	    g2d.scale(1/scale, 1/scale);
+	} else {
+	    double scale = 0.8;
+	    g2d.scale(scale, scale);
+        	
+	    feedTable.paint(g2d);
+        
+	    // reset scale
+	    g2d.scale(1/scale, 1/scale);
+	}
     }
 }
