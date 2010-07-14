@@ -1,5 +1,6 @@
 package org.tramper.video;
 
+import java.awt.Dimension;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -9,6 +10,9 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.tramper.JavaSystem;
@@ -17,6 +21,7 @@ import org.tramper.doc.Video;
 import org.tramper.parser.Parser;
 import org.tramper.parser.ParsingException;
 
+import com.sun.media.jmc.Media;
 import com.sun.media.jmc.MediaCorruptedException;
 import com.sun.media.jmc.MediaProvider;
 import com.sun.media.jmc.MediaUnavailableException;
@@ -37,7 +42,7 @@ public class VideoParser implements Parser {
      */
     public SimpleDocument parse(InputStream inStream, URL url) throws ParsingException {
 	Video video = new Video();
-	//Media media = null;
+	Media media = null;
 	MediaProvider mediaProvider = null;
 	
 	// the JMC video player doesn't read the Windows long pathnames
@@ -62,7 +67,7 @@ public class VideoParser implements Parser {
 	}
 	
 	try {
-	    //media = new Media(url.toURI());
+	    media = new Media(url.toURI());
 	    mediaProvider = new MediaProvider(url.toURI());
 	} catch (MediaUnavailableException e) {
 	    logger.error(e.getMessage(), e);
@@ -78,10 +83,10 @@ public class VideoParser implements Parser {
 	    throw new ParsingException(e.getMessage());
 	}
 	
-	double duration = mediaProvider.getDuration();
+	double duration = mediaProvider.getDuration(); // duration in seconds
 	video.setDuration(duration);
 	
-	/*Dimension frameSize = media.getFrameSize();
+	Dimension frameSize = media.getFrameSize();
 	video.setFrameSize(frameSize);
 	
 	Map<String, Object> metadata = media.getMetadata();
@@ -92,7 +97,7 @@ public class VideoParser implements Parser {
 		Object value = metadatum.getValue();
 		System.out.println("metadata video key="+key+" value="+value);
 	    }
-	} else {*/
+	} else {
             //if no metadata, get the file name as title
             String path = url.getPath();
             int lastIndexSlash = path.lastIndexOf("/");
@@ -100,7 +105,7 @@ public class VideoParser implements Parser {
                 path = path.substring(lastIndexSlash+1);
             }
             video.setTitle(path);
-	//}
+	}
 	
 	video.setMediaProvider(mediaProvider);
 	
