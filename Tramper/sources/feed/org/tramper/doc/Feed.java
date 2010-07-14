@@ -328,6 +328,18 @@ public class Feed extends MarkupDocument implements Serializable, TableModel, Li
     }
 
     /**
+     * @see org.tramper.doc.SimpleDocument#getFavoriteCategory()
+     */
+    @Override
+    public String getFavoriteCategory() {
+	if (category != null && !category.equals("")) {
+	    return category;
+	} else {
+	    return super.getFavoriteCategory();
+	}
+    }
+
+    /**
      * @see java.lang.Object#toString()
      */
     @Override

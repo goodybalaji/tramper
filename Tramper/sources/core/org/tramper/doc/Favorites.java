@@ -86,30 +86,6 @@ public class Favorites implements LoadingListener {
         
         OutlineItem root = new OutlineItem(favorites);
         favorites.setRoot(root);
-        
-        OutlineItem feedItem = new OutlineItem(favorites);
-        feedItem.setTitle(label.getString("feed"));
-        root.addChild(feedItem);
-        
-        OutlineItem outlineItem = new OutlineItem(favorites);
-        outlineItem.setTitle(label.getString("outline"));
-        root.addChild(outlineItem);
-        
-        OutlineItem webPageItem = new OutlineItem(favorites);
-        webPageItem.setTitle(label.getString("webPage"));
-        root.addChild(webPageItem);
-        
-        OutlineItem audioItem = new OutlineItem(favorites);
-        audioItem.setTitle(label.getString("audio"));
-        root.addChild(audioItem);
-        
-        OutlineItem videoItem = new OutlineItem(favorites);
-        videoItem.setTitle(label.getString("video"));
-        root.addChild(videoItem);
-        
-        OutlineItem imageItem = new OutlineItem(favorites);
-        imageItem.setTitle(label.getString("image"));
-        root.addChild(imageItem);
     }
     
     /**
@@ -118,40 +94,30 @@ public class Favorites implements LoadingListener {
      */
     public void addFavorite(SimpleDocument document) {
         if (!isFavorite(document)) {
-            ResourceBundle label = ResourceBundle.getBundle("label");
             OutlineItem newItem = new OutlineItem(favorites);
             String title = document.getTitle();
             newItem.setTitle(title);
             Link aLink = new Link();
             aLink.setRelation("related");
-            //aLink.setLinkingDocument(favorites);
+            aLink.setLinkingDocument(favorites);
             aLink.setLinkedDocument(document);
             newItem.addLink(aLink);
             
+            String category = document.getFavoriteCategory();
             OutlineItem root = (OutlineItem)favorites.getRoot();
             List<OutlineItem> children = root.getChildren();
             for (OutlineItem child : children) {
         	String childTitle = child.getTitle();
-        	if (childTitle.equals(label.getString("feed")) && document instanceof Feed) {
-        	    child.addChild(newItem);
-        	    return;
-        	} else if (childTitle.equals(label.getString("outline")) && document instanceof Outline) {
-        	    child.addChild(newItem);
-        	    return;
-        	} else if (childTitle.equals(label.getString("webPage")) && document instanceof WebPage) {
-        	    child.addChild(newItem);
-        	    return;
-        	} else if (childTitle.equals(label.getString("image")) && document instanceof ImageDocument) {
-        	    child.addChild(newItem);
-        	    return;
-        	} else if (childTitle.equals(label.getString("audio")) && document instanceof Sound) {
-        	    child.addChild(newItem);
-        	    return;
-        	} else if (childTitle.equals(label.getString("video")) && document instanceof Video) {
+        	if (category.equals(childTitle)) {
         	    child.addChild(newItem);
         	    return;
         	}
             }
+
+            OutlineItem newCategoryItem = new OutlineItem(favorites);
+            newCategoryItem.setTitle(document.getFavoriteCategory());
+            newCategoryItem.addChild(newItem);
+            root.addChild(newCategoryItem);
         }
     }
     
@@ -170,6 +136,9 @@ public class Favorites implements LoadingListener {
         	    SimpleDocument linkedDoc = links.get(0).getLinkedDocument();
         	    if (linkedDoc.equals(document)) {
         		child.removeChild(subChild);
+        		if (child.isLeaf()) {
+        		    root.removeChild(child);
+        		}
         		return;
         	    }
         	}

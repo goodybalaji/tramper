@@ -74,6 +74,18 @@ public class WebPage extends MarkupDocument implements Serializable {
     }
 
     /**
+     * @see org.tramper.doc.SimpleDocument#getFavoriteCategory()
+     */
+    @Override
+    public String getFavoriteCategory() {
+	if (category != null && !category.equals("")) {
+	    return category;
+	} else {
+	    return super.getFavoriteCategory();
+	}
+    }
+
+    /**
      * @see java.lang.Object#toString()
      */
     @Override

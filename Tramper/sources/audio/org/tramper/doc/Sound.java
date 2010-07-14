@@ -63,6 +63,18 @@ public class Sound extends SimpleDocument {
     }
     
     /**
+     * @see org.tramper.doc.SimpleDocument#getFavoriteCategory()
+     */
+    @Override
+    public String getFavoriteCategory() {
+	if (album != null && !album.equals("")) {
+	    return album;
+	} else {
+	    return super.getFavoriteCategory();
+	}
+    }
+
+    /**
      * @see java.lang.Object#toString()
      */
     public String toString() {
