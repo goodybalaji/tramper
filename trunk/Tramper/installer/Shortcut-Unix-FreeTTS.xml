@@ -7,7 +7,7 @@
    <shortcut
      name="Free Tramper"
      target="$JAVA_HOME/bin/java"
-     commandLine="-Xmx512m -jar lib/Tramper.jar"
+     commandLine="-Xmx512m -Djava.library.path=lib/linux/x86 -jar lib/Tramper.jar"
      workingDirectory="$INSTALL_PATH"
      description="This starts the free and portable version of Tramper"
      iconFile="$INSTALL_PATH/Tramper.png"
@@ -22,7 +22,6 @@
      encoding="UTF-8"
      terminal="false"
      KdeSubstUID="false">
-     
      <createForPack name="browser"/>
    </shortcut>
    
@@ -43,29 +42,7 @@
 	encoding="UTF-8"
 	terminal="false"
 	deSubstUID="false">
-
     <createForPack name="browser"/>
   </shortcut>
-  <!-- 
-   <shortcut
-     name="Tramper Documentation"
-     programGroup="yes"
-     desktop="no"
-     applications="no"
-     startMenu="no"
-     startup="no"
-     target="konqueror"
-     workingDirectory="$INSTALL_PATH"
-     commandLine=""
-     initialState="normal"
-     iconFile="help"
-     iconIndex="0"
-     url="$INSTALL_PATH/javadoc/index.html"
-     type="Link"
-     encoding="UTF-8"
-     description="Tramper Javadoc documentation for developer">
-
-     <createForPack name="Documentation"/>
-   </shortcut>
-    -->
+  
 </shortcuts>

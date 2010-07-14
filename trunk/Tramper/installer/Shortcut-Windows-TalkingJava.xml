@@ -9,7 +9,7 @@
     target="$JAVA_HOME\bin\javaw.exe"
     commandLine="-Xmx512m -Djava.ext.dirs=lib\windows\ext -Djava.library.path=lib\windows\x86 -jar lib\Tramper.jar"
     workingDirectory="$INSTALL_PATH"
-    description="This starts the commercial and Windows version of Tramper"
+    description="This starts the Windows version of Tramper"
     iconFile="$INSTALL_PATH\Tramper.ico"
     iconIndex="0"
     initialState="noShow"
@@ -18,7 +18,6 @@
     applications="no"
     startMenu="yes"
     startup="no">
-
     <createForPack name="browser"/>
   </shortcut>
 
@@ -36,27 +35,8 @@
     applications="no"
     startMenu="no"
     startup="no">
-
     <createForPack name="browser"/>
   </shortcut>
-  <!-- 
-  <shortcut
-    name="Tramper Documentation"
-    target="$INSTALL_PATH/javadoc/index.html"
-    commandLine=""
-    workingDirectory="$INSTALL_PATH"
-    description="Tramper Javadoc documentation for developer"
-    iconFile="$INSTALL_PATH\Tramper.ico"
-    iconIndex="0"
-    initialState="noShow"
-    programGroup="yes"
-    desktop="no"
-    applications="no"
-    startMenu="no"
-    startup="no">
 
-    <createForPack name="Documentation"/>
-  </shortcut>
- -->
 </shortcuts>
 
