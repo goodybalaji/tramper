@@ -69,7 +69,7 @@
 	            <include name="*.jar"/>
 	            <exclude name="cmu*.jar"/>
 	            <exclude name="en_us.jar"/>
-	            <exclude name="freetts.jar"/>
+	            <exclude name="freetts*.jar"/>	            <exclude name="sphinx4.jar"/>
 	            <exclude name="WSJ_8gau_13dCep_16k_40mel_130Hz_6800Hz.jar"/>
             </fileset>
             <fileset dir="lib/windows" os="windows" targetdir="$INSTALL_PATH/lib/windows"/>
