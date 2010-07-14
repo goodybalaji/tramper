@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 
 import javax.swing.JLabel;
@@ -80,11 +81,14 @@ public class VideoHeader extends SimpleHeader {
     public void displayDocument(SimpleDocument document, Target target) {
 	super.displayDocument(document, target);
 
-        ResourceBundle label = ResourceBundle.getBundle("label");
-        
 	double duration = ((Video)document).getDuration();
 	if (duration > 0) {
-	    documentDuration.setText(duration + label.getString("javaspeaker.unit.second"));
+	    long durationSeconds = Math.round(duration);
+	    long durationHours = durationSeconds/3600;
+	    long durationMinutes = durationSeconds%3600/60;
+	    durationSeconds = durationSeconds%3600%60;
+	    DecimalFormat formater = new DecimalFormat("00");
+	    documentDuration.setText(formater.format(durationHours) + ":" + formater.format(durationMinutes) + ":" + formater.format(durationSeconds));
 	}
 	
 	Dimension frameSize = ((Video)document).getFrameSize();
