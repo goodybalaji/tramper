@@ -13,6 +13,7 @@ image/bmp bmp
 image/vnd.microsoft.icon ico
 
 text/xml xml 
+application/xml xml 
 
 audio/basic au snd
 audio/x-wav wav
