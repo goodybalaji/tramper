@@ -25,13 +25,15 @@ public class UserInterfaceFactory {
     private static AudioUserInterface aui;
     /** graphical user interface */
     private static GraphicalUserInterface gui;
+    /** auxiliary look and feel */
+    private static LookAndFeel auxiliaryLaF;
     
     static {
 	// add the auxiliary look and feel for assistive technology
 	try {
 	    Class<?> auxiliaryLaFClass = Class.forName("org.fingon.FingonLookAndFeel");
-	    Object auxiliaryLaF = auxiliaryLaFClass.newInstance();
-	    UIManager.addAuxiliaryLookAndFeel((LookAndFeel)auxiliaryLaF);
+	    auxiliaryLaF = (LookAndFeel)auxiliaryLaFClass.newInstance();
+	    UIManager.addAuxiliaryLookAndFeel(auxiliaryLaF);
 	} catch (ClassNotFoundException e1) {
 	    logger.info("no Fingon auxiliary look and feel class in classpath");
 	} catch (InstantiationException e) {
@@ -60,6 +62,8 @@ public class UserInterfaceFactory {
 	// add nicer look and feels
 	LookAndFeelInfo quaquaLaF = new UIManager.LookAndFeelInfo("Quaqua", "ch.randelshofer.quaqua.QuaquaLookAndFeel");
 	lookAndFeels.add(quaquaLaF);
+	LookAndFeelInfo seaLaF = new UIManager.LookAndFeelInfo("sea", "com.seaglasslookandfeel.SeaGlassLookAndFeel");
+	lookAndFeels.add(seaLaF);
 	LookAndFeelInfo substanceDustLaF = new UIManager.LookAndFeelInfo("Dust", "org.jvnet.substance.skin.SubstanceDustLookAndFeel");
 	lookAndFeels.add(substanceDustLaF);
 	LookAndFeelInfo substanceBusinessLaF = new UIManager.LookAndFeelInfo("Business Black Steel", "org.jvnet.substance.skin.SubstanceBusinessBlackSteelLookAndFeel");
@@ -196,8 +200,21 @@ public class UserInterfaceFactory {
      */
     public static void removeAudioUserInterface() {
 	if (aui != null) {
+	    UIManager.removeAuxiliaryLookAndFeel(auxiliaryLaF);
+	    SwingUtilities.updateComponentTreeUI(gui);
 	    aui.unregister();
 	    aui = null;
+	}
+    }
+
+    /**
+     * 
+     */
+    public static void restoreAudioUserInterface() {
+	if (aui == null) {
+	    UIManager.addAuxiliaryLookAndFeel(auxiliaryLaF);
+	    SwingUtilities.updateComponentTreeUI(gui);
+	    aui = new AudioUserInterface();
 	}
     }
     

@@ -97,7 +97,7 @@ public class SystemTrayMgr implements ActionListener, ItemListener, Runnable {
 	    if (state == ItemEvent.SELECTED && UserInterfaceFactory.isAudioUserInterfaceInstanciated()) {
 		UserInterfaceFactory.removeAudioUserInterface();
 	    } else if (state == ItemEvent.DESELECTED && !UserInterfaceFactory.isAudioUserInterfaceInstanciated()) {
-		UserInterfaceFactory.getAudioUserInterface();
+		UserInterfaceFactory.restoreAudioUserInterface();
 	    }
 	} else if (name.equals("disappear")) {
 	    if (state == ItemEvent.SELECTED && UserInterfaceFactory.isGraphicalUserInterfaceInstanciated()) {
