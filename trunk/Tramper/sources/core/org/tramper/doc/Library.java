@@ -148,6 +148,15 @@ public class Library implements LoadingListener, LoaderFactoryListener {
     }
     
     /**
+     * Checks if the document in parameter is already in the library or not.
+     * @param aDocument the document to check
+     * @return true if the document in parameter is already in the library, false otherwise
+     */
+    public boolean contains(SimpleDocument aDocument) {
+	return docTargets.containsValue(aDocument);
+    }
+    
+    /**
      * Set the active document. The target in parameter must exist in the library.
      * @param targetToActivate the target of the document to activate
      */

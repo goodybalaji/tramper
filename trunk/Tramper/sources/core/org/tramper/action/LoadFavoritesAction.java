@@ -10,8 +10,8 @@ import org.tramper.doc.Outline;
 import org.tramper.doc.Target;
 
 /**
- * @author Paul-Emile
  * 
+ * @author Paul-Emile
  */
 public class LoadFavoritesAction extends AbstractAction {
     /** LoadFavoritesAction.java long */
@@ -44,6 +44,8 @@ public class LoadFavoritesAction extends AbstractAction {
 	Favorites favorites = Favorites.getInstance();
 	Outline fav = favorites.getFavorites();
 	Library lib = Library.getInstance();
-	lib.addDocument(fav, new Target(Library.SECONDARY_FRAME, null));
+	if (lib.contains(fav) == false) {
+	    lib.addDocument(fav, new Target(Library.SECONDARY_FRAME, null));
+	}
     }
 }
