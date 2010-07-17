@@ -25,6 +25,10 @@ import com.sun.media.jmc.control.VideoRenderControl;
 import com.sun.media.jmc.event.VideoRendererEvent;
 import com.sun.media.jmc.event.VideoRendererListener;
 
+/**
+ * 
+ * @author Paul-Emile
+ */
 public class VideoBody extends JPanel implements Body, VideoRendererListener, MouseListener {
     /** VideoBody.java long */
     private static final long serialVersionUID = 1L;
@@ -37,8 +41,6 @@ public class VideoBody extends JPanel implements Body, VideoRendererListener, Mo
     
     public VideoBody() {
 	super();
-	//this.putClientProperty(SubstanceLookAndFeel.WATERMARK_VISIBLE, Boolean.FALSE);
-	//SubstanceLookAndFeel.setDecorationType(this, DecorationAreaType.NONE);
 	this.setBackground(Color.BLACK);
 	this.setOpaque(true);
 	this.addMouseListener(this);
@@ -103,11 +105,7 @@ public class VideoBody extends JPanel implements Body, VideoRendererListener, Mo
 	AffineTransform currentTransform = g2d.getTransform();
 	AffineTransform flipTransform = new AffineTransform(1, 0, 0, -1, 0, videoHeight);
 	g2d.transform(flipTransform);
-	//g2d.rotate(Math.PI, videoWidth/2, videoHeight/2);
-	//g2d.scale(0.75, 0.75);
 	videoRenderCtrl.paintVideo(g2d, halfVideoSize, halfVideoSize);
-	//g2d.scale(1/0.75, 1/0.75);
-	//g2d.rotate(-Math.PI, videoWidth/2, videoHeight/2);
 	g2d.setTransform(currentTransform);
 	
 	// paint the transparent layer for reflected half video
