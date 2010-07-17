@@ -46,7 +46,7 @@ public class ParserFactory {
         	    return aParser;
         	}
 	    } catch (ServiceConfigurationError e) {
-		logger.error("Error when loading a service provider", e);
+		logger.error("Error when loading a parsing service provider", e);
 	    }
 	}
 	lock.unlock();
@@ -71,7 +71,7 @@ public class ParserFactory {
 		    return aParser;
 		}
 	    } catch (ServiceConfigurationError e) {
-		logger.error("Error when loading a service provider", e);
+		logger.error("Error when loading a parsing service provider", e);
 	    }
 	}
 	lock.unlock();
@@ -87,15 +87,15 @@ public class ParserFactory {
 	    try {
 		Parser aParser = parserIterator.next();
 		List<String> extensions = aParser.getSupportedExtensions();
-		String documentType = aParser.getSupportedDocument().toString();
-		if (fileFilterMap.containsKey(documentType)) {
-		    fileFilterMap.get(documentType).addExtensions(extensions);
+		String supportedDocumentName = aParser.getSupportedDocument().getClass().getSimpleName();
+		if (fileFilterMap.containsKey(supportedDocumentName)) {
+		    fileFilterMap.get(supportedDocumentName).addExtensions(extensions);
 		} else {
-		    FileFilterByExtension aFileFilter = new FileFilterByExtension(documentType, extensions);
-		    fileFilterMap.put(documentType, aFileFilter);
+		    FileFilterByExtension aFileFilter = new FileFilterByExtension(supportedDocumentName, extensions);
+		    fileFilterMap.put(supportedDocumentName, aFileFilter);
 		}
 	    } catch (ServiceConfigurationError e) {
-		logger.error("Error when loading a service provider", e);
+		logger.error("Error when loading a parsing service provider", e);
 	    }
 	}
 	lock.unlock();

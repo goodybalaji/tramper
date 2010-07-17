@@ -84,12 +84,4 @@ public class WebPage extends MarkupDocument implements Serializable {
 	    return super.getFavoriteCategory();
 	}
     }
-
-    /**
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-	return "webPage";
-    }
 }

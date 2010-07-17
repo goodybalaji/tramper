@@ -129,4 +129,12 @@ public class SimpleDocument extends TextDocument {
     public String getFavoriteCategory() {
 	return mimeType.substring(mimeType.indexOf("/")+1);
     }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+	return getTitle();
+    }
 }

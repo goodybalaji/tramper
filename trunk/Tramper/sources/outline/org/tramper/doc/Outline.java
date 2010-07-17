@@ -146,12 +146,4 @@ public class Outline extends MarkupDocument implements TreeModel, Serializable {
     public void valueForPathChanged(TreePath path, Object newValue) {
         //not used at this moment
     }
-
-    /**
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-	return "outline";
-    }
 }

@@ -338,12 +338,4 @@ public class Feed extends MarkupDocument implements Serializable, TableModel, Li
 	    return super.getFavoriteCategory();
 	}
     }
-
-    /**
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-	return "feed";
-    }
 }

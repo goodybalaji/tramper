@@ -43,7 +43,8 @@ import org.tramper.parser.ParserFactory;
 import org.tramper.ui.UserInterfaceFactory;
 
 /**
- * Address bar
+ * The address bar: the user can type an URL or some search criteria, choose a search engine,
+ * display the favorites, the history and open local files with a file chooser.
  * @author Paul-Emile
  */
 public class AddressControlPanel extends JPanel implements ActionListener {
@@ -73,6 +74,8 @@ public class AddressControlPanel extends JPanel implements ActionListener {
     //private JButton helpButton;
     /** last selected directory from the file chooser component */
     private File lastSelectedDir;
+    /** file chooser */
+    private JFileChooser fileDialog;
 
     /**
      * layout components
@@ -230,7 +233,7 @@ public class AddressControlPanel extends JPanel implements ActionListener {
     }
     
     /**
-     * set a new url in the textfield
+     * Sets a new URL in the textfield
      * @param newUrl
      */
     public void setUrl(final String newUrl) {
@@ -247,7 +250,7 @@ public class AddressControlPanel extends JPanel implements ActionListener {
     }
 
     /**
-     * The the url currently in the textfield
+     * The URL currently in the textfield
      * @return
      */
     public String getUrl() {
@@ -262,41 +265,46 @@ public class AddressControlPanel extends JPanel implements ActionListener {
         if (command.equals("openButton")) {
 	    ResourceBundle label = ResourceBundle.getBundle("label");
 	    // open a file dialog
-	    JFileChooser fileDialog = new JFileChooser();
-	    fileDialog.setMultiSelectionEnabled(false);
-
-	    Iterator<FileFilterByExtension> fileFilters = ParserFactory.getFileFiltersByExtension();
-	    while (fileFilters.hasNext()) {
-		FileFilterByExtension aFileFilter = fileFilters.next();
-		fileDialog.addChoosableFileFilter(aFileFilter);
+	    if (fileDialog == null) {
+		fileDialog = new JFileChooser();
+		fileDialog.setMultiSelectionEnabled(true);
+    
+		Iterator<FileFilterByExtension> fileFilters = ParserFactory.getFileFiltersByExtension();
+		while (fileFilters.hasNext()) {
+		    FileFilterByExtension aFileFilter = fileFilters.next();
+		    fileDialog.addChoosableFileFilter(aFileFilter);
+    	    	}
+    	    	
+    	    	fileDialog.setAcceptAllFileFilterUsed(true);
+    	    	
+    	    	fileDialog.setLocale(Locale.getDefault());
+    	    	fileDialog.setDialogTitle(label.getString("feedTitle"));
+    	    	fileDialog.setDialogType(JFileChooser.OPEN_DIALOG);
 	    }
 	    
-	    fileDialog.setAcceptAllFileFilterUsed(true);
-	    
-	    fileDialog.setLocale(Locale.getDefault());
-	    fileDialog.setDialogTitle(label.getString("feedTitle"));
-	    fileDialog.setDialogType(JFileChooser.OPEN_DIALOG);
 	    fileDialog.setCurrentDirectory(lastSelectedDir);
 	    
 	    int returnValue = fileDialog.showOpenDialog(this);
 	    if (returnValue == JFileChooser.APPROVE_OPTION) {
-		File aFile = fileDialog.getSelectedFile();
-		if (aFile != null) {
-		    boolean accepted = fileDialog.accept(aFile);
-		    GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
-		    if (accepted) {
-			lastSelectedDir = aFile.getParentFile();
-			try {
-			    URL url = aFile.toURI().toURL();
-			    String urlRef = url.toString();
-			    Loader aLoader = LoaderFactory.getLoader();
-			    aLoader.download(urlRef, new Target(Library.PRIMARY_FRAME, null));
-			} catch (Exception e) {
-			    logger.error("bad url", e);
+		File[] selectedFiles = fileDialog.getSelectedFiles();
+		if (selectedFiles != null) {
+		    for (File aFile : selectedFiles) {
+			boolean accepted = fileDialog.accept(aFile);
+			GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
+			if (accepted) {
+			    lastSelectedDir = aFile.getParentFile();
+			    try {
+				URL url = aFile.toURI().toURL();
+				String urlRef = url.toString();
+				Loader aLoader = LoaderFactory.getLoader();
+				aLoader.download(urlRef, new Target(Library.PRIMARY_FRAME, null));
+			    } catch (Exception e) {
+				logger.error("the selected file has a bad URL", e);
+				gui.raiseError("displayFailed");
+			    }
+			} else {
 			    gui.raiseError("displayFailed");
 			}
-		    } else {
-                        gui.raiseError("displayFailed");
 		    }
 		}
 	    }
