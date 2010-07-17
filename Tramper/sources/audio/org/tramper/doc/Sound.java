@@ -73,11 +73,4 @@ public class Sound extends SimpleDocument {
 	    return super.getFavoriteCategory();
 	}
     }
-
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        return "audio";
-    }
 }

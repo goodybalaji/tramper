@@ -72,12 +72,4 @@ public class Video extends SimpleDocument {
     public String getFavoriteCategory() {
 	return super.getFavoriteCategory();
     }
-
-    /**
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-	return "video";
-    }
 }
