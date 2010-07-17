@@ -59,7 +59,7 @@ public class NativeWebPageBody extends JPanel implements Body, WebBrowserListene
     private boolean setUrlNotUsed = true;
     /** native browser component (AWT canvas) */
     private IWebBrowser webBrowser;
-    /** javascript initialisation */
+    /** Javascript initialization */
     //private String initJavascript;
     /** target */
     private Target target;
@@ -397,13 +397,10 @@ public class NativeWebPageBody extends JPanel implements Body, WebBrowserListene
 
     public void paintMiniature(Graphics2D g2d, Dimension miniatureSize, boolean mouseOver) {
 	// the miniature of the native web browser breaks the layout 
-	// if we use the JPanel around the native component.
-	// we can't paint the native component itself either.
+	// if we use the JPanel around the native component,
+	// and we can't paint the native component itself either.
 
-	double scale = 0.4;
-	g2d.scale(scale, scale);
-	
-	Dimension screenCaptureSize = new Dimension((int)(miniatureSize.width/scale), (int)(miniatureSize.height/scale));
+	Dimension screenCaptureSize = this.getSize();
 	try {
 	    Rectangle screenPart = new Rectangle(this.getLocationOnScreen(), screenCaptureSize);
 	    Robot robot = new Robot();
@@ -417,7 +414,25 @@ public class NativeWebPageBody extends JPanel implements Body, WebBrowserListene
 		g2d.drawImage(screenCapture, 0, 0, this);
 	    }
 	}
+
+	int captureWidth = screenCaptureSize.width;
+	int captureHeight = screenCaptureSize.height;
 	
+	double scale = (double)miniatureSize.width/(double)captureWidth;
+	if (scale > 1) {
+	    scale = 1.0;
+	}
+	g2d.scale(scale, scale);
+	int x = (miniatureSize.width - captureWidth)/2;
+	if (x < 0) {
+	    x = 0;
+	}
+	int y = (miniatureSize.height - captureHeight)/2;
+	if (y < 0) {
+	    y = 0;
+	}
+	g2d.drawImage(screenCapture, null, x, y);
+
 	// reset scale
 	g2d.scale(1/scale, 1/scale);
     }
