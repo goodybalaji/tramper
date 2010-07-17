@@ -461,23 +461,23 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
     /**
      * Displays a document in the right viewer, in the right target.
      * @param document document to display
-     * @param target target where to dispay the viewer
+     * @param target target where to display the viewer
      */
     public void renderDocument(SimpleDocument document, Target target) {
 	String frame = target.getFrame();
 	String tab = target.getTab();
 	
-	// we instanciate a new viewer for this document at this target
+	// we instantiate a new viewer for this document at this target
 	try {
 	    Viewer docViewer = ViewerFactory.getViewerByDocument(document);
 	    ((Component) docViewer).setName(tab);
             if (frame.equals(Library.SECONDARY_FRAME)) {
-    	    secondaryPanel.add((Component) docViewer, tab);
+    	    	secondaryPanel.add((Component) docViewer, tab);
                 CardLayout panelLayout = (CardLayout)secondaryPanel.getLayout();
                 panelLayout.show(secondaryPanel, tab);
                 currentSecondaryTarget = target;
                 if (viewersArea.getDividerLocation() == 0) {
-            	viewersArea.setDividerLocation(0.3);
+                    viewersArea.setDividerLocation(0.3);
                 }
             } else {
                 primaryPanel.add((Component) docViewer, tab);
@@ -485,7 +485,7 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
                 panelLayout.show(primaryPanel, tab);
                 currentPrimaryTarget = target;
                 if (viewersArea.getDividerLocation() >= viewersArea.getMaximumDividerLocation()) {
-            	viewersArea.setDividerLocation(0.3);
+                    viewersArea.setDividerLocation(0.3);
                 }
             }
         
@@ -498,7 +498,7 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	    // add the viewer's miniature
 	    miniaturePanel.addMiniature(docViewer);
 	        
-	    // display the document's url in the address bar
+	    // display the document's URL in the address bar
 	    if (addressPanel != null) {
 	        addressPanel.setUrl(document.getUrl().toString());
 	    }
@@ -511,6 +511,11 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	}
     }
     
+    /**
+     * 
+     * @param document
+     * @param target
+     */
     public void modifyRenderer(SimpleDocument document, Target target) {
 	String frame = target.getFrame();
 	String tab = target.getTab();
