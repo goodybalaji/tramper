@@ -10,8 +10,8 @@ import org.tramper.doc.Library;
 import org.tramper.doc.Target;
 
 /**
- * @author Paul-Emile
  * 
+ * @author Paul-Emile
  */
 public class LoadHistoryAction extends AbstractAction {
     /** LoadHistoryAction.java long */
@@ -44,7 +44,9 @@ public class LoadHistoryAction extends AbstractAction {
 	History history = History.getInstance();
 	Feed historyDoc = history.getHistory();
 	Library lib = Library.getInstance();
-	lib.addDocument(historyDoc, new Target(Library.SECONDARY_FRAME, null));
+	if (lib.contains(historyDoc) == false) {
+	    lib.addDocument(historyDoc, new Target(Library.SECONDARY_FRAME, null));
+	}
     }
 
 }
