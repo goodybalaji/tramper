@@ -6,95 +6,246 @@
 	<meta name="author" content="Paul-Emile Veuve" />
 	<title>About Tramper</title>
 	<style type="text/css">
-	body {
-		background-color: #EEEEEE;
-		margin: 0px;
-		padding: 5px;
-		font: normal normal normal 12px arial;
-		color: #222222;
-	}
-	
-	#logo {
-		vertical-align: middle;
-	}
-	
-	h1 {
-		font: normal normal normal 40px arial;
-		color: #555555;
-	}
-	
-	a {
-		font: normal normal normal 12px arial;
-		color: #444444;
-	}
-	
-	a:hover {
-		font: normal normal normal 12px arial;
-		color: #f7922e;
-	}
-	li {
-		pause-before: 500ms;
-		cue-before: url(../aui/sounds/warning.wav);
-		rest-before: 500ms;
-	}
-	.male {
-		voice-family: male; voice-pitch: x-low; voice-pitch-range: x-low; voice-volume: x-loud; voice-rate: 30%;
-	}
-	.female {
-		voice-family: female; voice-pitch: x-high; voice-pitch-range: x-high; voice-volume: 75; voice-rate: 60%;
-	}
+		body {
+			background-color: #EEEEEE;
+			margin: 0px;
+			padding: 5px;
+			font: normal normal normal 12px arial;
+			color: #222222;
+		}
+		
+		td {
+			font: normal normal normal 12px arial;
+			color: #222222;
+		}
+		
+		th {
+			border-bottom: 1px solid #888888;
+		}
+		
+		h1 {
+			font: normal normal normal 40px arial;
+			color: #555555;
+		}
+		
+		a {
+			font: normal normal normal 12px arial;
+			color: #444444;
+		}
+		
+		a:hover {
+			font: normal normal normal 12px arial;
+			color: #f7922e;
+		}
+		li {
+			pause-before: 500ms;
+			rest-before: 500ms;
+		}
+		.male {
+			voice-family: male; voice-pitch: x-low; voice-pitch-range: x-low; voice-volume: x-loud; voice-rate: 30%;
+		}
+		.female {
+			voice-family: female; voice-pitch: x-high; voice-pitch-range: x-high; voice-volume: 75; voice-rate: 60%;
+		}
 	</style>
 </head>
 <body>
 	<h1>About Tramper</h1>
-	<strong>Version:</strong> 1.0.<br/>
+	<strong>Version:</strong> beta.<br/>
 	<strong>Author:</strong> Paul-Emile Veuve.<br/>
 	<strong>Contact:</strong> peveuve@gmail.com.<br/>
 	<strong>Third party libraries:</strong>
-	<ul>
-		<li class="male">
-			Speech synthesizer <a href="http://freetts.sourceforge.net/docs/index.php">FreeTTS 1.2.2</a> (Philip Kwok, Paul Lamere, Marc Schroeder, Willie Walker)
-		</li>
-		<li class="female">
-			Speech synthesizer <a href="http://www.cloudgarden.com/JSAPI/">TalkingJava 1.7.0</a> (CloudGarden)
-		</li>
-		<li class="male">
-			Speech recognizer <a href="http://cmusphinx.sourceforge.net/sphinx4/#what_is_sphinx4">Sphinx4 1.0</a> (Carnegie Mellon University, Sun Microsystems Laboratories, Mitsubishi Electric Research Labs, Hewlett Packard)
-		</li>
-		<li class="female">
-			Java sound implementation <a href="http://tritonus.org/">Tritonus share 0.3.6</a> (Florian Bomers, Henri Manson, Juergen Jaeschke, Matthias Pfisterer)
-		</li>
-		<li class="male">
-			MP3 decoder <a href="http://www.javazoom.net/javalayer/javalayer.html">JLayer 1.0.1</a> (Javazoom)
-		</li>
-		<li class="female">
-			OGG Vorbis decoder <a href="http://www.jcraft.com/jorbis/">Jorbis 0.0.15</a> (JCraft)
-		</li>
-		<li class="male">
-			Monkey audio decoder <a href="http://jmac.sourceforge.net/">JMac 1.74</a> (Dmitry Vagin)
-		</li>
-		<li class="female">
-			Operating system integration <a href="https://jdic.dev.java.net/">JDIC JDesktop Integration Components 0.9.5</a>
-		</li>
-		<li class="male">
-			HTML Parser <a href="http://sourceforge.net/projects/nekohtml">NekoHTML 0.9.5</a> (Andy Clark)
-		</li>
-		<li class="female">
-			CSS Parser <a href="http://cssparser.sourceforge.net/">CSS Parser 0.9.5</a> (David Schweinsberg)
-		</li>
-		<li class="male">
-			Java HTML renderer <a href="http://lobobrowser.org/cobra.jsp">Cobra 0.98.4</a>
-		</li>
-		<li class="female">
-			ICO image reader <a href="http://www.vdburgh.net/2/f/files/ICOReader/">ICOReader 1.04</a>
-		</li>
-		<li class="male">
-			<a href="http://www.randelshofer.ch/quaqua/">Quaqua look and feel 7.0.1</a> (Werner Randelshofer)
-		</li>
-		<li class="female">
-			<a href="https://substance.dev.java.net/">Substance look and feel 5.3</a> (Kirill Grouchnikov)
-		</li>
-	</ul>
+	<table>
+		<thead>
+			<tr>
+				<th>Library</th><th>version</th><th>Authors</th><th>License</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="male">
+				<td>
+					Speech synthesizer <a href="http://freetts.sourceforge.net/docs/index.php">FreeTTS</a>
+				</td>
+				<td>
+					1.2.2
+				</td>
+				<td>
+					Philip Kwok, Paul Lamere, Marc Schroeder, Willie Walker
+				</td>
+				<td>
+					BSD
+				</td>
+			</tr>
+			<tr class="female">
+				<td>
+					Speech synthesizer <a href="http://www.cloudgarden.com/JSAPI/">TalkingJava</a>
+				</td>
+				<td>
+					1.7.0
+				</td>
+				<td>
+					CloudGarden
+				</td>
+				<td>
+					Free for non-commercial use only
+				</td>
+			</tr>
+			<tr class="male">
+				<td>
+					Speech recognizer <a href="http://cmusphinx.sourceforge.net/sphinx4/#what_is_sphinx4">Sphinx4</a>
+				</td>
+				<td>
+					1.0
+				</td>
+				<td>
+					Carnegie Mellon University, Sun Microsystems Laboratories, Mitsubishi Electric Research Labs, Hewlett Packard
+				</td>
+				<td>
+					BSD
+				</td>
+			</tr>
+			<tr class="female">
+				<td>
+					Java sound implementation <a href="http://tritonus.org/">Tritonus share</a>
+				</td>
+				<td>
+					0.3.6
+				</td>
+				<td>
+					Florian Bomers, Henri Manson, Juergen Jaeschke, Matthias Pfisterer
+				</td>
+				<td>
+					LGPL
+				</td>
+			</tr>
+			<tr class="male">
+				<td>
+					MP3 decoder <a href="http://www.javazoom.net/javalayer/javalayer.html">JLayer</a>
+				</td>
+				<td>
+					1.0.1
+				</td>
+				<td>
+					Javazoom
+				</td>
+				<td>
+					LGPL
+				</td>
+			</tr>
+			<tr class="female">
+				<td>
+					OGG Vorbis decoder <a href="http://www.jcraft.com/jorbis/">Jorbis</a>
+				</td>
+				<td>
+					0.0.15
+				</td>
+				<td>
+					JCraft
+				</td>
+				<td>
+					LGPL
+				</td>
+			</tr>
+			<tr class="female">
+				<td>
+					Embedded native browser <a href="https://jdic.dev.java.net/">JDIC</a>
+				</td>
+				<td>
+					0.9.5
+				</td>
+				<td>
+					Georges Zhang
+				</td>
+				<td>
+					LGPL
+				</td>
+			</tr>
+			<tr class="male">
+				<td>
+					HTML Parser <a href="http://sourceforge.net/projects/nekohtml">NekoHTML</a>
+				</td>
+				<td>
+					0.9.5
+				</td>
+				<td>
+					Andy Clark
+				</td>
+				<td>
+					Apache 2.0
+				</td>
+			</tr>
+			<tr class="female">
+				<td>
+					CSS Parser <a href="http://cssparser.sourceforge.net/">CSS Parser</a>
+				</td>
+				<td>
+					0.9.5
+				</td>
+				<td>
+					David Schweinsberg
+				</td>
+				<td>
+					LGPL
+				</td>
+			</tr>
+			<tr class="male">
+				<td>
+					Java HTML renderer <a href="http://lobobrowser.org/cobra.jsp">Cobra</a>
+				</td>
+				<td>
+					0.98.4
+				</td>
+				<td>
+					LGPL
+				</td>
+			</tr>
+			<tr class="female">
+				<td>
+					ICO image reader <a href="http://www.vdburgh.net/2/f/files/ICOReader/">ICOReader</a>
+				</td>
+				<td>
+					1.04
+				</td>
+				<td>
+					nxt
+				</td>
+				<td>
+					LGPL
+				</td>
+			</tr>
+			<tr class="male">
+				<td>
+					<a href="http://www.randelshofer.ch/quaqua/">Quaqua look and feel</a>
+				</td>
+				<td>
+					7.0.1
+				</td>
+				<td>
+					Werner Randelshofer
+				</td>
+				<td>
+					LGPL or BSD
+				</td>
+			</tr>
+			<tr class="female">
+				<td>
+					<a href="https://sourceforge.net/projects/fingon/">Fingon auxiliary look and feel</a>
+				</td>
+				<td>
+					beta
+				</td>
+				<td>
+					Paul-Emile Veuve
+				</td>
+				<td>
+					LGPL
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<br/>
+	
 	<strong>Icons sets:</strong>
 	<ul>
 		<li class="male">
@@ -102,6 +253,13 @@
 		</li>
 		<li class="female">
 			<a href="http://www.everaldo.com">Crystal Project Icons</a> from <a href="everaldo@everaldo.com">Everaldo Coelho</a>
+		</li>
+	</ul>
+	
+	<strong>Soundpack:</strong>
+	<ul>
+		<li class="male">
+			<a href="http://www.softpedia.com/get/Desktop-Enhancements/Other-Desktop-Enhancements/Linux-Ubuntu-Sound-Scheme.shtml">Linux Ubuntu Sound Scheme 1.0</a> from Almir
 		</li>
 	</ul>
 </body>
