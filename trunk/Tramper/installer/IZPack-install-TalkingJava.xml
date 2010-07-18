@@ -65,14 +65,14 @@
             <file src="installer/Readme.txt" targetdir="$INSTALL_PATH"/>
             <file src="installer/Licence.txt" targetdir="$INSTALL_PATH"/>
             <file src="installer/Tramper.ico" os="windows" targetdir="$INSTALL_PATH"/>
-            <file src="installer/Tramper-uninstall.ico" os="windows" targetdir="$INSTALL_PATH"/>            <fileset dir="archives" targetdir="$INSTALL_PATH/lib">	            <include name="*.jar"/>            </fileset>            <fileset dir="lib" targetdir="$INSTALL_PATH/lib">
-	            <include name="*.jar"/>
+            <file src="installer/Tramper-uninstall.ico" os="windows" targetdir="$INSTALL_PATH"/>            <fileset dir="archives" targetdir="$INSTALL_PATH/lib">	            <include name="*.jar"/>	            <exclude name="video.jar"/>	            <exclude name="freetts-synthesizer.jar"/>	            <exclude name="sphinx-recognizer.jar"/>            </fileset>            <fileset dir="lib" targetdir="$INSTALL_PATH/lib">
+	            <include name="*.jar"/>	            <exclude name="jmc.jar"/>
 	            <exclude name="cmu*.jar"/>
 	            <exclude name="en_us.jar"/>
 	            <exclude name="freetts*.jar"/>	            <exclude name="sphinx4.jar"/>
 	            <exclude name="WSJ_8gau_13dCep_16k_40mel_130Hz_6800Hz.jar"/>
             </fileset>
-            <fileset dir="lib/windows" os="windows" targetdir="$INSTALL_PATH/lib/windows"/>
+            <fileset dir="lib/windows" os="windows" targetdir="$INSTALL_PATH/lib/windows">            	<exclude name="**/msvc*.dll"/>            	<exclude name="**/jmc.dll"/>            </fileset>
         </pack>
     </packs>
         <!-- for windows shortcuts -->    <native type="izpack" name="ShellLink.dll"/>    

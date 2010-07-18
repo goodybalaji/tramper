@@ -68,11 +68,11 @@
             <file src="installer/Tramper.ico" os="windows" targetdir="$INSTALL_PATH"/>
             <file src="installer/Tramper.png" os="unix" targetdir="$INSTALL_PATH"/>
             <file src="installer/Tramper-uninstall.ico" os="windows" targetdir="$INSTALL_PATH"/>
-            <file src="installer/Tramper-uninstall.png" os="unix" targetdir="$INSTALL_PATH"/>            <fileset dir="archives" targetdir="$INSTALL_PATH/lib">	            <include name="*.jar"/>            </fileset>            <fileset dir="lib" targetdir="$INSTALL_PATH/lib">
-	            <include name="*.jar"/>
+            <file src="installer/Tramper-uninstall.png" os="unix" targetdir="$INSTALL_PATH"/>            <fileset dir="archives" targetdir="$INSTALL_PATH/lib">	            <include name="*.jar"/>	            <exclude name="video.jar"/>	            <exclude name="talkingjava-synthesizer.jar"/>	            <exclude name="jsapi-recognizer.jar"/>            </fileset>            <fileset dir="lib" targetdir="$INSTALL_PATH/lib">
+	            <include name="*.jar"/>	            <exclude name="jmc.jar"/>
             </fileset>
             <fileset dir="lib/windows" os="windows" targetdir="$INSTALL_PATH/lib/windows">
-            	<exclude name="**/cgjsapi*.*"/>
+            	<exclude name="**/cgjsapi*.*"/>            	<exclude name="**/msvc*.dll"/>            	<exclude name="**/jmc.dll"/>
             </fileset>
             <fileset dir="lib/linux" os="unix" targetdir="$INSTALL_PATH/lib/linux"/>
             <fileset dir="lib/mac" os="mac" targetdir="$INSTALL_PATH/lib/mac"/>
