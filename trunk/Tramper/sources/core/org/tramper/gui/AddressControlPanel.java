@@ -85,13 +85,41 @@ public class AddressControlPanel extends JPanel implements ActionListener {
         GridBagLayout addressLayout = new GridBagLayout();
         this.setLayout(addressLayout);
         GridBagConstraints constraint = new GridBagConstraints();
+        constraint.insets = new Insets(2, 2, 2, 2);
         
         ResourceBundle label = ResourceBundle.getBundle("label");
+
+        favoritesButton = new JButton();
+        Icon buttonIcon = new EnhancedIcon(getClass().getResource("images/Favorites.png"));
+        favoritesButton.setIcon(buttonIcon);
+        String tooltip = TooltipManager.createTooltip("favorites");
+        favoritesButton.setToolTipText(tooltip);
+        favoritesButton.setActionCommand("favorites");
+        favoritesButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        favoritesButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+        favoritesButton.addActionListener(LoadFavoritesAction.getInstance());
+        constraint.anchor = GridBagConstraints.EAST;
+        constraint.weightx = 0;
+        addressLayout.setConstraints(favoritesButton, constraint);
+        this.add(favoritesButton);
         
+        historicButton = new JButton();
+        buttonIcon = new EnhancedIcon(getClass().getResource("images/Calendar.png"));
+        historicButton.setIcon(buttonIcon);
+        tooltip = TooltipManager.createTooltip("history");
+        historicButton.setToolTipText(tooltip);
+        historicButton.setActionCommand("historic");
+        historicButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        historicButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+        historicButton.addActionListener(LoadHistoryAction.getInstance());
+        constraint.anchor = GridBagConstraints.EAST;
+        constraint.weightx = 0;
+        addressLayout.setConstraints(historicButton, constraint);
+        this.add(historicButton);
+
         urlLabel = new JLabel(label.getString("Iwant"));
         constraint.anchor = GridBagConstraints.WEST;
         constraint.weightx = 0;
-        constraint.insets = new Insets(2, 2, 2, 2);
         addressLayout.setConstraints(urlLabel, constraint);
         this.add(urlLabel);
 
@@ -103,7 +131,6 @@ public class AddressControlPanel extends JPanel implements ActionListener {
         constraint.fill = GridBagConstraints.HORIZONTAL;
         constraint.anchor = GridBagConstraints.CENTER;
         constraint.weightx = 1;
-        constraint.insets = new Insets(2, 2, 2, 2);
         addressLayout.setConstraints(urlTextField, constraint);
         this.add(urlTextField);
         urlLabel.setLabelFor(urlTextField);
@@ -135,7 +162,14 @@ public class AddressControlPanel extends JPanel implements ActionListener {
         EnhancedIcon currentTabLeftIcon = new EnhancedIcon(getClass().getResource("images/Arrow Left.png"));
         currentSecondaryAction.putValue(Action.SMALL_ICON, currentTabLeftIcon);
 	listButtonActions.add(currentSecondaryAction);
-	
+
+	urlButton = new JDropDownButton(listButtonActions, false, true);
+        urlButton.setToolTipText(label.getString("javaspeaker.browseButton"));
+        constraint.anchor = GridBagConstraints.EAST;
+        constraint.weightx = 0;
+        addressLayout.setConstraints(urlButton, constraint);
+        this.add(urlButton);
+
         SearchEngineFactory engineFactory = SearchEngineFactory.getInstance();
         Vector<SearchEngine> searchEngines = engineFactory.getSearchEngines();
         searchEngineList = new JComboBox(searchEngines);
@@ -146,17 +180,8 @@ public class AddressControlPanel extends JPanel implements ActionListener {
         searchEngineList.setRenderer(searchEngineRenderer);
         constraint.anchor = GridBagConstraints.EAST;
         constraint.weightx = 0;
-        constraint.insets = new Insets(2, 2, 2, 2);
         addressLayout.setConstraints(searchEngineList, constraint);
         this.add(searchEngineList);
-
-	urlButton = new JDropDownButton(listButtonActions, false, true);
-        urlButton.setToolTipText(label.getString("javaspeaker.browseButton"));
-        constraint.anchor = GridBagConstraints.EAST;
-        constraint.weightx = 0;
-        constraint.insets = new Insets(2, 2, 2, 2);
-        addressLayout.setConstraints(urlButton, constraint);
-        this.add(urlButton);
 
         this.add(Box.createHorizontalStrut(10));
 
@@ -168,39 +193,8 @@ public class AddressControlPanel extends JPanel implements ActionListener {
         openButton.setToolTipText(label.getString("javaspeaker.menu.file.open"));
         constraint.anchor = GridBagConstraints.EAST;
         constraint.weightx = 0;
-        constraint.insets = new Insets(2, 2, 2, 2);
         addressLayout.setConstraints(openButton, constraint);
         this.add(openButton);
-
-        favoritesButton = new JButton();
-        Icon buttonIcon = new EnhancedIcon(getClass().getResource("images/Favorites.png"));
-        favoritesButton.setIcon(buttonIcon);
-        String tooltip = TooltipManager.createTooltip("favorites");
-        favoritesButton.setToolTipText(tooltip);
-        favoritesButton.setActionCommand("favorites");
-        favoritesButton.setHorizontalTextPosition(SwingConstants.CENTER);
-        favoritesButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-        favoritesButton.addActionListener(LoadFavoritesAction.getInstance());
-        constraint.anchor = GridBagConstraints.EAST;
-        constraint.weightx = 0;
-        constraint.insets = new Insets(2, 2, 2, 2);
-        addressLayout.setConstraints(favoritesButton, constraint);
-        this.add(favoritesButton);
-        
-        historicButton = new JButton();
-        buttonIcon = new EnhancedIcon(getClass().getResource("images/Calendar.png"));
-        historicButton.setIcon(buttonIcon);
-        tooltip = TooltipManager.createTooltip("history");
-        historicButton.setToolTipText(tooltip);
-        historicButton.setActionCommand("historic");
-        historicButton.setHorizontalTextPosition(SwingConstants.CENTER);
-        historicButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-        historicButton.addActionListener(LoadHistoryAction.getInstance());
-        constraint.anchor = GridBagConstraints.EAST;
-        constraint.weightx = 0;
-        constraint.insets = new Insets(2, 2, 2, 2);
-        addressLayout.setConstraints(historicButton, constraint);
-        this.add(historicButton);
 
         /*helpButton = new JButton();
         buttonIcon = new EnhancedIcon(getClass().getResource("images/help.png"));
@@ -213,7 +207,6 @@ public class AddressControlPanel extends JPanel implements ActionListener {
         helpButton.addActionListener(LoadHelpAction.getInstance());
         constraint.anchor = GridBagConstraints.EAST;
         constraint.weightx = 0;
-        constraint.insets = new Insets(2, 2, 2, 2);
         addressLayout.setConstraints(helpButton, constraint);
         this.add(helpButton);*/
     }
@@ -284,7 +277,7 @@ public class AddressControlPanel extends JPanel implements ActionListener {
 	    
 	    fileDialog.setCurrentDirectory(lastSelectedDir);
 	    
-	    int returnValue = fileDialog.showOpenDialog(this);
+	    int returnValue = fileDialog.showOpenDialog(null);
 	    if (returnValue == JFileChooser.APPROVE_OPTION) {
 		File[] selectedFiles = fileDialog.getSelectedFiles();
 		if (selectedFiles != null) {
