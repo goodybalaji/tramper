@@ -136,9 +136,6 @@ public class SoundParser implements Parser {
 	if (extension.equalsIgnoreCase("ogg")) {
 	    return true;
 	}
-	if (extension.equalsIgnoreCase("ape")) {
-	    return true;
-	}
 	if (extension.equalsIgnoreCase("aiff")) {
 	    return true;
 	}
@@ -195,9 +192,6 @@ public class SoundParser implements Parser {
 	if (mimeType.equalsIgnoreCase("application/x-ogg")) {
 	    return true;
 	}
-	if (mimeType.equalsIgnoreCase("audio/x-ape")) {
-	    return true;
-	}
 	if (mimeType.equalsIgnoreCase("application/ogg")) {
 	    return true;
 	}
@@ -224,7 +218,6 @@ public class SoundParser implements Parser {
 	extensions.add("ogg");
 	extensions.add("aiff");
 	extensions.add("aifc");
-	extensions.add("ape");
 	return extensions;
     }
 
