@@ -1,6 +1,6 @@
 		README
 		
-		Tramper 1.0 beta
+		Tramper beta
 
 
 Contents
