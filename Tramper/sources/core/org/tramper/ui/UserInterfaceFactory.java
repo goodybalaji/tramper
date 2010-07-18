@@ -62,9 +62,7 @@ public class UserInterfaceFactory {
 	// add nicer look and feels
 	LookAndFeelInfo quaquaLaF = new UIManager.LookAndFeelInfo("Quaqua", "ch.randelshofer.quaqua.QuaquaLookAndFeel");
 	lookAndFeels.add(quaquaLaF);
-	LookAndFeelInfo seaLaF = new UIManager.LookAndFeelInfo("sea", "com.seaglasslookandfeel.SeaGlassLookAndFeel");
-	lookAndFeels.add(seaLaF);
-	LookAndFeelInfo substanceDustLaF = new UIManager.LookAndFeelInfo("Dust", "org.jvnet.substance.skin.SubstanceDustLookAndFeel");
+	/*LookAndFeelInfo substanceDustLaF = new UIManager.LookAndFeelInfo("Dust", "org.jvnet.substance.skin.SubstanceDustLookAndFeel");
 	lookAndFeels.add(substanceDustLaF);
 	LookAndFeelInfo substanceBusinessLaF = new UIManager.LookAndFeelInfo("Business Black Steel", "org.jvnet.substance.skin.SubstanceBusinessBlackSteelLookAndFeel");
 	lookAndFeels.add(substanceBusinessLaF);
@@ -103,7 +101,7 @@ public class UserInterfaceFactory {
 	LookAndFeelInfo substanceNebulaLaF = new UIManager.LookAndFeelInfo("Nebula", "org.jvnet.substance.skin.SubstanceNebulaLookAndFeel");
 	lookAndFeels.add(substanceNebulaLaF);
 	LookAndFeelInfo substanceAutumnLaF = new UIManager.LookAndFeelInfo("Autumn", "org.jvnet.substance.skin.SubstanceAutumnLookAndFeel");
-	lookAndFeels.add(substanceAutumnLaF);
+	lookAndFeels.add(substanceAutumnLaF);*/
 	
 	// install the new look and feels
 	UIManager.setInstalledLookAndFeels(lookAndFeels.toArray(new UIManager.LookAndFeelInfo[lookAndFeels.size()]));
@@ -117,7 +115,7 @@ public class UserInterfaceFactory {
         	try {
         	    UIManager.setLookAndFeel(lookAndFeel);
         	} catch (Exception e) {
-        	    logger.warn("unable to load the look and feel and its theme at startup", e);
+        	    logger.warn("unable to load the look and feel at startup", e);
         	}
         	UIManager.put("ProgressBarUI", "org.tramper.gui.CompactProgressBarUI");
         	UIManager.put("ProgressBar.cycleTime", Integer.valueOf(800));
