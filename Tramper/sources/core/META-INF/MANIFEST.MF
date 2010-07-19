@@ -12,8 +12,6 @@ Class-Path: ./cmu_us_kal.jar
  ./ICOReader-1.04.jar 
  ./jdic.jar 
  ./jl1.0.1.jar  
- ./jmacdecoder.jar 
- ./jmactritonusspi.jar 
  ./jmc.jar 
  ./jogg-0.0.7.jar 
  ./jorbis-0.0.15.jar 
@@ -25,7 +23,6 @@ Class-Path: ./cmu_us_kal.jar
  ./quaqua.jar 
  ./serializer.jar 
  ./sphinx4.jar 
- ./substance-lite.jar 
  ./tritonus_jorbis-0.3.6.jar 
  ./tritonus_share-0.3.6.jar 
  ./WSJ_8gau_13dCep_16k_40mel_130Hz_6800Hz.jar 
@@ -36,8 +33,11 @@ Class-Path: ./cmu_us_kal.jar
  ./audio.jar 
  ./browser.jar 
  ./feed.jar 
+ ./freetts-synthesizer.jar 
  ./image.jar 
+ ./jsapi-recognizer.jar 
  ./outline.jar 
  ./sphinx-recognizer.jar 
+ ./talkingjava-synthesizer.jar 
  ./video.jar 
  ./webPage.jar 
