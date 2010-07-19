@@ -49,12 +49,9 @@
 	<classpathentry exported="true" kind="lib" path="lib/xml-apis.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/windows/ext/cgjsapi.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jmc.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/substance-lite.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/freetts-jsapi10.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/cmu_us_kal.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/mp3spi1.9.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jmacdecoder.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jmactritonusspi.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jogg-0.0.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jorbis-0.0.15.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jl1.0.1.jar"/>
@@ -73,6 +70,6 @@
 	<classpathentry kind="src" output="classes/feed" path="sources/feed"/>
 	<classpathentry kind="src" output="classes/webPage" path="sources/webPage"/>
 	<classpathentry kind="lib" path="lib/trident.jar"/>
-	<classpathentry kind="lib" path="lib/fingon.jar"/>
+	<classpathentry kind="lib" path="lib/fingon.jar" sourcepath="/Fingon/sources/core"/>
 	<classpathentry kind="output" path="classes/core"/>
 </classpath>
