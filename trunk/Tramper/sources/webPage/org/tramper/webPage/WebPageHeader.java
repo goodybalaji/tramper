@@ -4,6 +4,7 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -202,8 +203,11 @@ public class WebPageHeader extends SimpleHeader implements ActionListener {
     public void displayDocument(SimpleDocument document, Target target) {
 	super.displayDocument(document, target);
 	
-        Icon icon = ((MarkupDocument)document).getIcon();
-        iconLabel.setIcon(icon);
+        Image iconImage = ((MarkupDocument)document).getIcon();
+        if (iconImage != null) {
+            EnhancedIcon icon = new EnhancedIcon(iconImage);
+            iconLabel.setIcon(icon);
+        }
         
         Locale language = ((MarkupDocument)document).getLanguage();
         if (language != null) {

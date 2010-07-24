@@ -2,10 +2,12 @@ package org.tramper.outline;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.EnhancedIcon;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
@@ -63,8 +65,11 @@ public class OutlineHeader extends SimpleHeader {
     public void displayDocument(SimpleDocument document, Target target) {
 	super.displayDocument(document, target);
 
-        Icon icon = ((MarkupDocument)document).getIcon();
-        iconLabel.setIcon(icon);
+        Image iconImage = ((MarkupDocument)document).getIcon();
+        if (iconImage != null) {
+            EnhancedIcon icon = new EnhancedIcon(iconImage);
+            iconLabel.setIcon(icon);
+        }
         
         Locale language = ((MarkupDocument)document).getLanguage();
         if (language != null) {

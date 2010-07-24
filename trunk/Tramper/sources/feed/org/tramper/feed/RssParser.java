@@ -1,5 +1,6 @@
 package org.tramper.feed;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,8 +15,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import javax.swing.EnhancedIcon;
-import javax.swing.Icon;
+import javax.imageio.ImageIO;
 import javax.xml.parsers.*;
 import javax.xml.transform.TransformerException;
 
@@ -121,9 +121,9 @@ public class RssParser implements Parser {
                 if (aText != null) {
                     try {
                 	URL iconUrl = new URL(aText);
-                	Icon icon = new EnhancedIcon(iconUrl);
-                        feed.setIcon(icon);
-                    } catch (MalformedURLException e) {}
+                	Image img = ImageIO.read(iconUrl);
+                        feed.setIcon(img);
+                    } catch (Exception e) {}
                 }
             }
             aNode = XPathAPI.selectSingleNode(docRoot, "/rss/channel/pubDate/text()");

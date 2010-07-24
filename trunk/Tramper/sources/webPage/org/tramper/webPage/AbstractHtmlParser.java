@@ -15,8 +15,6 @@ import java.util.ResourceBundle;
 import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
-import javax.swing.EnhancedIcon;
-import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
 import org.tramper.doc.Link;
@@ -175,8 +173,7 @@ public abstract class AbstractHtmlParser implements Parser {
                     if (linkRel.equalsIgnoreCase("icon") || linkRel.equalsIgnoreCase("shortcut icon")) {
                         try {
                             Image img = ImageIO.read(anUrl);
-        	            Icon icon = new EnhancedIcon(img);
-        	            doc.setIcon(icon);
+        	            doc.setIcon(img);
         		} catch (Exception e) {
         		    logger.debug("unreadable icon: "+anUrl);
         		}
