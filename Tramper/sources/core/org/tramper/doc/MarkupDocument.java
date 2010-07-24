@@ -1,10 +1,9 @@
 package org.tramper.doc;
 
+import java.awt.Image;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
-
-import javax.swing.Icon;
 
 /**
  * Abstract markup document
@@ -16,7 +15,7 @@ public abstract class MarkupDocument extends SimpleDocument {
     /** language/locale */
     protected Locale language;
     /** icon */
-    protected Icon icon;
+    protected Image icon;
     /** links to related documents */
     protected transient List<Link> links;
 
@@ -38,14 +37,14 @@ public abstract class MarkupDocument extends SimpleDocument {
     /**
      * @return icon.
      */
-    public Icon getIcon() {
+    public Image getIcon() {
         return this.icon;
     }
 
     /**
      * @param icon icon 
      */
-    public void setIcon(Icon icon) {
+    public void setIcon(Image icon) {
         this.icon = icon;
     }
 

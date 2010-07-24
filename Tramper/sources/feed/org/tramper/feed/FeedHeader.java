@@ -1,9 +1,11 @@
 package org.tramper.feed;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -168,9 +170,10 @@ public class FeedHeader extends SimpleHeader implements ActionListener {
     public void displayDocument(SimpleDocument document, Target target) {
 	super.displayDocument(document, target);
 
-        Icon icon = ((MarkupDocument)document).getIcon();
-        if (icon != null) {
-            //((EnhancedIcon)icon).fit(new Dimension(120,120));
+        Image iconImage = ((MarkupDocument)document).getIcon();
+        if (iconImage != null) {
+            EnhancedIcon icon = new EnhancedIcon(iconImage);
+            icon.fit(new Dimension(120,120));
             iconLabel.setIcon(icon);
         }
         
