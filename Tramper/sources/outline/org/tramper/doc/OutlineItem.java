@@ -1,6 +1,7 @@
 package org.tramper.doc;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
@@ -14,7 +15,7 @@ import javax.swing.tree.TreePath;
  * An outline item
  * @author Paul-Emile
  */
-public class OutlineItem extends DocumentItem implements TreeNode {
+public class OutlineItem extends DocumentItem implements TreeNode, Comparable<OutlineItem> {
     /** title */
     private String title;
     /** the children nodes */
@@ -48,13 +49,14 @@ public class OutlineItem extends DocumentItem implements TreeNode {
     }
 
     /**
-     * add a new child to the list of children
-     * @param newChild
+     * Adds a new child to the list of children.
+     * @param newChild a node to add as child of this node
      */
     public void addChild(OutlineItem newChild) {
 	if (newChild != null && !children.contains(newChild)) {
 	    children.add(newChild);
 	    newChild.setParent(this);
+	    Collections.sort(children);
 	    
 	    TreePath treePath = buildTreePath();
 	    int[] addedIndices = {this.getIndex(newChild)};
@@ -65,8 +67,8 @@ public class OutlineItem extends DocumentItem implements TreeNode {
     }
 
     /**
-     * remove a child from the list of children
-     * @param oldChild
+     * Removes a child from the list of children.
+     * @param oldChild a node to remove from the children of this node
      */
     public void removeChild(OutlineItem oldChild) {
 	if (oldChild != null && children.contains(oldChild)) {
@@ -82,6 +84,10 @@ public class OutlineItem extends DocumentItem implements TreeNode {
 	}
     }
 
+    /**
+     * 
+     * @return
+     */
     private TreePath buildTreePath() {
         List<TreeNode> listPath = new ArrayList<TreeNode>();
         listPath.add(0, this);
@@ -212,5 +218,20 @@ public class OutlineItem extends DocumentItem implements TreeNode {
      */
     public String toString() {
         return title;
+    }
+
+    /**
+     * 
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(OutlineItem o) {
+	if (o == null) {
+	    return -1;
+	}
+	String titleToCompare = o.getTitle();
+	if (titleToCompare == null) {
+	    return -1;
+	}
+	return title.compareTo(titleToCompare);
     }
 }

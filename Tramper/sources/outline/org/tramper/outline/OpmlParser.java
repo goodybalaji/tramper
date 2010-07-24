@@ -182,8 +182,10 @@ public class OpmlParser implements Parser {
                 } else if (type.equalsIgnoreCase("include")) {
                     //must be an outline
                     mimeType = "text/x-opml";
-                } else {
+                } else if (type.equals("")) {
                     mimeType = MimeTypeMapper.getInstance().getMimeType(url);
+                } else {
+                    mimeType = type;
                 }
             }
             
@@ -323,7 +325,7 @@ public class OpmlParser implements Parser {
         	outlineElem.setAttribute("type", "include");
                 outlineElem.setAttribute("url", url.toString());
             } else {
-        	outlineElem.setAttribute("type", "link");
+        	outlineElem.setAttribute("type", mimeType);
                 outlineElem.setAttribute("url", url.toString());
             }
         }
