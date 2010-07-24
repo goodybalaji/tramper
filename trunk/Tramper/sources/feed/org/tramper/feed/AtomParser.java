@@ -135,7 +135,8 @@ public class AtomParser implements Parser {
                         feed.setIcon(icon);
                     } catch (MalformedURLException e) {}
                 }
-            } else {
+            }
+            if (feed.getIcon() == null) {
                 aNode = XPathAPI.selectSingleNode(docRoot, "/feed/logo/text()");
                 if (aNode != null) {
                     String aText = aNode.getNodeValue();
