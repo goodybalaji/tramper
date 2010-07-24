@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -126,6 +127,21 @@ public class OpmlParser implements Parser {
                     }
                     catch (ParseException e) {
                         logger.warn("error when parsing modified date : "+aText);
+                    }
+                }
+            }
+            aNode = XPathAPI.selectSingleNode(docRoot, "/opml/head/expansionState/text()");
+            if (aNode != null) {
+                String expansionState = aNode.getNodeValue();
+                if (expansionState != null) {
+                    String[] expansionStateArray = expansionState.split(",");
+                    for (String aState : expansionStateArray) {
+                	try {
+                	    int aNodeIndex = Integer.parseInt(aState);
+                            outline.addExpandedNodeIndex(aNodeIndex);
+                	} catch (NumberFormatException e) {
+                	    // we don't put in the list something which is not an integer
+                	}
                     }
                 }
             }
@@ -285,6 +301,19 @@ public class OpmlParser implements Parser {
             ownerElem.appendChild(docSource.createTextNode(author));
             headElem.appendChild(ownerElem);
         }
+
+        Iterator<Integer> expandedNodeIndices = doc.getAscendingExpandedNodeIndices();
+        StringBuilder expansionState = new StringBuilder();
+        while (expandedNodeIndices.hasNext()) {
+            Integer anIndex = expandedNodeIndices.next();
+            expansionState.append(anIndex);
+            if (expandedNodeIndices.hasNext()) {
+        	expansionState.append(",");
+            }
+        }
+        Element expansionElem = docSource.createElement("expansionState");
+        expansionElem.appendChild(docSource.createTextNode(expansionState.toString()));
+        headElem.appendChild(expansionElem);
 
         Element bodyElem = docSource.createElement("body");
         opmlElem.appendChild(bodyElem);

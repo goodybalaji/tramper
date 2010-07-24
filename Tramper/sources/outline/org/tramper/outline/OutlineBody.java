@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JScrollPane;
@@ -65,6 +66,12 @@ public class OutlineBody extends JScrollPane implements Body, MouseListener, Tre
         outlineTree.setModel(document);
         long index = document.getIndex();
         selectItem((int)index);
+        // expand the nodes below the root in descending order
+        Iterator<Integer> expandedNodeIndices = document.getDescendingExpandedNodeIndices();
+        while (expandedNodeIndices.hasNext()) {
+            outlineTree.expandRow(expandedNodeIndices.next());
+        }
+        outlineTree.addTreeExpansionListener(document);
     }
     
     /**

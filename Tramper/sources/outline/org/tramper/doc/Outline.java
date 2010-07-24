@@ -3,18 +3,24 @@ package org.tramper.doc;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NavigableSet;
+import java.util.TreeSet;
 
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 /**
- * An outline
+ * An outline.
  * @author Paul-Emile
  */
-public class Outline extends MarkupDocument implements TreeModel, Serializable {
+public class Outline extends MarkupDocument implements TreeModel, TreeExpansionListener, Serializable {
     /** Outline.java long */
     private static final long serialVersionUID = 4086509332353444267L;
     /** modification date */
@@ -23,6 +29,8 @@ public class Outline extends MarkupDocument implements TreeModel, Serializable {
     private List<TreeModelListener> treeModelListener;
     /** virtual root item */
     private OutlineItem rootItem;
+    /** expanded node indices */
+    private NavigableSet<Integer> expandedNodeIndices;
     
     /**
      * 
@@ -31,6 +39,7 @@ public class Outline extends MarkupDocument implements TreeModel, Serializable {
         treeModelListener = new ArrayList<TreeModelListener>();
         links = new ArrayList<Link>();
         items = new ArrayList<DocumentItem>();
+        expandedNodeIndices = new TreeSet<Integer>();
     }
     
     /**
@@ -48,12 +57,20 @@ public class Outline extends MarkupDocument implements TreeModel, Serializable {
         items.add(newItem);
     }
     
+    /**
+     * 
+     * @param e
+     */
     protected void fireTreeNodesInserted(TreeModelEvent e) {
 	for (TreeModelListener aListener : treeModelListener) {
 	    aListener.treeNodesInserted(e);
 	}
     }
 
+    /**
+     * 
+     * @param e
+     */
     protected void fireTreeNodesRemoved(TreeModelEvent e) {
 	for (TreeModelListener aListener : treeModelListener) {
 	    aListener.treeNodesRemoved(e);
@@ -81,6 +98,40 @@ public class Outline extends MarkupDocument implements TreeModel, Serializable {
         this.rootItem = root;
     }
 
+    /**
+     * Adds the index of a node of the first level (children of the root) 
+     * to expand in the outline. 
+     * @param nodeIndex an index of node, child of the root 
+     */
+    public void addExpandedNodeIndex(Integer nodeIndex) {
+	expandedNodeIndices.add(nodeIndex);
+    }
+    
+    /**
+     * Removes the index of a node of the first level (children of the root) 
+     * from the list of nodes to expand.
+     * @param nodeIndex an index of node, child of the root 
+     */
+    public void removeExpandedNodeIndex(Integer nodeIndex) {
+	expandedNodeIndices.remove(nodeIndex);
+    }
+    
+    /**
+     * Returns the node indices to expand in descending order.
+     * @return 
+     */
+    public Iterator<Integer> getDescendingExpandedNodeIndices() {
+	return expandedNodeIndices.descendingIterator();
+    }
+
+    /**
+     * Returns the node indices to expand in ascending order.
+     * @return 
+     */
+    public Iterator<Integer> getAscendingExpandedNodeIndices() {
+	return expandedNodeIndices.iterator();
+    }
+    
     /**
      * 
      * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
@@ -145,5 +196,31 @@ public class Outline extends MarkupDocument implements TreeModel, Serializable {
      */
     public void valueForPathChanged(TreePath path, Object newValue) {
         //not used at this moment
+    }
+
+    /**
+     * 
+     * @see javax.swing.event.TreeExpansionListener#treeCollapsed(javax.swing.event.TreeExpansionEvent)
+     */
+    public void treeCollapsed(TreeExpansionEvent event) {
+	TreePath collapsedPath = event.getPath();
+	Object[] path = collapsedPath.getPath();
+	if (path.length == 2) {
+	    int collapsedIndex = rootItem.getIndex((TreeNode)path[1]);
+	    removeExpandedNodeIndex(collapsedIndex);
+	}
+    }
+
+    /**
+     * 
+     * @see javax.swing.event.TreeExpansionListener#treeExpanded(javax.swing.event.TreeExpansionEvent)
+     */
+    public void treeExpanded(TreeExpansionEvent event) {
+	TreePath expandedPath = event.getPath();
+	Object[] path = expandedPath.getPath();
+	if (path.length == 2) {
+	    int expandedIndex = rootItem.getIndex((TreeNode)path[1]);
+	    addExpandedNodeIndex(expandedIndex);
+	}
     }
 }
