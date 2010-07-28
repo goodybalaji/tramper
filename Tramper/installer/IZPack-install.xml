@@ -32,7 +32,7 @@
         The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.
     -->
     <resources>
-        <res id="LicencePanel.licence" src="installer/Licence.txt"/>        <res id="shortcutSpec.xml" src="installer/Shortcut-Windows-TalkingJava.xml"/>		<res id="Unix_shortcutSpec.xml" src="installer/Shortcut-Unix-FreeTTS.xml"/>
+        <res id="LicencePanel.licence" src="installer/License.txt"/>        <res id="shortcutSpec.xml" src="installer/IZPack-Windows-Shortcut.xml"/>		<res id="Unix_shortcutSpec.xml" src="installer/IZPack-Unix-Shortcut.xml"/>
     </resources>	<!-- 		Various variables for installation.	 -->	<variables>		<variable name="ShowCreateDirectoryMessage" value="false"/>	</variables>	
     <!-- 
         The panels section.
@@ -56,7 +56,7 @@
             <file src="soundbank.gm" targetdir="$INSTALL_PATH"/>
             <file src="GUIConfig.properties" targetdir="$INSTALL_PATH"/>
             <file src="installer/Readme.txt" targetdir="$INSTALL_PATH"/>
-            <file src="installer/Licence.txt" targetdir="$INSTALL_PATH"/>
+            <file src="installer/License.txt" targetdir="$INSTALL_PATH"/>
             <file src="installer/Tramper.ico" os="windows" targetdir="$INSTALL_PATH"/>
             <file src="installer/Tramper.png" os="unix" targetdir="$INSTALL_PATH"/>
             <file src="installer/Tramper-uninstall.ico" os="windows" targetdir="$INSTALL_PATH"/>

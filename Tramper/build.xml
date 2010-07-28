@@ -97,7 +97,7 @@
 	
 	<target name="IzPack-installer">
 		<antcall target="archives"/>
-		<izpack input="installer/IZPack-install-FreeTTS.xml"
+		<izpack input="installer/IZPack-install.xml"
 		    output="installer/Tramper-installer.jar"
 		    installerType="standard"
 		    basedir="."
