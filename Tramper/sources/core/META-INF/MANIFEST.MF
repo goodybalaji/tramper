@@ -2,42 +2,30 @@ Manifest-Version: 1.0
 Created-By: 1.6.0_11 (Sun Microsystems Inc.) 
 Main-Class: org.tramper.Tramper
 SplashScreen-Image: org/tramper/gui/images/splash.png
-Class-Path: ./cmu_us_kal.jar 
- ./cmudict04.jar 
- ./cmulex.jar 
- ./cobra.jar 
- ./en_us.jar 
- ./freetts.jar 
- ./freetts-jsapi10.jar 
+Class-Path: ./cobra.jar 
+ ./jsapi.jar 
+ ./fingon.jar 
  ./ICOReader-1.04.jar 
  ./jdic.jar 
- ./jl1.0.1.jar  
- ./jmc.jar 
+ ./jdic_stub.jar 
+ ./jl1.0.1.jar 
  ./jogg-0.0.7.jar 
  ./jorbis-0.0.15.jar 
  ./js.jar 
- ./jsapi.jar 
  ./log4j-1.2.4.jar 
  ./mp3spi1.9.4.jar 
  ./nekohtml.jar 
  ./quaqua.jar 
  ./serializer.jar 
- ./sphinx4.jar 
  ./tritonus_jorbis-0.3.6.jar 
  ./tritonus_share-0.3.6.jar 
- ./WSJ_8gau_13dCep_16k_40mel_130Hz_6800Hz.jar 
  ./xalan.jar 
  ./xercesImpl.jar 
  ./xml-apis.jar 
- ./fingon.jar 
  ./audio.jar 
  ./browser.jar 
  ./feed.jar 
- ./freetts-synthesizer.jar 
  ./image.jar 
- ./jsapi-recognizer.jar 
  ./outline.jar 
- ./sphinx-recognizer.jar 
- ./talkingjava-synthesizer.jar 
- ./video.jar 
  ./webPage.jar 
+ 
