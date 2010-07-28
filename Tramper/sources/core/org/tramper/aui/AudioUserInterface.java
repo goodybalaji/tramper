@@ -34,11 +34,11 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
      */
     public AudioUserInterface() {
 	conductorByTarget = new HashMap<Target, Conductor>();
-        //load the recognizer
+        //load the speech recognizer
         try {
             SpeechRecognizerFactory.getSpeechRecognizer();
         } catch (RecognitionException e) {
-            logger.error("can't launch the recorder", e);
+            logger.debug("can't find a speech recognizer");
         }
 	Library.getInstance().addLibraryListener(this);
     }
