@@ -8,8 +8,6 @@
 	<classpathentry exported="true" kind="lib" path="archives/video.jar" sourcepath="sources/video"/>
 	<classpathentry exported="true" kind="lib" path="archives/webPage.jar" sourcepath="sources/webPage"/>
 	<classpathentry exported="true" kind="lib" path="archives/image.jar" sourcepath="sources/image"/>
-	<classpathentry exported="true" kind="lib" path="archives/talkingjava-synthesizer.jar" sourcepath="sources/talkingjava-synthesizer"/>
-	<classpathentry exported="true" kind="lib" path="archives/freetts-synthesizer.jar" sourcepath="sources/freetts-synthesizer"/>
 	<classpathentry exported="true" kind="lib" path="archives/jsapi-recognizer.jar" sourcepath="sources/jsapi-recognizer"/>
 	<classpathentry exported="true" kind="lib" path="archives/sphinx-recognizer.jar" sourcepath="sources/sphinx-recognizer"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_13"/>
@@ -60,8 +58,6 @@
 	<classpathentry kind="src" output="classes/audio" path="sources/audio"/>
 	<classpathentry kind="src" output="classes/jsapi-recognizer" path="sources/jsapi-recognizer"/>
 	<classpathentry kind="src" output="classes/sphinx-recognizer" path="sources/sphinx-recognizer"/>
-	<classpathentry kind="src" output="classes/talkingjava-synthesizer" path="sources/talkingjava-synthesizer"/>
-	<classpathentry kind="src" output="classes/freetts-synthesizer" path="sources/freetts-synthesizer"/>
 	<classpathentry kind="src" output="classes/browser" path="sources/browser"/>
 	<classpathentry kind="src" output="classes/outline" path="sources/outline"/>
 	<classpathentry kind="src" output="classes/image" path="sources/image"/>
@@ -71,5 +67,7 @@
 	<classpathentry kind="src" output="classes/webPage" path="sources/webPage"/>
 	<classpathentry kind="lib" path="lib/trident.jar"/>
 	<classpathentry kind="lib" path="lib/fingon.jar" sourcepath="/Fingon/sources/core"/>
+	<classpathentry kind="lib" path="lib/fingon-freetts-synthesizer.jar"/>
+	<classpathentry kind="lib" path="lib/fingon-talkingjava-synthesizer.jar"/>
 	<classpathentry kind="output" path="classes/core"/>
 </classpath>
