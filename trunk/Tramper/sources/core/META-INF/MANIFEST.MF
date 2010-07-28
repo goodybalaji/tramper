@@ -3,29 +3,19 @@ Created-By: 1.6.0_11 (Sun Microsystems Inc.)
 Main-Class: org.tramper.Tramper
 SplashScreen-Image: org/tramper/gui/images/splash.png
 Class-Path: ./cobra.jar 
- ./jsapi.jar 
- ./fingon.jar 
  ./ICOReader-1.04.jar 
  ./jdic.jar 
  ./jdic_stub.jar 
- ./jl1.0.1.jar 
- ./jogg-0.0.7.jar 
- ./jorbis-0.0.15.jar 
  ./js.jar 
  ./log4j-1.2.4.jar 
- ./mp3spi1.9.4.jar 
  ./nekohtml.jar 
  ./quaqua.jar 
  ./serializer.jar 
- ./tritonus_jorbis-0.3.6.jar 
- ./tritonus_share-0.3.6.jar 
  ./xalan.jar 
  ./xercesImpl.jar 
  ./xml-apis.jar 
- ./audio.jar 
  ./browser.jar 
  ./feed.jar 
- ./image.jar 
  ./outline.jar 
  ./webPage.jar 
  
