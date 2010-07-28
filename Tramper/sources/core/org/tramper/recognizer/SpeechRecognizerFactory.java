@@ -43,7 +43,7 @@ public class SpeechRecognizerFactory {
 	    }
 	}
 	lock.unlock();
-        logger.error("Unable to load a speech recognizer");
+        logger.debug("no speech recognizer available");
         throw new RecognitionException("Unable to load a speech recognizer");
     }
 }
