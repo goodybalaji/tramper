@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?><!-- 
-    A sample installation file.
-    Use it as a base for your own installers :-)
+    Tramper IzPack installation file.
     To compile it :
     - go in the bin directory where you installed IzPack
     - call "compile ../sample/install.xml -b ../sample"
 -->
 <installation version="1.0">   <info>
         <appname>Tramper</appname>
-        <appversion>1.0</appversion>
+        <appversion>beta</appversion>
         <authors>
             <author name="Paul-Emile Veuve" email="peveuve@gmail.com"/>
         </authors>
@@ -15,9 +14,9 @@
     </info>
     <!-- 
         The gui preferences indication.
-        Sets the installer window to 640x480. It will not be able to change the size.
+        Sets the installer window to 640x480. It will be able to change the size.
     -->
-    <guiprefs width="640" height="480" resizable="no">
+    <guiprefs width="640" height="480" resizable="yes">
     	<modifier key="langDisplayType" value="native"/>
     </guiprefs>
     <!-- 
@@ -33,50 +32,42 @@
         The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.
     -->
     <resources>
-        <res id="LicencePanel.licence" src="installer/Licence.txt"/>
-        <res id="InfoPanel.info" src="installer/Readme.txt"/>        <res id="shortcutSpec.xml" src="installer/Shortcut-Windows-FreeTTS.xml"/>		<res id="Unix_shortcutSpec.xml" src="installer/Shortcut-Unix-FreeTTS.xml"/>
-    </resources>
+        <res id="LicencePanel.licence" src="installer/Licence.txt"/>        <res id="shortcutSpec.xml" src="installer/Shortcut-Windows-TalkingJava.xml"/>		<res id="Unix_shortcutSpec.xml" src="installer/Shortcut-Unix-FreeTTS.xml"/>
+    </resources>	<!-- 		Various variables for installation.	 -->	<variables>		<variable name="ShowCreateDirectoryMessage" value="false"/>	</variables>	
     <!-- 
         The panels section.
         We indicate here which panels we want to use. The order will be respected.
     -->
     <panels>
-    <!-- 
         <panel classname="HelloPanel"/>
-         -->
-        <panel classname="InfoPanel"/>
         <panel classname="LicencePanel"/>
-        <panel classname="TargetPanel"/> 
-        <!-- 
+        <panel classname="TargetPanel"/>
         <panel classname="PacksPanel"/>
-         -->
         <panel classname="InstallPanel"/>        <panel classname="ShortcutPanel"/>
-        <panel classname="FinishPanel"/>
-    </panels>
+        <panel classname="SimpleFinishPanel"/>
+    </panels>    
     <!-- 
         The packs section.
         We specify here our packs.
     -->
     <packs>
-        <pack name="browser" required="yes">
-            <description>The media browser, the core features</description>            <file src="sources/core/speech.properties" targetdir="$USER_HOME"/>
+        <pack name="Core" required="yes">
+            <description>The media browser, the core features</description>
             <file src="soundbank.gm" targetdir="$INSTALL_PATH"/>
-            <file src="GUIConfig.properties" targetdir="$INSTALL_PATH"/>            <file os="windows" src="shortPathNameFormat.vbs" targetdir="$INSTALL_PATH"/>
-            <file src="sphinx-recognizer.config.xml" targetdir="$INSTALL_PATH"/>
+            <file src="GUIConfig.properties" targetdir="$INSTALL_PATH"/>
             <file src="installer/Readme.txt" targetdir="$INSTALL_PATH"/>
             <file src="installer/Licence.txt" targetdir="$INSTALL_PATH"/>
             <file src="installer/Tramper.ico" os="windows" targetdir="$INSTALL_PATH"/>
             <file src="installer/Tramper.png" os="unix" targetdir="$INSTALL_PATH"/>
             <file src="installer/Tramper-uninstall.ico" os="windows" targetdir="$INSTALL_PATH"/>
-            <file src="installer/Tramper-uninstall.png" os="unix" targetdir="$INSTALL_PATH"/>            <fileset dir="archives" targetdir="$INSTALL_PATH/lib">	            <include name="*.jar"/>	            <exclude name="video.jar"/>	            <exclude name="talkingjava-synthesizer.jar"/>	            <exclude name="jsapi-recognizer.jar"/>            </fileset>            <fileset dir="lib" targetdir="$INSTALL_PATH/lib">
-	            <include name="*.jar"/>	            <exclude name="jmc.jar"/>
-            </fileset>
-            <fileset dir="lib/windows" os="windows" targetdir="$INSTALL_PATH/lib/windows">
-            	<exclude name="**/cgjsapi*.*"/>            	<exclude name="**/msvc*.dll"/>            	<exclude name="**/jmc.dll"/>
-            </fileset>
-            <fileset dir="lib/linux" os="unix" targetdir="$INSTALL_PATH/lib/linux"/>
-            <fileset dir="lib/mac" os="mac" targetdir="$INSTALL_PATH/lib/mac"/>
-        </pack>
+            <file src="installer/Tramper-uninstall.png" os="unix" targetdir="$INSTALL_PATH"/>            <fileset dir="archives" targetdir="$INSTALL_PATH/lib">	            <include name="audio.jar"/>	            <include name="browser.jar"/>	            <include name="feed.jar"/>	            <include name="image.jar"/>	            <include name="outline.jar"/>	            <include name="Tramper.jar"/>	            <include name="webPage.jar"/>            </fileset>            <fileset dir="lib" targetdir="$INSTALL_PATH/lib">	            <include name="fingon.jar"/>
+	            <include name="ICOReader-1.04.jar"/>	            <include name="jdic.jar"/>	            <include name="jl1.0.1.jar"/>	            <include name="jogg-0.0.7.jar"/>	            <include name="jorbis-0.0.15.jar"/>	            <include name="js.jar"/>	            <include name="jsapi.jar"/>	            <include name="cobra.jar"/>	            <include name="trident.jar"/>	            <include name="log4j-1.2.4.jar"/>	            <include name="mp3spi1.9.4.jar"/>	            <include name="nekohtml.jar"/>	            <include name="quaqua.jar"/>	            <include name="serializer.jar"/>	            <include name="tritonus_share-0.3.6.jar"/>	            <include name="tritonus_jorbis-0.3.6.jar"/>	            <include name="xalan.jar"/>	            <include name="xercesImpl.jar"/>	            <include name="xml-apis.jar"/>
+            </fileset>            <fileset dir="lib/windows" os="windows" targetdir="$INSTALL_PATH/lib">            	<include name="jdic_stub.jar"/>            </fileset>
+            <fileset dir="lib/windows/x86" os="windows" targetdir="$INSTALL_PATH/lib/x86">            	<include name="jdic.dll"/>            	<include name="IeEmbed.exe"/>            	<include name="MozEmbed.exe"/>
+            </fileset>            <fileset dir="lib/linux" os="unix" targetdir="$INSTALL_PATH/lib">            	<include name="jdic_stub.jar"/>            </fileset>
+            <fileset dir="lib/linux/x86" os="unix" targetdir="$INSTALL_PATH/lib/x86"/>            <fileset dir="lib/mac" os="mac" targetdir="$INSTALL_PATH/lib">            	<include name="jdic_stub.jar"/>            </fileset>
+            <fileset dir="lib/mac/ppc" os="mac" targetdir="$INSTALL_PATH/lib/ppc"/>
+        </pack>                <pack name="Video" required="no" preselected="no">            <description>The video player, requires JavaFX</description>            <file os="windows" src="shortPathNameFormat.vbs" targetdir="$INSTALL_PATH"/>            <fileset dir="archives" targetdir="$INSTALL_PATH/lib/ext">	            <include name="video.jar"/>            </fileset>            <fileset dir="lib" targetdir="$INSTALL_PATH/lib/ext">	            <include name="jmc.jar"/>            </fileset>            <fileset dir="lib/windows/x86" os="windows" targetdir="$INSTALL_PATH/lib/x86">            	<include name="**/msvc*.dll"/>            	<include name="**/jmc.dll"/>            </fileset>            <fileset dir="lib/linux/x86" os="unix" targetdir="$INSTALL_PATH/lib/x86">            	<!-- to be completed when I have the JavaFX linux binaries -->            </fileset>            <fileset dir="lib/mac/ppc" os="mac" targetdir="$INSTALL_PATH/lib/ppc">            	<!-- to be completed when I have the JavaFX Mac OS X binaries -->            </fileset>        </pack>                <pack name="FreeTTS" required="no" preselected="yes">            <description>FreeTTS, a portable free speech synthesizer</description>            <file src="speech.properties" targetdir="$USER_HOME"/>            <fileset dir="lib" targetdir="$INSTALL_PATH/lib/ext">	            <include name="cmu_us_kal.jar"/>	            <include name="cmudict04.jar"/>	            <include name="cmulex.jar"/>	            <include name="en_us.jar"/>	            <include name="freetts-jsapi10.jar"/>	            <include name="freetts.jar"/>	            <include name="fingon-freetts-synthesizer.jar"/>            </fileset>        </pack>                <pack name="TalkingJava" required="no" preselected="no" os="windows">            <description>TalkingJava, a Windows-only free for non-commercial use speech synthesizer and recognizer</description>            <fileset dir="lib" targetdir="$INSTALL_PATH/lib/ext">	            <include name="fingon-talkingjava-synthesizer.jar"/>            </fileset>            <fileset dir="archives" targetdir="$INSTALL_PATH/lib/ext">	            <include name="jsapi-recognizer.jar"/>            </fileset>            <fileset dir="lib/windows/x86" os="windows" targetdir="$INSTALL_PATH/lib/x86">            	<include name="cgjsapi*.dll"/>            </fileset>            <fileset dir="lib/windows/ext" os="windows" targetdir="$INSTALL_PATH/lib/ext">	            <include name="cgjsapi.jar"/>            </fileset>        </pack>                <pack name="Sphinx" required="no" preselected="no">            <description>Sphinx, a portable free speech recognizer</description>            <file src="sphinx-recognizer.config.xml" targetdir="$INSTALL_PATH"/>            <fileset dir="archives" targetdir="$INSTALL_PATH/lib/ext">	            <include name="sphinx-recognizer.jar"/>            </fileset>            <fileset dir="lib" targetdir="$INSTALL_PATH/lib/ext">	            <include name="sphinx4.jar"/>	            <include name="WSJ_8gau_13dCep_16k_40mel_130Hz_6800Hz.jar"/>            </fileset>        </pack>
     </packs>
-        <!-- for windows shortcuts -->    <native type="izpack" name="ShellLink.dll"/>    
+        <!-- for Windows shortcuts -->    <native type="izpack" name="ShellLink.dll"/>    
 </installation>

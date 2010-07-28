@@ -1,79 +1,0 @@
-<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?><!-- 
-    A sample installation file.
-    Use it as a base for your own installers :-)
-    To compile it :
-    - go in the bin directory where you installed IzPack
-    - call "compile ../sample/install.xml -b ../sample"
--->
-<installation version="1.0">   <info>
-        <appname>Tramper</appname>
-        <appversion>1.0</appversion>
-        <authors>
-            <author name="Paul-Emile Veuve" email="peveuve@gmail.com"/>
-        </authors>
-        <url>http://code.google.com/p/tramper/</url>        <javaversion>1.6</javaversion>
-    </info>
-    <!-- 
-        The gui preferences indication.
-        Sets the installer window to 640x480. It will not be able to change the size.
-    -->
-    <guiprefs width="640" height="480" resizable="no">
-    	<modifier key="langDisplayType" value="native"/>
-    </guiprefs>
-    <!-- 
-        The locale section.
-        Asks here to include the English and French langpacks.
-    -->
-    <locale>
-        <langpack iso3="eng"/>
-        <langpack iso3="fra"/>
-    </locale>
-    <!-- 
-        The resources section.
-        The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.
-    -->
-    <resources>
-        <res id="LicencePanel.licence" src="installer/Licence.txt"/>
-        <res id="InfoPanel.info" src="installer/Readme.txt"/>        <res id="shortcutSpec.xml" src="installer/Shortcut-Windows-TalkingJava.xml"/>
-    </resources>
-    <!-- 
-        The panels section.
-        We indicate here which panels we want to use. The order will be respected.
-    -->
-    <panels>
-    <!-- 
-        <panel classname="HelloPanel"/>
-         -->
-        <panel classname="InfoPanel"/>
-        <panel classname="LicencePanel"/>
-        <panel classname="TargetPanel"/> 
-        <!-- 
-        <panel classname="PacksPanel"/>
-         -->
-        <panel classname="InstallPanel"/>        <panel classname="ShortcutPanel"/>
-        <panel classname="FinishPanel"/>
-    </panels>
-    <!-- 
-        The packs section.
-        We specify here our packs.
-    -->
-    <packs>
-        <pack name="browser" required="yes">
-            <description>The media browser, the core features</description>            <file src="sources/core/speech.properties" targetdir="$USER_HOME"/>
-            <file src="soundbank.gm" targetdir="$INSTALL_PATH"/>
-            <file src="GUIConfig.properties" targetdir="$INSTALL_PATH"/>            <file os="windows" src="shortPathNameFormat.vbs" targetdir="$INSTALL_PATH"/>
-            <file src="installer/Readme.txt" targetdir="$INSTALL_PATH"/>
-            <file src="installer/Licence.txt" targetdir="$INSTALL_PATH"/>
-            <file src="installer/Tramper.ico" os="windows" targetdir="$INSTALL_PATH"/>
-            <file src="installer/Tramper-uninstall.ico" os="windows" targetdir="$INSTALL_PATH"/>            <fileset dir="archives" targetdir="$INSTALL_PATH/lib">	            <include name="*.jar"/>	            <exclude name="video.jar"/>	            <exclude name="freetts-synthesizer.jar"/>	            <exclude name="sphinx-recognizer.jar"/>            </fileset>            <fileset dir="lib" targetdir="$INSTALL_PATH/lib">
-	            <include name="*.jar"/>	            <exclude name="jmc.jar"/>
-	            <exclude name="cmu*.jar"/>
-	            <exclude name="en_us.jar"/>
-	            <exclude name="freetts*.jar"/>	            <exclude name="sphinx4.jar"/>
-	            <exclude name="WSJ_8gau_13dCep_16k_40mel_130Hz_6800Hz.jar"/>
-            </fileset>
-            <fileset dir="lib/windows" os="windows" targetdir="$INSTALL_PATH/lib/windows">            	<exclude name="**/msvc*.dll"/>            	<exclude name="**/jmc.dll"/>            </fileset>
-        </pack>
-    </packs>
-        <!-- for windows shortcuts -->    <native type="izpack" name="ShellLink.dll"/>    
-</installation>
