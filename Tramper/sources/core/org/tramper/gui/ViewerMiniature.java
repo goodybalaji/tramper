@@ -183,7 +183,9 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 
 	g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	
-	RoundRectangle2D.Float roundRect = new RoundRectangle2D.Float(marginWidth, marginWidth, miniatureSize.width - 2*marginWidth, miniatureSize.height - 2*marginWidth, 10, 10);
+	float arcWidth = 10;
+	float arcHeight = 10;
+	RoundRectangle2D.Float roundRect = new RoundRectangle2D.Float(marginWidth, marginWidth, miniatureSize.width - 2*marginWidth, miniatureSize.height - 2*marginWidth, arcWidth, arcHeight);
 	g2d.setClip(roundRect);
 	
 	// paint the background, if the viewer is not wide enough for the miniature
@@ -223,9 +225,9 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 	
 	// fill title background
 	g2d.setColor(titleBackground);
-        int titleBackgroundX = marginWidth;
-        int titleBackgroundY = miniatureSize.height - ((int)metrics.getHeight() + marginWidth);
-        int titleBackgroundWidth = miniatureSize.width - 2*marginWidth;
+        int titleBackgroundX = marginWidth + borderWidth;
+        int titleBackgroundY = miniatureSize.height - ((int)metrics.getHeight() + marginWidth + borderWidth);
+        int titleBackgroundWidth = miniatureSize.width - 2*(marginWidth + borderWidth);
         int titleBackgroundHeight = (int)metrics.getHeight();
 	g2d.fillRect(titleBackgroundX, titleBackgroundY, titleBackgroundWidth, titleBackgroundHeight);
 	
@@ -242,8 +244,8 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 	    int visiblePart = (titleCharLength*titleBackgroundWidth)/titleWidth - 2;
 	    title = title.substring(0, visiblePart) + "...";
 	}
-	int titleX = marginWidth + borderWidth;
-	int titleY = miniatureSize.height - (int)(metrics.getDescent() + metrics.getLeading() + marginWidth);
+	int titleX = marginWidth + borderWidth + (int)arcWidth;
+	int titleY = miniatureSize.height - (int)(metrics.getDescent() + metrics.getLeading() + marginWidth + borderWidth);
 	g2d.drawString(title, titleX, titleY);
 	
 	// draw double-lines border
