@@ -18,6 +18,7 @@ import org.fingon.player.PlayListener;
 import org.fingon.player.Player;
 import org.fingon.player.PlayerFactory;
 import org.fingon.synthesizer.SpeechSynthesizer;
+import org.fingon.synthesizer.SpeechSynthesizerFactory;
 import org.fingon.synthesizer.SynthesisException;
 import org.fingon.synthesizer.VoiceDesc;
 import org.tramper.ui.Renderer;
@@ -51,8 +52,8 @@ public class MarkupConductor extends Conductor implements Runnable {
 	players = new ArrayList<Player>();
 	playListener = new ArrayList<PlayListener>();
 	try {
-	    principal = (SpeechSynthesizer)PlayerFactory.getPlayerByExtension("html");
-	} catch (PlayException e) {
+	    principal = SpeechSynthesizerFactory.getSpeechSynthesizer();
+	} catch (SynthesisException e) {
 	    logger.error("couldn't have a speech synthesizer, so can't play the document", e);
 	}
 	players.add(principal);
