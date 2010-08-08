@@ -3,6 +3,7 @@ package org.tramper.audio;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 
 import javax.swing.JLabel;
@@ -77,10 +78,14 @@ public class SoundHeader extends SimpleHeader {
     public void displayDocument(SimpleDocument document, Target target) {
 	super.displayDocument(document, target);
 	Sound soundDoc = (Sound)document;
-        ResourceBundle label = ResourceBundle.getBundle("label");
 	long duration = soundDoc.getDuration();
 	if (duration > 0) {
-	    documentDuration.setText(duration/100000+label.getString("javaspeaker.unit.second"));
+	    long durationSeconds = duration/1000000;
+	    long durationHours = durationSeconds/3600;
+	    long durationMinutes = durationSeconds%3600/60;
+	    durationSeconds = durationSeconds%3600%60;
+	    DecimalFormat formater = new DecimalFormat("00");
+	    documentDuration.setText(formater.format(durationHours) + ":" + formater.format(durationMinutes) + ":" + formater.format(durationSeconds));
 	}
 	String album = soundDoc.getAlbum();
 	if (album != null) {
