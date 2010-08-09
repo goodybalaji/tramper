@@ -28,7 +28,7 @@ import org.tramper.gui.IconFactory;
  * @author Paul-Emile
  */
 public class FeedItemListCellRenderer extends JPanel implements ListCellRenderer {
-    /** RssItemListCellRenderer.java long */
+    /** FeedItemListCellRenderer.java long */
     private static final long serialVersionUID = 8116072096549573274L;
     /**  */
     private JLabel titleLabel;
@@ -37,7 +37,7 @@ public class FeedItemListCellRenderer extends JPanel implements ListCellRenderer
     /**  */
     private JLabel modificationDateLabel;
     /**  */
-    private JLabel creationLabelLabel;
+    private JLabel creationDateLabel;
     
     
     /**
@@ -49,34 +49,36 @@ public class FeedItemListCellRenderer extends JPanel implements ListCellRenderer
         this.setLayout(panelLayout);
         
         GridBagConstraints constraints = new GridBagConstraints();
-        
+
         titleLabel = new JLabel();
         constraints.anchor = GridBagConstraints.WEST;
         constraints.weightx = 1;
+        constraints.gridheight = 1;
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
         panelLayout.setConstraints(titleLabel, constraints);
         this.add(titleLabel);
-        
-        creationLabelLabel = new JLabel();
-        creationLabelLabel.setForeground(Color.GRAY);
-        constraints.anchor = GridBagConstraints.EAST;
-        constraints.weightx = 0;
-        constraints.gridwidth = GridBagConstraints.REMAINDER;
-        panelLayout.setConstraints(creationLabelLabel, constraints);
-        this.add(creationLabelLabel);
         
         categoryLabel = new JLabel();
         categoryLabel.setForeground(new Color(0, 64, 0));
         constraints.anchor = GridBagConstraints.WEST;
-        constraints.weightx = 1;
+        constraints.weightx = 0;
+        constraints.gridwidth = 1;
         constraints.insets = new Insets(0, 20, 0, 0);
         panelLayout.setConstraints(categoryLabel, constraints);
         this.add(categoryLabel);
+
+        creationDateLabel = new JLabel();
+        creationDateLabel.setForeground(Color.GRAY);
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.weightx = 0;
+        constraints.insets = new Insets(0, 0, 0, 0);
+        panelLayout.setConstraints(creationDateLabel, constraints);
+        this.add(creationDateLabel);
         
         modificationDateLabel = new JLabel();
         modificationDateLabel.setForeground(Color.GRAY);
-        constraints.anchor = GridBagConstraints.EAST;
-        constraints.weightx = 0;
-        constraints.insets = new Insets(0, 0, 0, 0);
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.weightx = 1;
         constraints.gridwidth = GridBagConstraints.REMAINDER;
         panelLayout.setConstraints(modificationDateLabel, constraints);
         this.add(modificationDateLabel);
@@ -102,9 +104,11 @@ public class FeedItemListCellRenderer extends JPanel implements ListCellRenderer
             if ("via".equals(relation) || "enclosure".equals(relation)) {
                 found = true;
         	SimpleDocument linkedDoc = link.getLinkedDocument();
+        	
         	String mimeType = linkedDoc.getMimeType();
                 Icon icon = IconFactory.getIconByMimeType(mimeType);
                 titleLabel.setIcon(icon);
+                
                 if (title == null) {
                     text = linkedDoc.getTitle();
                 }
@@ -124,9 +128,9 @@ public class FeedItemListCellRenderer extends JPanel implements ListCellRenderer
         
         Date pubDate = item.getPublicationDate();
         if (pubDate != null) {
-            creationLabelLabel.setText(dateFormat.format(pubDate));
+            creationDateLabel.setText(dateFormat.format(pubDate));
         } else {
-            creationLabelLabel.setText("");
+            creationDateLabel.setText("");
         }
         
         Date updateDate = item.getUpdateDate();
