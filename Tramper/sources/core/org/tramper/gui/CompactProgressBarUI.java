@@ -51,19 +51,11 @@ public class CompactProgressBarUI extends BasicProgressBarUI {
     }
 
     /**
-     * @see javax.swing.plaf.basic.BasicProgressBarUI#getMaximumSize(javax.swing.JComponent)
-     */
-    @Override
-    public Dimension getMaximumSize(JComponent c) {
-	return new Dimension(45, 45);
-    }
-
-    /**
      * @see javax.swing.plaf.basic.BasicProgressBarUI#getMinimumSize(javax.swing.JComponent)
      */
     @Override
     public Dimension getMinimumSize(JComponent c) {
-	return new Dimension(15, 15);
+	return new Dimension(16, 16);
     }
 
     /**
@@ -71,7 +63,15 @@ public class CompactProgressBarUI extends BasicProgressBarUI {
      */
     @Override
     public Dimension getPreferredSize(JComponent c) {
-	return new Dimension(30, 30);
+	return new Dimension(32, 32);
+    }
+
+    /**
+     * @see javax.swing.plaf.basic.BasicProgressBarUI#getMaximumSize(javax.swing.JComponent)
+     */
+    @Override
+    public Dimension getMaximumSize(JComponent c) {
+	return new Dimension(48, 48);
     }
 
     /**
@@ -133,6 +133,11 @@ public class CompactProgressBarUI extends BasicProgressBarUI {
 	Insets insets = progressBar.getInsets(); // area for border
 	int barRectWidth = progressBar.getWidth() - (insets.right + insets.left);
 	int barRectHeight = progressBar.getHeight() - (insets.top + insets.bottom);
+	if (barRectWidth > barRectHeight) {
+	    barRectWidth = barRectHeight;
+	} else if (barRectHeight > barRectWidth) {
+	    barRectHeight = barRectWidth;
+	}
         
 	Stroke stroke = new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 	g2d.setStroke(stroke);
@@ -152,7 +157,21 @@ public class CompactProgressBarUI extends BasicProgressBarUI {
 	}
 	
 	g2d.setColor(progressBar.getParent().getBackground());
-	Ellipse2D.Float center = new Ellipse2D.Float(progressBar.getWidth()/4, progressBar.getHeight()/4, progressBar.getWidth()/2, progressBar.getHeight()/2);
+	float centerx = progressBar.getWidth()/4;
+	float centery = progressBar.getHeight()/4;
+	if (centerx > centery) {
+	    centerx = centery;
+	} else if (centery > centerx) {
+	    centery = centerx;
+	}
+	float centerWidth = progressBar.getWidth()/2;
+	float centerHeight = progressBar.getHeight()/2;
+	if (centerWidth > centerHeight) {
+	    centerWidth = centerHeight;
+	} else if (centerHeight > centerWidth) {
+	    centerHeight = centerWidth;
+	}
+	Ellipse2D.Float center = new Ellipse2D.Float(centerx, centery, centerWidth, centerHeight);
 	g2d.fill(center);
     }
 }

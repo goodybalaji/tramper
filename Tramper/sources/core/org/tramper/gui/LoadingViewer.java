@@ -5,6 +5,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.EnhancedIcon;
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -37,6 +38,9 @@ public class LoadingViewer extends JPanel implements ActionListener {
      * 
      */
     public LoadingViewer() {
+	BoxLayout layout = new BoxLayout(this, BoxLayout.X_AXIS);
+	this.setLayout(layout);
+	
 	this.setOpaque(false);
 	
 	loadingProgress = new JProgressBar();
@@ -58,7 +62,7 @@ public class LoadingViewer extends JPanel implements ActionListener {
      */
     @Override
     public Dimension getMinimumSize() {
-	return new Dimension(40, 30);
+	return new Dimension(66, 16);
     }
 
     /**
@@ -66,7 +70,7 @@ public class LoadingViewer extends JPanel implements ActionListener {
      */
     @Override
     public Dimension getPreferredSize() {
-	return new Dimension(80, 60);
+	return new Dimension(82, 32);
     }
 
     /**
@@ -74,7 +78,7 @@ public class LoadingViewer extends JPanel implements ActionListener {
      */
     @Override
     public Dimension getMaximumSize() {
-	return getPreferredSize();
+	return new Dimension(98, 48);
     }
 
     /**
