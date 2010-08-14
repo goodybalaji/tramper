@@ -17,7 +17,7 @@ import javax.swing.JComponent;
 import javax.swing.JProgressBar;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
-import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.ProgressBarUI;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
 public class CompactProgressBarUI extends BasicProgressBarUI {
@@ -25,7 +25,12 @@ public class CompactProgressBarUI extends BasicProgressBarUI {
     private Color backgroundHighlight;
     private Color foregroundHighlight;
     
-    public static ComponentUI createUI(JComponent x) {
+    /**
+     * 
+     * @param x
+     * @return
+     */
+    public static ProgressBarUI createUI(JComponent x) {
 	return new CompactProgressBarUI();
     }
 
@@ -34,6 +39,10 @@ public class CompactProgressBarUI extends BasicProgressBarUI {
      */
     @Override
     protected void installDefaults() {
+	UIManager.put("ProgressBar.cycleTime", Integer.valueOf(800));
+	UIManager.put("ProgressBar.repaintInterval", Integer.valueOf(100));
+	UIManager.put("ProgressBar.backgroundHighlight", UIManager.getColor("TextField.selectionBackground"));
+	UIManager.put("ProgressBar.foregroundHighlight", UIManager.getColor("TextField.selectionForeground"));
         LookAndFeel.installProperty(progressBar, "opaque", Boolean.FALSE);
 	LookAndFeel.installColorsAndFont(progressBar,
 					 "ProgressBar.background",
@@ -63,7 +72,7 @@ public class CompactProgressBarUI extends BasicProgressBarUI {
      */
     @Override
     public Dimension getPreferredSize(JComponent c) {
-	return new Dimension(32, 32);
+	return new Dimension(24, 24);
     }
 
     /**
