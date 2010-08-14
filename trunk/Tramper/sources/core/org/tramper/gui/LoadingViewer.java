@@ -45,7 +45,7 @@ public class LoadingViewer extends JPanel implements ActionListener {
 	
 	loadingProgress = new JProgressBar();
 	loadingProgress.setStringPainted(false);
-	loadingProgress.setUI(CompactProgressBarUI.createUI(loadingProgress));
+	//loadingProgress.setUI(CompactProgressBarUI.createUI(loadingProgress));
 	this.add(loadingProgress);
 
 	stopButton = new JButton();

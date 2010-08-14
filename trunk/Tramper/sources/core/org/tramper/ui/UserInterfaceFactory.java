@@ -117,6 +117,7 @@ public class UserInterfaceFactory {
         	} catch (Exception e) {
         	    logger.warn("unable to load the look and feel at startup", e);
         	}
+        	UIManager.put("ProgressBarUI", "org.tramper.gui.CompactProgressBarUI");
 	    }
 	});
     }
