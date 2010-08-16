@@ -100,7 +100,7 @@ public class ImagePlayer implements Player, Runnable {
      * @throws PlayException
      */
     public void play(URL anUrl) throws PlayException {
-        image = Toolkit.getDefaultToolkit().getImage(anUrl);
+        image = Toolkit.getDefaultToolkit().createImage(anUrl);
         Thread thread = new Thread(this);
         thread.start();
     }
@@ -111,7 +111,7 @@ public class ImagePlayer implements Player, Runnable {
      * @throws PlayException
      */
     public void playAndWait(URL anUrl) throws PlayException {
-        image = Toolkit.getDefaultToolkit().getImage(anUrl);
+        image = Toolkit.getDefaultToolkit().createImage(anUrl);
         Thread thread = new Thread(this);
         thread.start();
         try {
@@ -127,7 +127,7 @@ public class ImagePlayer implements Player, Runnable {
      * @throws PlayException
      */
     public void playLoop(URL anUrl) throws PlayException {
-        image = Toolkit.getDefaultToolkit().getImage(anUrl);
+        image = Toolkit.getDefaultToolkit().createImage(anUrl);
         Thread thread = new Thread(this);
         thread.start();
     }
