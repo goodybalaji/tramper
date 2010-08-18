@@ -15,7 +15,6 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 
 import javax.swing.Action;
-import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -182,8 +181,6 @@ public class AddressControlPanel extends JPanel implements ActionListener {
         constraint.weightx = 0;
         addressLayout.setConstraints(searchEngineList, constraint);
         this.add(searchEngineList);
-
-        this.add(Box.createHorizontalStrut(10));
 
         openButton = new JButton();
         openButton.setActionCommand("openButton");
