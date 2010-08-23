@@ -119,6 +119,7 @@ public class PlayerControlPanel extends JPanel implements PlayListener, ChangeLi
         speedSlider.setPreferredSize(new Dimension(130, 30));
         speedSlider.setMaximumSize(new Dimension(130, 30));
         speedSlider.setOrientation(JSlider.HORIZONTAL);
+        speedSlider.setMinorTickSpacing(10);
         speedSlider.setPaintTicks(true);
         Hashtable<Integer, JLabel> sampleRateTable = new Hashtable<Integer, JLabel>();
         speedLabelMin = new JLabel(label.getString("javaspeaker.speakingRateLabel.min"));
@@ -206,6 +207,7 @@ public class PlayerControlPanel extends JPanel implements PlayListener, ChangeLi
         volumeSlider.setPreferredSize(new Dimension(130, 30));
         volumeSlider.setMaximumSize(new Dimension(130, 30));
         volumeSlider.setOrientation(JSlider.HORIZONTAL);
+        volumeSlider.setMinorTickSpacing(10);
         volumeSlider.setPaintTicks(true);
         Hashtable<Integer, JLabel> volumeTable = new Hashtable<Integer, JLabel>();
         volumeLabelMin = new JLabel(label.getString("javaspeaker.volumeLabel.min"));
