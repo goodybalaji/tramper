@@ -218,22 +218,6 @@ public class GUIConfig {
     }
 
     /**
-     * get the window's synthesizer panel flag
-     * @return last flag or default false
-     */
-    public boolean getSynthesizerPanel() {
-        return Boolean.valueOf(prop.getProperty("synthesizerPanel")).booleanValue();
-    }
-
-    /**
-     * set the window's synthesizer panel flag
-     * @param windowSynthesizerPanel 
-     */
-    public void setSynthesizerPanel(boolean windowSynthesizerPanel) {
-        prop.setProperty("synthesizerPanel", String.valueOf(windowSynthesizerPanel));
-    }
-
-    /**
      * get the window's recognizer panel flag
      * @return last flag or default false
      */
