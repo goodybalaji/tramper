@@ -32,7 +32,6 @@ import org.tramper.action.LoadHistoryAction;
 import org.tramper.action.NextPlayAction;
 import org.tramper.action.OpenDisplayAction;
 import org.tramper.action.OpenRecognizerAction;
-import org.tramper.action.OpenSynthesizerAction;
 import org.tramper.action.PausePlayAction;
 import org.tramper.action.PreviousPlayAction;
 import org.tramper.action.QuitAction;
@@ -103,7 +102,6 @@ public class SphinxSpeechRecognizer implements StateListener, SpeechRecognizer, 
         actionMap.put("backHistory", BackHistoryAction.getInstance());
         actionMap.put("forwardHistory", ForwardHistoryAction.getInstance());
         actionMap.put("openDisplay", OpenDisplayAction.getInstance());
-        actionMap.put("openSynthesizer", new OpenSynthesizerAction());
         actionMap.put("openRecognizer", OpenRecognizerAction.getInstance());
         load();
     }

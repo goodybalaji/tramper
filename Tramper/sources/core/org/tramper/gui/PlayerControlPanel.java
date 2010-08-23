@@ -25,7 +25,6 @@ import org.tramper.action.LoadAboutAction;
 import org.tramper.action.NextPlayAction;
 import org.tramper.action.OpenDisplayAction;
 import org.tramper.action.OpenRecognizerAction;
-import org.tramper.action.OpenSynthesizerAction;
 import org.tramper.action.PausePlayAction;
 import org.tramper.action.PreviousPlayAction;
 import org.tramper.action.ResumePlayAction;
@@ -81,8 +80,6 @@ public class PlayerControlPanel extends JPanel implements PlayListener, ChangeLi
     private JLabel speedLabelMax;
     /** recognizer control panel display button */
     private JButton recognizerButton;
-    /** synthesizer control panel display button */
-    private JButton synthesizerButton;
     /** recognizer enhanced icon */
     private EnhancedIcon recognizerIcon;
     /** display control panel display button */
@@ -101,21 +98,11 @@ public class PlayerControlPanel extends JPanel implements PlayListener, ChangeLi
 	
         ResourceBundle label = ResourceBundle.getBundle("label", Locale.getDefault());
 
-        synthesizerButton = new JButton();
-        synthesizerButton.setAction(new OpenSynthesizerAction());
-        EnhancedIcon synthesizerIcon = new EnhancedIcon(getClass().getResource("images/speaker.png"));
-        synthesizerButton.setIcon(synthesizerIcon);
-        String tooltip = TooltipManager.createTooltip("synthesizer");
-        synthesizerButton.setToolTipText(tooltip);
-        this.add(synthesizerButton);
-
-        this.add(Box.createRigidArea(new Dimension(4, 4)));
-
         recognizerButton = new JButton();
         recognizerButton.setAction(OpenRecognizerAction.getInstance());
         recognizerIcon = new EnhancedIcon(getClass().getResource("images/microphone.png"));
         recognizerButton.setIcon(recognizerIcon);
-        tooltip = TooltipManager.createTooltip("recognizer");
+        String tooltip = TooltipManager.createTooltip("recognizer");
         recognizerButton.setToolTipText(tooltip);
         this.add(recognizerButton);
         
@@ -290,8 +277,6 @@ public class PlayerControlPanel extends JPanel implements PlayListener, ChangeLi
        recognizerButton.setToolTipText(formated);
        formated = TooltipManager.createTooltip("display");
        displayButton.setToolTipText(formated);
-       formated = TooltipManager.createTooltip("synthesizer");
-       synthesizerButton.setToolTipText(formated);
        formated = TooltipManager.createTooltip("about");
        aboutButton.setToolTipText(formated);
        

@@ -59,7 +59,6 @@ import org.tramper.action.LoadHistoryAction;
 import org.tramper.action.NextPlayAction;
 import org.tramper.action.OpenDisplayAction;
 import org.tramper.action.OpenRecognizerAction;
-import org.tramper.action.OpenSynthesizerAction;
 import org.tramper.action.PausePlayAction;
 import org.tramper.action.PreviousPlayAction;
 import org.tramper.action.QuitAction;
@@ -84,8 +83,6 @@ import org.tramper.doc.Target;
 import org.tramper.gui.viewer.Viewer;
 import org.tramper.gui.viewer.ViewerFactory;
 import org.tramper.loader.LoaderFactory;
-import org.fingon.player.Player;
-import org.fingon.synthesizer.SpeechSynthesizer;
 import org.tramper.ui.RenderingException;
 import org.tramper.ui.UserInterface;
 import org.tramper.ui.UserInterfaceFactory;
@@ -119,8 +116,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
     private DisplayControlPanel displayPanel;
     /**  */
     private PlayerControlPanel playerPanel;
-    /**  */
-    private SynthesizerControlPanel speakerPanel;
     /**  */
     private AddressControlPanel addressPanel;
     /**  */
@@ -175,7 +170,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
         
 	boolean addressPanelFlag = guiConfig.getAddressPanel();
 	boolean displayPanelFlag = guiConfig.getDisplayPanel();
-	boolean synthesizerPanelFlag = guiConfig.getSynthesizerPanel();
 	boolean recognizerPanelFlag = guiConfig.getRecognizerPanel();
 	boolean readerPanelFlag = guiConfig.getPlayerPanel();
 
@@ -239,11 +233,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	    this.getContentPane().add(displayPanel, BorderLayout.WEST);
 	}
 
-	if (synthesizerPanelFlag) {
-	    speakerPanel = new SynthesizerControlPanel(this);
-	    this.getContentPane().add(speakerPanel, BorderLayout.WEST);
-	}
-
 	if (recognizerPanelFlag) {
 	    recorderPanel = new RecognizerControlPanel(this);
 	    this.getContentPane().add(recorderPanel, BorderLayout.WEST);
@@ -293,8 +282,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	actionMap.put("backHistory", BackHistoryAction.getInstance());
 	inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.ALT_DOWN_MASK), "forwardHistory");
 	actionMap.put("forwardHistory", ForwardHistoryAction.getInstance());
-	inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0), "openSynthesizer");
-	actionMap.put("openSynthesizer", new OpenSynthesizerAction());
 	inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0), "openRecognizer");
 	actionMap.put("openRecognizer", OpenRecognizerAction.getInstance());
 	inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0), "openDisplay");
@@ -443,11 +430,7 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
      */
     public void actionPerformed(ActionEvent event) {
 	String command = event.getActionCommand();
-	 if (command.equals("closeEngine")) {
-	    this.getContentPane().remove(speakerPanel);
-	    this.getContentPane().validate();
-	    speakerPanel = null;
-	} else if (command.equals("closeRecognizer")) {
+	if (command.equals("closeRecognizer")) {
 	    this.getContentPane().remove(recorderPanel);
 	    this.getContentPane().validate();
 	    recorderPanel = null;
@@ -629,31 +612,8 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
     /**
      * 
      */
-    public void openSynthesizer() {
-	if (recorderPanel != null) {
-	    this.getContentPane().remove(recorderPanel);
-	    recorderPanel = null;
-	} else if (displayPanel != null) {
-	    this.getContentPane().remove(displayPanel);
-	    displayPanel = null;
-	}
-	if (speakerPanel == null) {
-            speakerPanel = new SynthesizerControlPanel(this);
-            this.getContentPane().add(speakerPanel, BorderLayout.WEST);
-            // transfer the focus to the next component
-            speakerPanel.transferFocus();
-            this.validate();
-	}
-    }
-
-    /**
-     * 
-     */
     public void openRecognizer() {
-	if (speakerPanel != null) {
-	    this.getContentPane().remove(speakerPanel);
-	    speakerPanel = null;
-	} else if (displayPanel != null) {
+	if (displayPanel != null) {
 	    this.getContentPane().remove(displayPanel);
 	    displayPanel = null;
 	}
@@ -670,10 +630,7 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
      * 
      */
     public void openDisplay() {
-	if (speakerPanel != null) {
-	    this.getContentPane().remove(speakerPanel);
-	    speakerPanel = null;
-	} else if (recorderPanel != null) {
+	if (recorderPanel != null) {
 	    this.getContentPane().remove(recorderPanel);
 	    recorderPanel = null;
 	}
@@ -750,9 +707,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	}
 	if (playerPanel != null) {
 	    playerPanel.relocalize();
-	}
-	if (speakerPanel != null) {
-	    speakerPanel.relocalize();
 	}
 	if (recorderPanel != null) {
 	    recorderPanel.relocalize();
@@ -947,11 +901,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
             displayPanel = null;
         }
 
-        if (speakerPanel != null) {
-            this.getContentPane().remove(speakerPanel);
-            speakerPanel = null;
-        }
-
         if (recorderPanel != null) {
             this.getContentPane().remove(recorderPanel);
             recorderPanel = null;
@@ -1062,7 +1011,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	guiConfig.setLookAndFeel(laf.getClass().getName());
 	guiConfig.setAddressPanel((addressPanel != null));
 	guiConfig.setPlayerPanel((playerPanel != null));
-	guiConfig.setSynthesizerPanel((speakerPanel != null));
 	guiConfig.setRecognizerPanel((recorderPanel != null));
 	guiConfig.setDisplayPanel((displayPanel != null));
 	guiConfig.setWindowExtendedState(this.getExtendedState());
@@ -1248,16 +1196,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	        }
 	    });
         }
-        final Player principal = activatedConductor.getPrincipal();
-        if (principal instanceof SpeechSynthesizer) {
-            if (speakerPanel != null) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-    	            	speakerPanel.setControlValues((SpeechSynthesizer)principal);
-                    }
-                });
-            }
-        }
     }
 
     /**
@@ -1274,17 +1212,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
                 	playerPanel.setEnabled(false);
                     }
                 });
-            }
-            Player principal = deactivatedPlayer.getPrincipal();
-            if (principal instanceof SpeechSynthesizer) {
-                if (speakerPanel != null) {
-                    ((SpeechSynthesizer)principal).removeSpeechListener(speakerPanel);
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            speakerPanel.setEnabled(false);
-                        }
-                    });
-                }
             }
 	}
     }

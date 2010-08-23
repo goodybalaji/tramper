@@ -4,7 +4,6 @@ import org.tramper.aui.AudioUserInterface;
 import org.tramper.doc.Favorites;
 import org.tramper.doc.History;
 import org.tramper.gui.GraphicalUserInterface;
-import org.tramper.gui.SystemTrayMgr;
 import org.tramper.ui.UserInterfaceFactory;
 
 /**
@@ -33,9 +32,6 @@ public class Tramper {
         AudioUserInterface aui = UserInterfaceFactory.getAudioUserInterface();
         aui.addAUIListener(gui);
 
-        // Set an icon in the system tray
-        new SystemTrayMgr();
-        
         // load last document of the history
         while (!history.isLoaded()) {
             try {

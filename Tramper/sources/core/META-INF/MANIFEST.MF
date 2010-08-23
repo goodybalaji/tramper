@@ -1,21 +1,5 @@
-Manifest-Version: 1.0 
-Created-By: 1.6.0_11 (Sun Microsystems Inc.) 
+Manifest-Version: 1.0
 Main-Class: org.tramper.Tramper
 SplashScreen-Image: org/tramper/gui/images/splash.png
-Class-Path: ./cobra.jar 
- ./ICOReader-1.04.jar 
- ./jdic.jar 
- ./jdic_stub.jar 
- ./js.jar 
- ./log4j-1.2.4.jar 
- ./nekohtml.jar 
- ./quaqua.jar 
- ./serializer.jar 
- ./xalan.jar 
- ./xercesImpl.jar 
- ./xml-apis.jar 
- ./browser.jar 
- ./feed.jar 
- ./outline.jar 
- ./webPage.jar 
- 
+Class-Path: log4j-1.2.4.jar trident.jar quaqua.jar serializer.jar 
+ xalan.jar xercesImpl.jar xml-apis.jar browser.jar feed.jar outline.jar
