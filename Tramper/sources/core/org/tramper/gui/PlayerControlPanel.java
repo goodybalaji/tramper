@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
@@ -22,6 +23,7 @@ import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
 import org.tramper.action.LoadAboutAction;
+import org.tramper.action.MuteAction;
 import org.tramper.action.NextPlayAction;
 import org.tramper.action.OpenDisplayAction;
 import org.tramper.action.OpenRecognizerAction;
@@ -78,6 +80,8 @@ public class PlayerControlPanel extends JPanel implements PlayListener, ChangeLi
     private JLabel speedLabelMin;
     /** Maximum speed label */
     private JLabel speedLabelMax;
+    /** mute button */
+    private JToggleButton muteButton;
     /** recognizer control panel display button */
     private JButton recognizerButton;
     /** recognizer enhanced icon */
@@ -98,11 +102,21 @@ public class PlayerControlPanel extends JPanel implements PlayListener, ChangeLi
 	
         ResourceBundle label = ResourceBundle.getBundle("label", Locale.getDefault());
 
+        muteButton = new JToggleButton();
+        muteButton.setAction(MuteAction.getInstance());
+        Icon muteIcon = new EnhancedIcon(getClass().getResource("images/speaker.png"));
+        muteButton.setIcon(muteIcon);
+        Icon mutedIcon = new EnhancedIcon(getClass().getResource("images/speaker_mute.png"));
+        muteButton.setSelectedIcon(mutedIcon);
+        String tooltip = TooltipManager.createTooltip("mute");
+        muteButton.setToolTipText(tooltip);
+        this.add(muteButton);
+
         recognizerButton = new JButton();
         recognizerButton.setAction(OpenRecognizerAction.getInstance());
         recognizerIcon = new EnhancedIcon(getClass().getResource("images/microphone.png"));
         recognizerButton.setIcon(recognizerIcon);
-        String tooltip = TooltipManager.createTooltip("recognizer");
+        tooltip = TooltipManager.createTooltip("recognizer");
         recognizerButton.setToolTipText(tooltip);
         this.add(recognizerButton);
         
@@ -281,6 +295,8 @@ public class PlayerControlPanel extends JPanel implements PlayListener, ChangeLi
        displayButton.setToolTipText(formated);
        formated = TooltipManager.createTooltip("about");
        aboutButton.setToolTipText(formated);
+       formated = TooltipManager.createTooltip("mute");
+       muteButton.setToolTipText(formated);
        
        speedLabel.setText(label.getString("javaspeaker.speakingRateLabel"));
        speedLabelMin.setText(label.getString("javaspeaker.speakingRateLabel.min"));
