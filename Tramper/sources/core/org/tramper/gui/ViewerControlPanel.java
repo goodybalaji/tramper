@@ -5,7 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RadialGradientPaint;
+import java.awt.LinearGradientPaint;
 import java.awt.RenderingHints;
 import java.awt.MultipleGradientPaint.CycleMethod;
 import java.awt.geom.Point2D;
@@ -68,17 +68,24 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
 
 	g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	Color thisBackground = this.getBackground();
-        int newRed = thisBackground.getRed()+15 > 255 ? 255 : thisBackground.getRed()+15;
-        int newGreen = thisBackground.getGreen()+15 > 255 ? 255 : thisBackground.getGreen()+15;
-        int newBlue = thisBackground.getBlue()+15 > 255 ? 255 : thisBackground.getBlue()+15;
-        Color newBgColor = new Color(newRed, newGreen, newBlue);
+        int lighterRed = thisBackground.getRed()+40 > 255 ? 255 : thisBackground.getRed()+40;
+        int lighterGreen = thisBackground.getGreen()+40 > 255 ? 255 : thisBackground.getGreen()+40;
+        int lighterBlue = thisBackground.getBlue()+40 > 255 ? 255 : thisBackground.getBlue()+40;
+        Color lighterBgColor = new Color(lighterRed, lighterGreen, lighterBlue);
+        int darkerRed = thisBackground.getRed()-10 < 0 ? 0 : thisBackground.getRed()-10;
+        int darkerGreen = thisBackground.getGreen()-10 < 0 ? 0 : thisBackground.getGreen()-10;
+        int darkerBlue = thisBackground.getBlue()-10 < 0 ? 0 : thisBackground.getBlue()-10;
+        Color darkerBgColor = new Color(darkerRed, darkerGreen, darkerBlue);
+        int evenMoreDarkerRed = thisBackground.getRed()-40 < 0 ? 0 : thisBackground.getRed()-40;
+        int evenMoreDarkerGreen = thisBackground.getGreen()-40 < 0 ? 0 : thisBackground.getGreen()-40;
+        int evenMoreDarkerBlue = thisBackground.getBlue()-40 < 0 ? 0 : thisBackground.getBlue()-40;
+        Color evenMoreDarkerBgColor = new Color(evenMoreDarkerRed, evenMoreDarkerGreen, evenMoreDarkerBlue);
 
-	Point2D center = new Point2D.Float(dimPanel.width/2, dimPanel.height);
-	float radius = dimPanel.width/4;
-	float[] dist = {0.3f, 1.0f};
-	Color internalColor = new Color(0, 0, 0, 0);
-	Color[] colors = {internalColor, newBgColor};
-	RadialGradientPaint p = new RadialGradientPaint(center, radius, dist, colors, CycleMethod.REFLECT);
+	Point2D startPoint = new Point2D.Float(0, 0);
+	Point2D endPoint = new Point2D.Float(0, dimPanel.height);
+	float[] dist = {0.0f, 0.49f, 0.51f, 1.0f};
+	Color[] colors = {lighterBgColor, thisBackground, darkerBgColor, evenMoreDarkerBgColor};
+	LinearGradientPaint p = new LinearGradientPaint(startPoint, endPoint, dist, colors, CycleMethod.NO_CYCLE);
 	g2d.setPaint(p);
 	g2d.fillRect(0, 0, dimPanel.width, dimPanel.height);
     }
