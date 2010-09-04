@@ -25,6 +25,13 @@ public interface Loader {
     public void download(String url, Target target);
 
     /**
+     * Used for uploading favorites and history at shutdown
+     * @param doc document to upload
+     * @param url URL where to upload the document
+     */
+    public void initUpload(SimpleDocument doc, String url);
+    
+    /**
      * upload a document to a source designated by an url
      * @param doc document to upload
      * @param url url where upload the document

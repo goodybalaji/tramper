@@ -5,14 +5,12 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-import org.tramper.doc.Favorites;
-import org.tramper.doc.History;
-import org.tramper.gui.GraphicalUserInterface;
+import org.tramper.loader.LoaderFactory;
 import org.tramper.ui.UserInterfaceFactory;
 
 /**
- * @author Paul-Emile
  * 
+ * @author Paul-Emile
  */
 public class QuitAction extends AbstractAction {
     /** QuitAction.java long */
@@ -43,20 +41,12 @@ public class QuitAction extends AbstractAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-	Favorites fav = Favorites.getInstance();
-	fav.save();
-	
-        if (UserInterfaceFactory.isGraphicalUserInterfaceInstanciated()) {
-            GraphicalUserInterface graphicalUserInterface = UserInterfaceFactory.getGraphicalUserInterface();
-            graphicalUserInterface.obfuscate();
-            graphicalUserInterface.saveGuiConfig();
-            graphicalUserInterface.dispose();
-        }
-	
-	History histo = History.getInstance();
-	histo.save();
+	// stop the remaining loadings if any
+	LoaderFactory.getInstance().unregister();
+
+        UserInterfaceFactory.removeAudioUserInterface();
+        UserInterfaceFactory.removeGraphicalUserInterface();
 	
 	System.exit(0);
     }
-
 }

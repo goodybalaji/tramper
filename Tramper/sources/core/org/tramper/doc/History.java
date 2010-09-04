@@ -27,7 +27,7 @@ public class History implements LoadingListener {
     private Feed history;
     /** Favorites file name */
     private static final String FILENAME = "history.atom";
-    /** history fil url */
+    /** history file URL */
     private URL historyUrl;
     /** current position in the history */
     private int currentPosition;
@@ -52,7 +52,7 @@ public class History implements LoadingListener {
     }
     
     /**
-     * Load the singleton from a file, or instanciate new one if failed
+     * Loads the singleton from a file, or instantiate new one if failed
      * @return
      */
     public static History getInstance() {
@@ -67,7 +67,7 @@ public class History implements LoadingListener {
      */
     public void load() {
         try {
-            Loader loader = LoaderFactory.getLoader();
+            Loader loader = LoaderFactory.getInstance().newLoader();
             loader.addLoadingListener(this);
             loader.download(historyUrl.toString(), new Target(Library.SECONDARY_FRAME, null));
         } catch (Exception e) {
@@ -77,7 +77,7 @@ public class History implements LoadingListener {
     }
     
     /**
-     * instanciate a new history feed with some default informations
+     * Instantiates a new history feed with some default informations
      */
     public void newHistory() {
         ResourceBundle label = ResourceBundle.getBundle("label");
@@ -90,6 +90,11 @@ public class History implements LoadingListener {
         history.setCreationDate(new Date());
         history.setLanguage(Locale.getDefault());
         history.setUrl(historyUrl);
+
+        Loader saver = LoaderFactory.getInstance().newLoader();
+        saver.initUpload(history, historyUrl.toString());
+        Thread aSavingThread = new Thread((Runnable)saver, "history saving");
+        Runtime.getRuntime().addShutdownHook(aSavingThread);
     }
     
     /**
@@ -231,7 +236,7 @@ public class History implements LoadingListener {
                 if ("via".equals(relation)) {
                     SimpleDocument aDocument = aLink.getLinkedDocument();
                     URL url = aDocument.getUrl();
-                    Loader loader = LoaderFactory.getLoader();
+                    Loader loader = LoaderFactory.getInstance().newLoader();
                     loader.download(url.toString(), new Target(Library.PRIMARY_FRAME, null));
                     break;
                 }
@@ -280,8 +285,8 @@ public class History implements LoadingListener {
 	if (isLoaded()) {
             history.setLastBuildDate(new Date());
             try {
-                Loader loader = LoaderFactory.getLoader();
-                loader.uploadAndWait(history, historyUrl.toString());
+                Loader loader = LoaderFactory.getInstance().newLoader();
+                loader.upload(history, historyUrl.toString());
             } catch (Exception e) {
                 logger.error("error saving history "+historyUrl, e);
             }
@@ -310,13 +315,19 @@ public class History implements LoadingListener {
      */
     public void loadingCompleted(LoadingEvent event) {
         history = (Feed)event.getLoadedDocument();
+
+        Loader saver = LoaderFactory.getInstance().newLoader();
+        saver.initUpload(history, historyUrl.toString());
+        Thread aSavingThread = new Thread((Runnable)saver, "history saving");
+        Runtime.getRuntime().addShutdownHook(aSavingThread);
+        
         if (UserInterfaceFactory.isGraphicalUserInterfaceInstanciated()) {
             UserInterfaceFactory.getGraphicalUserInterface().clarify();
         }
     }
     
     /**
-     * the loading has failed, instanciate a new empty history document 
+     * the loading has failed, instantiate a new empty history document 
      * @see org.tramper.loader.LoadingListener#loadingFailed(org.tramper.loader.LoadingEvent)
      */
     public void loadingFailed(LoadingEvent event) {
