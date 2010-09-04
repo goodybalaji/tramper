@@ -48,6 +48,7 @@ public class ListTableCellEditor extends JList implements TableCellEditor, Mouse
     /**
      * @see javax.swing.table.TableCellEditor#getTableCellEditorComponent(javax.swing.JTable, java.lang.Object, boolean, int, int)
      */
+    @SuppressWarnings("unchecked")
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 	links = (List<Object>)value;
         if (links != null) {
@@ -157,7 +158,7 @@ public class ListTableCellEditor extends JList implements TableCellEditor, Mouse
                     Sound media = (Sound)selected;
                     url = media.getUrl();
                 }
-                Loader loader = LoaderFactory.getLoader();
+                Loader loader = LoaderFactory.getInstance().newLoader();
                 loader.download(url.toString(), new Target(Library.PRIMARY_FRAME, null));
 	    }
 	}

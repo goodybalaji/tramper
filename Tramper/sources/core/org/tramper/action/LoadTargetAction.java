@@ -58,7 +58,7 @@ public class LoadTargetAction extends AbstractAction {
 	            address = searchEngine.makeResearchUrl(keywords);
 		}
 	    }
-            Loader aLoader = LoaderFactory.getLoader();
+            Loader aLoader = LoaderFactory.getInstance().newLoader();
             aLoader.download(address, target);
 	}
     }

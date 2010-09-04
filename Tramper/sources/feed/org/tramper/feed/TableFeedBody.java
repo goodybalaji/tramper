@@ -309,7 +309,7 @@ public class TableFeedBody extends JSplitPane implements Body, MouseListener, Ke
                 doc.processHTMLFrameHyperlinkEvent(evt);
             } else {
                 String url = e.getURL().toString();
-                Loader loader = LoaderFactory.getLoader();
+                Loader loader = LoaderFactory.getInstance().newLoader();
                 loader.download(url, new Target(Library.PRIMARY_FRAME, null));
             }
         }

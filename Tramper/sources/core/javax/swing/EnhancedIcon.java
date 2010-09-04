@@ -251,7 +251,7 @@ public class EnhancedIcon extends ImageIcon implements Runnable {
      */
     public void setAnimated(boolean animated) {
 	if (!this.animated && animated) {
-	    Thread aRunning = new Thread(this);
+	    Thread aRunning = new Thread(this, "animated icon");
 	    aRunning.start();
 	}
 	this.animated = animated;
@@ -269,14 +269,16 @@ public class EnhancedIcon extends ImageIcon implements Runnable {
      * NORTH_WEST, NORTH_EAST, SOUTH_WEST, SOUTH_EAST
      */
     public void addDecorationIcon(ImageIcon decorationIcon, int location) {
-	if (location == SwingConstants.NORTH_WEST) {
-	    northWestDecorationIcon = decorationIcon;
-	} else if (location == SwingConstants.NORTH_EAST) {
-	    northEastDecorationIcon = decorationIcon;
-	} else if (location == SwingConstants.SOUTH_WEST) {
-	    southWestDecorationIcon = decorationIcon;
-	} else if (location == SwingConstants.SOUTH_EAST) {
-	    southEastDecorationIcon = decorationIcon;
+	synchronized (this) {
+	    if (location == SwingConstants.NORTH_WEST) {
+		northWestDecorationIcon = decorationIcon;
+	    } else if (location == SwingConstants.NORTH_EAST) {
+		northEastDecorationIcon = decorationIcon;
+	    } else if (location == SwingConstants.SOUTH_WEST) {
+		southWestDecorationIcon = decorationIcon;
+	    } else if (location == SwingConstants.SOUTH_EAST) {
+		southEastDecorationIcon = decorationIcon;
+	    }
 	}
 	ImageObserver imgObs = this.getImageObserver();
 	if (imgObs != null) {
@@ -288,10 +290,12 @@ public class EnhancedIcon extends ImageIcon implements Runnable {
      * 
      */
     public void removeAllDecorationIcons() {
-	northWestDecorationIcon = null;
-	northEastDecorationIcon = null;
-	southWestDecorationIcon = null;
-	southEastDecorationIcon = null;
+	synchronized (this) {
+	    northWestDecorationIcon = null;
+	    northEastDecorationIcon = null;
+	    southWestDecorationIcon = null;
+	    southEastDecorationIcon = null;
+	}
 
 	ImageObserver imgObs = this.getImageObserver();
 	if (imgObs != null) {

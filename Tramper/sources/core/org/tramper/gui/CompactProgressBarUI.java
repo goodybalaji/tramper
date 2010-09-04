@@ -111,7 +111,7 @@ public class CompactProgressBarUI extends BasicProgressBarUI {
 	int frameCount = 8;
 	double animationIndex = frameCount*percentComplete;
 	float startingAngle = 0;
-	float angularExtent = 360/frameCount;
+	float angularExtent = 360f/frameCount;
 	for (int i=0; i<frameCount; i++) {
 	    startingAngle += angularExtent;
 	    if (i < animationIndex) {
@@ -124,7 +124,7 @@ public class CompactProgressBarUI extends BasicProgressBarUI {
 	}
 
 	g2d.setColor(progressBar.getParent().getBackground());
-	Ellipse2D.Float center = new Ellipse2D.Float(progressBar.getWidth()/4, progressBar.getHeight()/4, progressBar.getWidth()/2, progressBar.getHeight()/2);
+	Ellipse2D.Float center = new Ellipse2D.Float(progressBar.getWidth()/4f, progressBar.getHeight()/4f, progressBar.getWidth()/2f, progressBar.getHeight()/2f);
 	g2d.fill(center);
     }
 
@@ -153,7 +153,7 @@ public class CompactProgressBarUI extends BasicProgressBarUI {
 	Rectangle2D.Float ellipseBoundary = new Rectangle2D.Float(insets.left, insets.top, barRectWidth, barRectHeight);
 
 	float startingAngle = 0;
-	float angularExtent = 360/frameCount;
+	float angularExtent = 360f/frameCount;
 	for (int i=0; i<frameCount; i++) {
 	    startingAngle += angularExtent;
 	    if (i == animationIndex) {
@@ -166,15 +166,15 @@ public class CompactProgressBarUI extends BasicProgressBarUI {
 	}
 	
 	g2d.setColor(progressBar.getParent().getBackground());
-	float centerx = progressBar.getWidth()/4;
-	float centery = progressBar.getHeight()/4;
+	float centerx = progressBar.getWidth()/4f;
+	float centery = progressBar.getHeight()/4f;
 	if (centerx > centery) {
 	    centerx = centery;
 	} else if (centery > centerx) {
 	    centery = centerx;
 	}
-	float centerWidth = progressBar.getWidth()/2;
-	float centerHeight = progressBar.getHeight()/2;
+	float centerWidth = progressBar.getWidth()/2f;
+	float centerHeight = progressBar.getHeight()/2f;
 	if (centerWidth > centerHeight) {
 	    centerWidth = centerHeight;
 	} else if (centerHeight > centerWidth) {

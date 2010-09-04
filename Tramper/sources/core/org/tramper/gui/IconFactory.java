@@ -7,8 +7,6 @@ import javax.swing.Icon;
 import javax.swing.EnhancedIcon;
 import javax.swing.ImageIcon;
 
-import org.fingon.synthesizer.VoiceDesc;
-
 /**
  * Icon factory
  * @author Paul-Emile

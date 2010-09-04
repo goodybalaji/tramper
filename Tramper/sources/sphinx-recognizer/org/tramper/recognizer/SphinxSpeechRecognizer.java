@@ -151,7 +151,7 @@ public class SphinxSpeechRecognizer implements StateListener, SpeechRecognizer, 
      * Start recording (with a thread)
      */
     public void record() {
-        Thread aThread = new Thread(this);
+        Thread aThread = new Thread(this, "Sphinx recorder");
         aThread.start();
     }
     
@@ -161,7 +161,6 @@ public class SphinxSpeechRecognizer implements StateListener, SpeechRecognizer, 
      */
     public void run() {
         RuleGrammar ruleGrammar = jsgfGrammar.getRuleGrammar();
-        GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
         
         // the microphone will keep recording until the program exits
         if (microphone.startRecording()) {
@@ -200,20 +199,23 @@ public class SphinxSpeechRecognizer implements StateListener, SpeechRecognizer, 
                         double wordConf = wr.getLogMath().logToLinear((float)wr.getConfidence());
                         logger.debug("word "+word+" "+wordConf);
                     }
-                    boolean confirmed = false;
-                    gui.confirmMessage("chooseRecognized", new Object[] {finalResultText});
-                    if (confirmed) {
-                        //look for possible tag(s) in the results
-                        try {
-                            RuleParse ruleParse = ruleGrammar.parse(finalResultText, null);
-                            if (ruleParse != null) {
-                                String[] tags = ruleParse.getTags();
-                                for (int i = 0; i < tags.length; i++) {
-                                    performAction(tags[i]);
+                    if (UserInterfaceFactory.isGraphicalUserInterfaceInstanciated()) {
+                        GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
+                        boolean confirmed = false;
+                        gui.confirmMessage("chooseRecognized", new Object[] {finalResultText});
+                        if (confirmed) {
+                            //look for possible tag(s) in the results
+                            try {
+                                RuleParse ruleParse = ruleGrammar.parse(finalResultText, null);
+                                if (ruleParse != null) {
+                                    String[] tags = ruleParse.getTags();
+                                    for (int i = 0; i < tags.length; i++) {
+                                        performAction(tags[i]);
+                                    }
                                 }
+                            } catch (GrammarException e) {
+                                logger.warn("result parse failed");
                             }
-                        } catch (GrammarException e) {
-                            logger.warn("result parse failed");
                         }
                     }
                 } else {

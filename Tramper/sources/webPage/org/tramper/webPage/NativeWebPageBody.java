@@ -10,6 +10,8 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -69,6 +71,7 @@ public class NativeWebPageBody extends JPanel implements Body, WebBrowserListene
     /**
      * @throws Exception if no suitable native browser
      */
+    @SuppressWarnings("unchecked")
     public NativeWebPageBody() throws Exception {
         super();
         elementId = new ArrayList<String>();
@@ -192,8 +195,19 @@ public class NativeWebPageBody extends JPanel implements Body, WebBrowserListene
 	}
         URL newUrl = doc.getUrl();
         URL currentUrl = webBrowser.getURL();
+        boolean uriEqual = false;
+	try {
+	    URI newUri = newUrl.toURI();
+	    URI currentUri = null;
+	    if (currentUrl != null) {
+		currentUri = currentUrl.toURI();
+	    }
+	    uriEqual = newUri.equals(currentUri);
+	} catch (URISyntaxException e) {
+	    uriEqual = false;
+	}
         //do not reload the webpage if this is the same url (happens when loading document after a click on a link)
-        if (!newUrl.equals(currentUrl)) {
+        if (!uriEqual) {
             this.target = target;
             document = (WebPage)doc;
             
@@ -317,7 +331,7 @@ public class NativeWebPageBody extends JPanel implements Body, WebBrowserListene
             if (setUrlNotUsed) { // a click on a link, a javascript reload...
         	// we have to load the document because we don't have a player for it
                 logger.debug("reload document after completed in browser");
-                Loader loader = LoaderFactory.getLoader();
+                Loader loader = LoaderFactory.getInstance().newLoader();
                 loader.download(urlString, target);
             }
         }

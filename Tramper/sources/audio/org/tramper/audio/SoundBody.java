@@ -30,8 +30,6 @@ public class SoundBody extends JScrollPane implements Body, MouseListener {
     private JLabel progress;
     /** target */
     private Target target;
-    /** video */
-    private Sound document;
     
     public SoundBody() {
 	super();
@@ -53,7 +51,6 @@ public class SoundBody extends JScrollPane implements Body, MouseListener {
 	    throw new RuntimeException(doc.getTitle()+" is not a sound");
 	}
 	this.target = target;
-	this.document = (Sound)doc;
     }
 
     /**

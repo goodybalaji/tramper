@@ -43,7 +43,7 @@ public class ViewerControlPanel extends JPanel implements LoadingListener, Loade
 
     public ViewerControlPanel(GraphicalUserInterface main) {
 	loadingViewers = new HashMap<Loader, LoadingViewer>();
-        LoaderFactory.addLoaderFactoryListener(this);
+        LoaderFactory.getInstance().addLoaderFactoryListener(this);
 	
 	BoxLayout panelLayout = new BoxLayout(this, BoxLayout.X_AXIS);
 	this.setLayout(panelLayout);

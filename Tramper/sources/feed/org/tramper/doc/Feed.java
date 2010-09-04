@@ -278,6 +278,7 @@ public class Feed extends MarkupDocument implements Serializable, TableModel, Li
      * 
      * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
      */
+    @SuppressWarnings("unchecked")
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         FeedItem item = (FeedItem)items.get(rowIndex);
         if (columnIndex == 0) {

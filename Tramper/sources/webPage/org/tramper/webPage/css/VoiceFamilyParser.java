@@ -29,6 +29,7 @@ public class VoiceFamilyParser implements CSSPropertyParser {
     /**
      * @see org.tramper.parser.css.CSSPropertyParser#parse(org.w3c.dom.css.CSSValue)
      */
+    @SuppressWarnings("unchecked")
     public Object parse(CSSValue value) {
 	List<VoiceDesc> lValue = new ArrayList<VoiceDesc>();
 	

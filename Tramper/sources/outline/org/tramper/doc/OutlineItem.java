@@ -221,6 +221,36 @@ public class OutlineItem extends DocumentItem implements TreeNode, Comparable<Ou
     }
 
     /**
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	if (title != null) {
+	    return title.hashCode();
+	} else {
+	    return super.hashCode();
+	}
+    }
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (!(obj instanceof OutlineItem)) {
+	    return false;
+	}
+	String titleToCompare = ((OutlineItem)obj).getTitle();
+	if (title == null) {
+	    return false;
+	}
+	if (titleToCompare == null) {
+	    return false;
+	}
+	return title.equals(titleToCompare);
+    }
+
+    /**
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
@@ -231,6 +261,9 @@ public class OutlineItem extends DocumentItem implements TreeNode, Comparable<Ou
 	String titleToCompare = o.getTitle();
 	if (titleToCompare == null) {
 	    return -1;
+	}
+	if (title == null) {
+	    return 1;
 	}
 	return title.compareTo(titleToCompare);
     }

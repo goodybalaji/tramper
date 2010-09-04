@@ -167,7 +167,7 @@ public class SpeakableHtmlRendererContext extends SimpleHtmlRendererContext {
      * @see org.lobobrowser.html.HtmlRendererContext#linkClicked(org.w3c.dom.html2.HTMLElement, java.net.URL, java.lang.String)
      */
     public void linkClicked(HTMLElement arg0, URL url, String arg2) {
-        Loader loader = LoaderFactory.getLoader();
+        Loader loader = LoaderFactory.getInstance().newLoader();
         loader.download(url.toString(), new Target(Library.PRIMARY_FRAME, null));
     }
 
@@ -208,7 +208,7 @@ public class SpeakableHtmlRendererContext extends SimpleHtmlRendererContext {
      * @see org.lobobrowser.html.HtmlRendererContext#open(java.net.URL, java.lang.String, java.lang.String, boolean)
      */
     public HtmlRendererContext open(URL url, String arg1, String arg2, boolean arg3) {
-        Loader loader = LoaderFactory.getLoader();
+        Loader loader = LoaderFactory.getInstance().newLoader();
         loader.download(url.toString(), new Target(Library.PRIMARY_FRAME, null));
         return null;
     }
@@ -232,7 +232,7 @@ public class SpeakableHtmlRendererContext extends SimpleHtmlRendererContext {
      * @see org.lobobrowser.html.HtmlRendererContext#submitForm(java.lang.String, java.net.URL, java.lang.String, java.lang.String, org.lobobrowser.html.FormInput[])
      */
     public void submitForm(String method, URL url, String target, String enctype, FormInput[] formInput) {
-        Loader loader = LoaderFactory.getLoader();
+        Loader loader = LoaderFactory.getInstance().newLoader();
         
         if ("post".equalsIgnoreCase(method)) {
             //construct the HTTP request body with the form inputs

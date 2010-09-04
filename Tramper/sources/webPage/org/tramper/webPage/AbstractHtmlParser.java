@@ -265,6 +265,7 @@ public abstract class AbstractHtmlParser implements Parser {
      * @param node current HTML document node
      * @param url URL of the document to parse
      */
+    @SuppressWarnings("unchecked")
     protected void depthFirstSearch(WebPage doc, WebPageItem item, Link aLink, Node node, URL url, String baseUrl, String hostUrl, Map<String, Map<String, Object>> allStyleMap, int idIndex, int linkNumber) {
         boolean searchDepth = true;
         
@@ -532,8 +533,7 @@ public abstract class AbstractHtmlParser implements Parser {
                                 logger.debug("Bad media url: "+mediaUrl);
                             }
                         }
-                    } else if (paramName.equalsIgnoreCase("autoplay") || paramName.equalsIgnoreCase("autoStart")) {
-                    }
+                    } // do something for "autoplay" and "autoStart"?
                 }
             }
             //others elements are ignored
