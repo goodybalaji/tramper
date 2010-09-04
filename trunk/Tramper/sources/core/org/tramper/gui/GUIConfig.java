@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Properties;
 
 import javax.swing.JSplitPane;
+import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
@@ -16,7 +17,7 @@ import org.apache.log4j.Logger;
  * Graphical user interface configuration
  * @author Paul-Emile
  */
-public class GUIConfig {
+public class GUIConfig implements Runnable {
     /** logger */
     private Logger logger = Logger.getLogger(GUIConfig.class);
     /** GUI configuration properties */
@@ -34,6 +35,9 @@ public class GUIConfig {
         String sep = System.getProperty("file.separator");
         propFile = userDir + sep + "GUIConfig.properties";
 	this.load();
+	
+	Thread guiConfigSaver = new Thread(this, "GUI config saver");
+	Runtime.getRuntime().addShutdownHook(guiConfigSaver);
     }
     
     /**
@@ -318,10 +322,22 @@ public class GUIConfig {
      * 
      */
     public void save() {
+	Thread saver = new Thread(this, "GUI config saver");
+	saver.start();
+    }
+
+    public void run() {
+	LookAndFeel laf = UIManager.getLookAndFeel();
+	this.setLookAndFeel(laf.getClass().getName());
+
+	float scale = (float)ScaleBoundedRangeModel.getInstance().getValue()/(float)100;
+        this.setScale(scale);
+	this.setLocale(Locale.getDefault());
+        
 	FileOutputStream outStream = null;
         try {
             outStream = new FileOutputStream(propFile);
-            prop.store(outStream, "Graphical user interface configuration");
+            prop.store(outStream, "Tramper configuration");
         } catch (IOException e) {
             logger.error("unable to save the GUI config");
         } finally {

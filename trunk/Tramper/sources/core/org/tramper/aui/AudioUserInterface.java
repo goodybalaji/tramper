@@ -2,6 +2,7 @@ package org.tramper.aui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -224,6 +225,10 @@ public class AudioUserInterface implements UserInterface, LibraryListener {
      * @see org.tramper.ui.UserInterface#unregister()
      */
     public void unregister() {
+	Iterator<Target> targets = conductorByTarget.keySet().iterator();
+	while (targets.hasNext()) {
+	    removePlayer(targets.next());
+	}
 	Library.getInstance().removeLibraryListener(this);
     }
 }

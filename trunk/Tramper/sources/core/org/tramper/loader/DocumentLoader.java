@@ -20,7 +20,7 @@ import org.tramper.parser.ParserFactory;
 import org.tramper.parser.ParsingException;
 
 /**
- * Document downloader starting a thread
+ * Document loader launching a thread
  * @author Paul-Emile
  */
 public class DocumentLoader implements Loader, Runnable {
@@ -28,7 +28,7 @@ public class DocumentLoader implements Loader, Runnable {
     private static Logger logger = Logger.getLogger(DocumentLoader.class);
     /** flag to stop the current loading (break from the thread) */
     private boolean loadingStopped = false;
-    /** url of the resource to load */
+    /** URL of the resource to load */
     private String url;
     /** loading listener list */
     private List<LoadingListener> loadingListener;
@@ -74,6 +74,17 @@ public class DocumentLoader implements Loader, Runnable {
     }
     
     /**
+     * Used for uploading favorites and history at shutdown
+     * @param doc document to upload
+     * @param url URL where to upload the document
+     */
+    public void initUpload(SimpleDocument doc, String url) {
+        this.url = url;
+        this.uploadDocument = doc;
+        this.loadingType = UPLOAD;
+    }
+    
+    /**
      * 
      * @see org.tramper.loader.Loader#upload(org.tramper.doc.SimpleDocument, java.lang.String)
      */
@@ -85,7 +96,7 @@ public class DocumentLoader implements Loader, Runnable {
             this.stop();
         }
         loadingType = UPLOAD;
-        aLoading = new Thread(this);
+        aLoading = new Thread(this, "loading");
         aLoading.start();
     }
     
@@ -114,7 +125,7 @@ public class DocumentLoader implements Loader, Runnable {
             this.stop();
         }
         loadingType = CALL;
-        aLoading = new Thread(this);
+        aLoading = new Thread(this, "loading");
         aLoading.start();
     }
     

@@ -165,25 +165,9 @@ public class UserInterfaceFactory {
     
     /**
      * 
-     * @return
-     */
-    public static List<UserInterface> getAllUserInterfaces() {
-	List<UserInterface> ui = new ArrayList<UserInterface>();
-	if (aui != null) {
-	    ui.add(aui);
-	}
-	if (gui != null) {
-	    ui.add(gui);
-	}
-	return ui;
-    }
-    
-    /**
-     * 
      */
     public static void removeGraphicalUserInterface() {
 	if (gui != null) {
-	    gui.dispose();
 	    gui.unregister();
 	    gui = null;
 	}
@@ -194,8 +178,10 @@ public class UserInterfaceFactory {
      */
     public static void removeAudioUserInterface() {
 	if (aui != null) {
-	    UIManager.removeAuxiliaryLookAndFeel(auxiliaryLaF);
-	    SwingUtilities.updateComponentTreeUI(gui);
+	    if (gui != null) {
+		UIManager.removeAuxiliaryLookAndFeel(auxiliaryLaF);
+		SwingUtilities.updateComponentTreeUI(gui);
+	    }
 	    aui.unregister();
 	    aui = null;
 	}

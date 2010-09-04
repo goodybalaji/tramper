@@ -61,7 +61,7 @@ public class Favorites implements LoadingListener {
      */
     public void load() {
         try {
-            Loader loader = LoaderFactory.getLoader();
+            Loader loader = LoaderFactory.getInstance().newLoader();
             loader.addLoadingListener(this);
             loader.download(favoritesUrl.toString(), new Target(Library.SECONDARY_FRAME, null));
         } catch (Exception e) {
@@ -86,6 +86,11 @@ public class Favorites implements LoadingListener {
         
         OutlineItem root = new OutlineItem(favorites);
         favorites.setRoot(root);
+
+        Loader saver = LoaderFactory.getInstance().newLoader();
+        saver.initUpload(favorites, favoritesUrl.toString());
+        Thread aSavingThread = new Thread((Runnable)saver, "favorites saving");
+        Runtime.getRuntime().addShutdownHook(aSavingThread);
     }
     
     /**
@@ -184,7 +189,7 @@ public class Favorites implements LoadingListener {
 	if (favorites != null) {
             favorites.setModificationDate(new Date());
             try {
-                Loader loader = LoaderFactory.getLoader();
+                Loader loader = LoaderFactory.getInstance().newLoader();
                 loader.upload(favorites, favoritesUrl.toString());
             } catch (Exception e) {
                 logger.error("error saving favorites "+favoritesUrl, e);
@@ -206,6 +211,11 @@ public class Favorites implements LoadingListener {
      */
     public void loadingCompleted(LoadingEvent event) {
         favorites = (Outline)event.getLoadedDocument();
+
+        Loader saver = LoaderFactory.getInstance().newLoader();
+        saver.initUpload(favorites, favoritesUrl.toString());
+        Thread aSavingThread = new Thread((Runnable)saver, "favorites saving");
+        Runtime.getRuntime().addShutdownHook(aSavingThread);
     }
     
     /**

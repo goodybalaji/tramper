@@ -42,7 +42,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
-import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -489,8 +488,7 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	    this.validate();
 	} catch (RenderingException e) {
 	    logger.error("error when rendering " + document);
-            GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
-            gui.raiseError("displayFailed");
+            raiseError("displayFailed");
 	}
     }
     
@@ -972,51 +970,19 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
     }
     
     /**
-     * Save the GUI configuration, dispose the window, set the singleton to null
-     * and reinit the singleton.
+     * Write the GUI configuration in the GUIConfig object
      */
-    public void restart() {
-	// save the window location before disposing it, it doesn't work if the window is not displayed
-	saveGuiConfig();
-	try {
-	    this.dispose();
-	    if (UIManager.getLookAndFeel().getSupportsWindowDecorations()) {
-		this.setUndecorated(true);
-		this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
-	    } else {
-		this.setUndecorated(false);
-	    }
-	    this.pack();
-	    this.setVisible(true);
-	} catch (Exception e) {
-	    // thrown when switching from Substance to another look and feel
-            GraphicalUserInterface gui = UserInterfaceFactory.getGraphicalUserInterface();
-            gui.raiseWarning("badLaF");
-            System.exit(1);
-	}
-    }
-
-    /**
-     * Save the GUI configuration in a file
-     */
-    public void saveGuiConfig() {
-	LookAndFeel laf = UIManager.getLookAndFeel();
-        
-	float scale = (float)ScaleBoundedRangeModel.getInstance().getValue()/(float)100;
-        guiConfig.setScale(scale);
+    public void writeGuiConfig() {
 	guiConfig.setWindowX(this.getLocationOnScreen().x);
 	guiConfig.setWindowY(this.getLocationOnScreen().y);
 	guiConfig.setWindowWidth(this.getWidth());
 	guiConfig.setWindowHeight(this.getHeight());
-	guiConfig.setLookAndFeel(laf.getClass().getName());
 	guiConfig.setAddressPanel((addressPanel != null));
 	guiConfig.setPlayerPanel((playerPanel != null));
 	guiConfig.setRecognizerPanel((recorderPanel != null));
 	guiConfig.setDisplayPanel((displayPanel != null));
 	guiConfig.setWindowExtendedState(this.getExtendedState());
-	guiConfig.setLocale(Locale.getDefault());
 	guiConfig.setOrientation(viewersArea.getOrientation());
-	guiConfig.save();
     }
 
     /**
@@ -1319,8 +1285,14 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
      * @see org.tramper.ui.UserInterface#unregister()
      */
     public void unregister() {
-	LoaderFactory.removeLoaderFactoryListener(miniaturePanel);
+	obfuscate();
+	writeGuiConfig();
+	LoaderFactory.getInstance().removeLoaderFactoryListener(miniaturePanel);
 	Library.getInstance().removeLibraryListener(this);
+	if (UserInterfaceFactory.isAudioUserInterfaceInstanciated()) {
+	    UserInterfaceFactory.getAudioUserInterface().removeAUIListener(this);
+	}
+	dispose();
     }
 
     public void stateChanged(ChangeEvent e) {
