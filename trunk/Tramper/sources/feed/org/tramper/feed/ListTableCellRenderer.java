@@ -29,6 +29,7 @@ public class ListTableCellRenderer extends JList implements TableCellRenderer {
      * 
      * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
      */
+    @SuppressWarnings("unchecked")
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         List<Object> links = (List<Object>)value;
         if (links != null) {

@@ -199,8 +199,8 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 	// draw a halo around the miniature if the mouse is over the miniature
 	if (mouseOn) {
 	    Color extenalColor = new Color(230, 230, 230, 100);
-	    Point2D center = new Point2D.Float(miniatureSize.width/2, miniatureSize.height/2);
-	    float radius = miniatureSize.width/2;
+	    Point2D center = new Point2D.Float(miniatureSize.width/2f, miniatureSize.height/2f);
+	    float radius = miniatureSize.width/2f;
 	    float[] dist = {0.5f, 1.0f};
 	    Color internalColor = new Color(255, 255, 255, 0);
 	    Color[] colors = {internalColor, extenalColor};
@@ -249,14 +249,14 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 	g2d.drawString(title, titleX, titleY);
 	
 	// draw double-lines border
-        g2d.setStroke(new BasicStroke(borderWidth/2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
+        g2d.setStroke(new BasicStroke(borderWidth/2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
 
         roundRect.width -= 1;
         roundRect.height -= 1;
 	g2d.setColor(outerBorder);
         g2d.draw(roundRect);
-        roundRect.x += borderWidth/2;
-        roundRect.y += borderWidth/2;
+        roundRect.x += borderWidth/2f;
+        roundRect.y += borderWidth/2f;
         roundRect.width -= borderWidth;
         roundRect.height -= borderWidth;
         g2d.setColor(innerBorder);

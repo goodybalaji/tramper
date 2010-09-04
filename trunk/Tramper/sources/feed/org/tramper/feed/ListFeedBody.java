@@ -199,7 +199,7 @@ public class ListFeedBody extends JSplitPane implements Body, MouseListener, Hyp
 			String relation = link.getRelation();
 			if ("via".equals(relation) || "enclosure".equals(relation)) {
 			    URL url = link.getLinkedDocument().getUrl();
-			    Loader loader = LoaderFactory.getLoader();
+			    Loader loader = LoaderFactory.getInstance().newLoader();
 			    loader.download(url.toString(), new Target(Library.PRIMARY_FRAME, null));
 			}
 		    }
@@ -252,7 +252,7 @@ public class ListFeedBody extends JSplitPane implements Body, MouseListener, Hyp
         	URL url = e.getURL();
         	if (url != null) {
                     String urlStr = url.toString();
-                    Loader loader = LoaderFactory.getLoader();
+                    Loader loader = LoaderFactory.getInstance().newLoader();
                     loader.download(urlStr, new Target(Library.PRIMARY_FRAME, null));
         	}
             }

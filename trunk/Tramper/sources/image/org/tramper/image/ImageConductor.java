@@ -32,9 +32,9 @@ public class ImageConductor extends Conductor {
      * @see org.tramper.ui.Renderer#isDocumentSupported(org.tramper.doc.SimpleDocument)
      */
     public boolean isDocumentSupported(SimpleDocument document) {
-	if (document instanceof ImageDocument) {
+	/*if (document instanceof ImageDocument) {
 	    return true;
-	}
+	}*/
 	return false;
     }
     

@@ -195,7 +195,7 @@ public class OutlineBody extends JScrollPane implements Body, MouseListener, Tre
         	    for (Link link : links) {
         		if ("related".equals(link.getRelation())) {
         		    URL url = link.getLinkedDocument().getUrl();
-        		    Loader loader = LoaderFactory.getLoader();
+        		    Loader loader = LoaderFactory.getInstance().newLoader();
         		    loader.download(url.toString(), new Target(Library.PRIMARY_FRAME, null));
                 	}
         	    }

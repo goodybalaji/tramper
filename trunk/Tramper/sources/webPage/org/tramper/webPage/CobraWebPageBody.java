@@ -58,7 +58,7 @@ public class CobraWebPageBody extends HtmlPanel implements Body, MouseListener {
     /** HTML document builder */
     private DocumentBuilderImpl docBuilder;
     /** customized HTML renderer context */
-    private HtmlRendererContext rendererContext;
+    private transient HtmlRendererContext rendererContext;
     /** user agent */
     private UserAgentContext userAgentcontext;
     /** last element style */

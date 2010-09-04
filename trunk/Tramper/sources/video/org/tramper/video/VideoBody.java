@@ -110,9 +110,9 @@ public class VideoBody extends JPanel implements Body, VideoRendererListener, Mo
 	
 	// paint the transparent layer for reflected half video
 	g2d.setComposite(AlphaComposite.SrcOver.derive(1.0f));
-	GradientPaint gradientRightIn = new GradientPaint(0, 0, new Color(0, 0, 0, 0), 0, videoHeight/2, getBackground());
+	GradientPaint gradientRightIn = new GradientPaint(0, 0, new Color(0, 0, 0, 0), 0, videoHeight/2f, getBackground());
 	g2d.setPaint(gradientRightIn);
-	Rectangle2D.Float transparentLayer = new Rectangle2D.Float(0, 0, videoWidth, videoHeight/2);
+	Rectangle2D.Float transparentLayer = new Rectangle2D.Float(0, 0, videoWidth, videoHeight/2f);
 	g2d.fill(transparentLayer);
 	
 	g2d.translate(0, -videoHeight);

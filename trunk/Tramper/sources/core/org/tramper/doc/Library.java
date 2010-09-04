@@ -54,7 +54,7 @@ public class Library implements LoadingListener, LoaderFactoryListener {
     private Library() {
 	docTargets = new HashMap<Target, SimpleDocument>();
 	libraryListener = new ArrayList<LibraryListener>();
-        LoaderFactory.addLoaderFactoryListener(this);
+        LoaderFactory.getInstance().addLoaderFactoryListener(this);
     }
     
     /**

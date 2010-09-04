@@ -48,7 +48,7 @@ public class LoadAboutAction extends AbstractAction {
     public void actionPerformed(ActionEvent evt) {
 	try {
 	    URL aboutUrl = new URL("http://sites.google.com/site/tramperproject/third-party-libraries");
-	    Loader loader = LoaderFactory.getLoader();
+	    Loader loader = LoaderFactory.getInstance().newLoader();
 	    loader.download(aboutUrl.toString(), new Target(Library.PRIMARY_FRAME, null));
 	} catch (MalformedURLException ex) {
 	    logger.error("about page unavailable");

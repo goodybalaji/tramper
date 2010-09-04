@@ -286,7 +286,7 @@ public class AddressControlPanel extends JPanel implements ActionListener {
 			    try {
 				URL url = aFile.toURI().toURL();
 				String urlRef = url.toString();
-				Loader aLoader = LoaderFactory.getLoader();
+				Loader aLoader = LoaderFactory.getInstance().newLoader();
 				aLoader.download(urlRef, new Target(Library.PRIMARY_FRAME, null));
 			    } catch (Exception e) {
 				logger.error("the selected file has a bad URL", e);

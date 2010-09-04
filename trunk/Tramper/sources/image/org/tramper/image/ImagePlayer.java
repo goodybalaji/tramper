@@ -487,12 +487,12 @@ public class ImagePlayer implements Player, Runnable {
     }
 
     public boolean isExtensionSupported(String extension) {
-	String[] extensions = ImageIO.getReaderFileSuffixes();
+	/*String[] extensions = ImageIO.getReaderFileSuffixes();
 	for (String anExtension : extensions) {
 	    if (anExtension.equalsIgnoreCase(extension)) {
 		return true;
 	    }
-	}
+	}*/
 	return false;
     }
 }

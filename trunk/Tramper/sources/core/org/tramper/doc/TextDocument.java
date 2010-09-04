@@ -153,6 +153,14 @@ public class TextDocument {
     }
 
     /**
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	return url.toString().hashCode();
+    }
+
+    /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

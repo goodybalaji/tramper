@@ -289,10 +289,15 @@ public class DisplayControlPanel extends JPanel implements ItemListener, Display
                 try {
                     UIManager.setLookAndFeel(lafClassName);
                     SwingUtilities.updateComponentTreeUI(main);
+                    // we can manage the window decoration only if the frame is not displayed
+                    /*if (UIManager.getLookAndFeel().getSupportsWindowDecorations()) {
+                	main.setUndecorated(true);
+                	main.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+                    } else {
+                	main.setUndecorated(false);
+                    }*/
                 } catch (Exception ex) {
                     logger.error(ex.getMessage(), ex);
-                } finally {
-                    main.restart();
                 }
             }
         }
