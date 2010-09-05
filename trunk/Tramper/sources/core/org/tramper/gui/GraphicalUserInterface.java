@@ -150,8 +150,18 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         
 	//set the window's icon
-	Image logoTramper = toolkit.createImage(getClass().getResource("images/Tramper.png"));
-	this.setIconImage(logoTramper);
+        List<Image> windowIcons = new ArrayList<Image>();
+	Image icon16px = toolkit.createImage(getClass().getResource("images/16px-tramper-icon.png"));
+	windowIcons.add(icon16px);
+	Image icon24px = toolkit.createImage(getClass().getResource("images/24px-tramper-icon.png"));
+	windowIcons.add(icon24px);
+	Image icon32px = toolkit.createImage(getClass().getResource("images/32px-tramper-icon.png"));
+	windowIcons.add(icon32px);
+	Image icon48px = toolkit.createImage(getClass().getResource("images/48px-tramper-icon.png"));
+	windowIcons.add(icon48px);
+	Image icon128px = toolkit.createImage(getClass().getResource("images/128px-tramper-icon.png"));
+	windowIcons.add(icon128px);
+	this.setIconImages(windowIcons);
 
 	//set the window's mouse pointer
         //cursorImage = toolkit.createImage(getClass().getResource("images/mouse_pointer.png"));
