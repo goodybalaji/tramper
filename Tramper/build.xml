@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Tramper" default="archives">
-	<property name="izPackDir" value="C:\Program Files\IzPack"/>
-	
 	<target name="javadoc">
 		<javadoc access="package" 
 				author="true" 
@@ -93,14 +91,12 @@
 		-->
 	</target>
 	
-	<taskdef name="izpack" classpath="${izPackDir}/lib/compiler.jar" classname="com.izforge.izpack.ant.IzPackTask"/>
+	<taskdef name="izpack" classpath="installer/standalone-compiler.jar" classname="com.izforge.izpack.ant.IzPackTask"/>
 	
 	<target name="IzPack-installer">
-		<antcall target="archives"/>
 		<izpack input="installer/IZPack-install.xml"
 		    output="installer/Tramper-installer.jar"
 		    installerType="standard"
-		    basedir="."
-		    izPackDir="${izPackDir}/"/>
+		    basedir="."/>
 	</target>
 </project>
