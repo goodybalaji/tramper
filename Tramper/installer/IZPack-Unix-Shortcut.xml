@@ -5,7 +5,7 @@
   <programGroup defaultName="Tramper" location="applications"/>
 
    <shortcut
-     name="Free Tramper"
+     name="Tramper"
      target="$JAVA_HOME/bin/java"
      commandLine="-Xmx512m -Djava.library.path=lib/x86 -jar lib/Tramper.jar"
      workingDirectory="$INSTALL_PATH"

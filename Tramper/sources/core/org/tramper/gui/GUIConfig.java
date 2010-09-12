@@ -31,7 +31,7 @@ public class GUIConfig implements Runnable {
     public GUIConfig() {
         super();
         prop = new Properties();
-        String userDir = System.getProperty("user.dir");
+        String userDir = System.getProperty("user.home");
         String sep = System.getProperty("file.separator");
         propFile = userDir + sep + "GUIConfig.properties";
 	this.load();
@@ -49,12 +49,14 @@ public class GUIConfig implements Runnable {
             inStream = new FileInputStream(propFile);
             prop.load(inStream);
         } catch (IOException e) {
-            logger.error("unable to load the GUI config");
+            logger.debug("unable to load the GUI config, use default values then", e);
         } finally {
-            try {
-        	inStream.close();
-            } catch (IOException e) {
-        	logger.warn("load() : closing stream reading the config file failed");
+            if (inStream != null) {
+                try {
+                    inStream.close();
+                } catch (IOException e) {
+                    logger.warn("load() : closing stream reading the config file failed");
+                }
             }
         }
     }
@@ -64,8 +66,12 @@ public class GUIConfig implements Runnable {
      * @return last extended state or default
      */
     public int getWindowExtendedState() {
+	String windowState = prop.getProperty("window.extendedState");
+	if (windowState == null) {
+	    windowState = String.valueOf(Frame.NORMAL);
+	}
         try {
-            return Integer.parseInt(prop.getProperty("window.extendedState"));
+            return Integer.parseInt(windowState);
         }
         catch (NumberFormatException e) {
             logger.error("the window.extendedState property is not an integer : "+e.getMessage());
@@ -86,8 +92,12 @@ public class GUIConfig implements Runnable {
      * @return last x or default
      */
     public int getWindowX() {
+	String windowX = prop.getProperty("window.x");
+	if (windowX == null) {
+	    windowX = "0";
+	}
         try {
-            return Integer.parseInt(prop.getProperty("window.x"));
+            return Integer.parseInt(windowX);
         }
         catch (NumberFormatException e) {
             logger.error("the window.x property is not an integer : "+e.getMessage());
@@ -108,8 +118,12 @@ public class GUIConfig implements Runnable {
      * @return last y or default
      */
     public int getWindowY() {
+	String windowY = prop.getProperty("window.y");
+	if (windowY == null) {
+	    windowY = "0";
+	}
         try {
-            return Integer.parseInt(prop.getProperty("window.y"));
+            return Integer.parseInt(windowY);
         }
         catch (NumberFormatException e) {
             logger.error("the window.y property is not an integer : "+e.getMessage());
@@ -130,8 +144,12 @@ public class GUIConfig implements Runnable {
      * @return last width or default
      */
     public int getWindowWidth() {
+	String windowWidth = prop.getProperty("window.width");
+	if (windowWidth == null) {
+	    windowWidth = "800";
+	}
         try {
-            return Integer.parseInt(prop.getProperty("window.width"));
+            return Integer.parseInt(windowWidth);
         }
         catch (NumberFormatException e) {
             logger.error("the window.width property is not an integer : "+e.getMessage());
@@ -152,8 +170,12 @@ public class GUIConfig implements Runnable {
      * @return last height or default
      */
     public int getWindowHeight() {
+	String windowHeight = prop.getProperty("window.height");
+	if (windowHeight == null) {
+	    windowHeight = "600";
+	}
         try {
-            return Integer.parseInt(prop.getProperty("window.height"));
+            return Integer.parseInt(windowHeight);
         }
         catch (NumberFormatException e) {
             logger.error("the window.height property is not an integer : "+e.getMessage());
@@ -194,7 +216,11 @@ public class GUIConfig implements Runnable {
      * @return last flag or default false
      */
     public boolean getAddressPanel() {
-        return Boolean.valueOf(prop.getProperty("addressPanel")).booleanValue();
+	String addressPanel = prop.getProperty("addressPanel");
+	if (addressPanel == null) {
+	    addressPanel = "true";
+	}
+        return Boolean.valueOf(addressPanel).booleanValue();
     }
 
     /**
@@ -210,7 +236,11 @@ public class GUIConfig implements Runnable {
      * @return last flag or default false
      */
     public boolean getPlayerPanel() {
-        return Boolean.valueOf(prop.getProperty("playerPanel")).booleanValue();
+	String playerPanel = prop.getProperty("playerPanel");
+	if (playerPanel == null) {
+	    playerPanel = "true";
+	}
+        return Boolean.valueOf(playerPanel).booleanValue();
     }
 
     /**
@@ -226,7 +256,11 @@ public class GUIConfig implements Runnable {
      * @return last flag or default false
      */
     public boolean getRecognizerPanel() {
-        return Boolean.valueOf(prop.getProperty("recognizerPanel")).booleanValue();
+	String recognizerPanel = prop.getProperty("recognizerPanel");
+	if (recognizerPanel == null) {
+	    recognizerPanel = "false";
+	}
+        return Boolean.valueOf(recognizerPanel).booleanValue();
     }
     
     /**
@@ -242,7 +276,11 @@ public class GUIConfig implements Runnable {
      * @return last flag or default false
      */
     public boolean getDisplayPanel() {
-        return Boolean.valueOf(prop.getProperty("displayPanel")).booleanValue();
+	String displayPanel = prop.getProperty("displayPanel");
+	if (displayPanel == null) {
+	    displayPanel = "false";
+	}
+        return Boolean.valueOf(displayPanel).booleanValue();
     }
     
     /**
@@ -258,8 +296,12 @@ public class GUIConfig implements Runnable {
      * @return current scale
      */
     public float getScale() {
+	String scale = prop.getProperty("scale");
+	if (scale == null) {
+	    scale = "1";
+	}
 	try {
-	    return Float.parseFloat(prop.getProperty("scale"));
+	    return Float.parseFloat(scale);
 	} catch (NumberFormatException e) {
 	    return 1;
 	}
@@ -301,8 +343,12 @@ public class GUIConfig implements Runnable {
      * @return orientation
      */
     public int getOrientation() {
+	String orientation = prop.getProperty("orientation");
+	if (orientation == null) {
+	    orientation = String.valueOf(JSplitPane.HORIZONTAL_SPLIT);
+	}
         try {
-            return Integer.parseInt(prop.getProperty("orientation"));
+            return Integer.parseInt(orientation);
         }
         catch (NumberFormatException e) {
             logger.error("the orientation property is not an integer : "+e.getMessage());
