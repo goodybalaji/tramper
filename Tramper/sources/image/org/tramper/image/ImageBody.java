@@ -3,6 +3,7 @@ package org.tramper.image;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -119,6 +120,8 @@ public class ImageBody extends JScrollPane implements Body, MouseListener {
 	if (y < 0) {
 	    y = 0;
 	}
+	g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
 	g2d.drawImage(document.getImage(), null, x, y);
 
 	// reset scale

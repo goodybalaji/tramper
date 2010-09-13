@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URL;
@@ -369,6 +370,7 @@ public class ListFeedBody extends JSplitPane implements Body, MouseListener, Hyp
 	    if (y < 0) {
 		y = 0;
 	    }
+	    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 	    g2d.drawImage(feedIcon, x, y, this);
 
 	    // reset scale
