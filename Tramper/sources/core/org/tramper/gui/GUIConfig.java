@@ -49,7 +49,7 @@ public class GUIConfig implements Runnable {
             inStream = new FileInputStream(propFile);
             prop.load(inStream);
         } catch (IOException e) {
-            logger.debug("unable to load the GUI config, use default values then", e);
+            logger.debug("unable to load the GUI config, use default values then");
         } finally {
             if (inStream != null) {
                 try {
