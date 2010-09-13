@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.IllegalComponentStateException;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
@@ -423,31 +424,29 @@ public class NativeWebPageBody extends JPanel implements Body, WebBrowserListene
 	    logger.error("Screen capture not possible");
 	} catch (IllegalComponentStateException e) {
 	    // can't locate the browser on screen because it is not displayed
-	} finally {
-	    if (screenCapture != null) {
-		g2d.drawImage(screenCapture, 0, 0, this);
-	    }
 	}
-
-	int captureWidth = screenCaptureSize.width;
-	int captureHeight = screenCaptureSize.height;
+	if (screenCapture != null) {
+	    int captureWidth = screenCaptureSize.width;
+	    int captureHeight = screenCaptureSize.height;
 	
-	double scale = (double)miniatureSize.width/(double)captureWidth;
-	if (scale > 1) {
-	    scale = 1.0;
-	}
-	g2d.scale(scale, scale);
-	int x = (miniatureSize.width - captureWidth)/2;
-	if (x < 0) {
-	    x = 0;
-	}
-	int y = (miniatureSize.height - captureHeight)/2;
-	if (y < 0) {
-	    y = 0;
-	}
-	g2d.drawImage(screenCapture, null, x, y);
+	    double scale = (double)miniatureSize.width/(double)captureWidth;
+	    if (scale > 1) {
+		scale = 1.0;
+	    }
+	    g2d.scale(scale, scale);
+	    int x = (miniatureSize.width - captureWidth)/2;
+	    if (x < 0) {
+		x = 0;
+	    }
+	    int y = (miniatureSize.height - captureHeight)/2;
+	    if (y < 0) {
+		y = 0;
+	    }
+	    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	    g2d.drawImage(screenCapture, null, x, y);
 
-	// reset scale
-	g2d.scale(1/scale, 1/scale);
+	    // reset scale
+	    g2d.scale(1/scale, 1/scale);
+	}
     }
 }
