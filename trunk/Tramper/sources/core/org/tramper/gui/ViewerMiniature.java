@@ -59,7 +59,7 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
     /** margin width */
     private int marginWidth = 4;
     /** border width */
-    private int borderWidth = 2;
+    private int borderWidth = 1;
     /** mouse is on the component */
     private boolean mouseOn;
     /** target */
@@ -178,13 +178,12 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 		titleForeground = UIManager.getColor("textText");
 	    }
 	}
-	Color innerBorder = titleBackground;
 	Color outerBorder = titleForeground;
 
 	g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	
-	float arcWidth = 10;
-	float arcHeight = 10;
+	float arcWidth = 20;
+	float arcHeight = 20;
 	RoundRectangle2D.Float roundRect = new RoundRectangle2D.Float(marginWidth, marginWidth, miniatureSize.width - 2*marginWidth, miniatureSize.height - 2*marginWidth, arcWidth, arcHeight);
 	g2d.setClip(roundRect);
 	
@@ -210,7 +209,7 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 	}
 	
 	// apply transparency for title
-	AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f);
+	AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f);
         g2d.setComposite(composite);
         
 	// get title metrics
@@ -244,22 +243,15 @@ public class ViewerMiniature extends JPanel implements MouseListener, DocumentLi
 	    int visiblePart = (titleCharLength*titleBackgroundWidth)/titleWidth - 2;
 	    title = title.substring(0, visiblePart) + "...";
 	}
-	int titleX = marginWidth + borderWidth + (int)arcWidth;
+	int titleX = marginWidth + borderWidth + (int)(arcWidth/2);
 	int titleY = miniatureSize.height - (int)(metrics.getDescent() + metrics.getLeading() + marginWidth + borderWidth);
 	g2d.drawString(title, titleX, titleY);
 	
 	// draw double-lines border
-        g2d.setStroke(new BasicStroke(borderWidth/2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
-
+        g2d.setStroke(new BasicStroke((float)borderWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
         roundRect.width -= 1;
         roundRect.height -= 1;
 	g2d.setColor(outerBorder);
-        g2d.draw(roundRect);
-        roundRect.x += borderWidth/2f;
-        roundRect.y += borderWidth/2f;
-        roundRect.width -= borderWidth;
-        roundRect.height -= borderWidth;
-        g2d.setColor(innerBorder);
         g2d.draw(roundRect);
 
 	g2d.setClip(null);
