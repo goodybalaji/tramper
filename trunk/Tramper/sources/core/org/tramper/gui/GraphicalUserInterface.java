@@ -853,10 +853,8 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 	
 	try {
             Class<?> awtUtilClass = Class.forName("com.sun.awt.AWTUtilities");
-            Method opaqueMethod = awtUtilClass.getMethod("setWindowOpaque", Window.class, Boolean.TYPE);
-            opaqueMethod.invoke(awtUtilClass, this, false);
             Method opacityMethod = awtUtilClass.getMethod("setWindowOpacity", Window.class, Float.TYPE);
-            opacityMethod.invoke(awtUtilClass, this, 0.95f);
+            opacityMethod.invoke(awtUtilClass, this, 0.9f);
         } catch (Exception e) {
             // silently ignore this exception.
         }
@@ -882,8 +880,6 @@ public class GraphicalUserInterface extends JFrame implements UserInterface, Act
 
 	try {
             Class<?> awtUtilClass = Class.forName("com.sun.awt.AWTUtilities");
-            Method opaqueMethod = awtUtilClass.getMethod("setWindowOpaque", Window.class, Boolean.TYPE);
-            opaqueMethod.invoke(awtUtilClass, this, true);
             Method opacityMethod = awtUtilClass.getMethod("setWindowOpacity", Window.class, Float.TYPE);
             opacityMethod.invoke(awtUtilClass, this, 1.0f);
         } catch (Exception e) {
