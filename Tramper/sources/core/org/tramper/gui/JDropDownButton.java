@@ -54,12 +54,12 @@ public class JDropDownButton extends JButton implements MouseListener, ActionLis
 	super();
 	this.replaceText = replaceText;
 	this.replaceIcon = replaceIcon;
-	
+		
 	innerPopup = new JPopupMenu();
 	setActions(actions);
 	arrowIcon = UIManager.getIcon("Menu.arrowIcon");
 	listZoneWidth = arrowIcon.getIconWidth()*2;
-	
+		
 	addMouseListener(this);
     }
     
@@ -106,7 +106,7 @@ public class JDropDownButton extends JButton implements MouseListener, ActionLis
     protected void paintComponent(Graphics g) {
 	super.paintComponent(g);
 	Graphics2D g2d = (Graphics2D)g;
-	
+		
 	// draw a separator  between the button itself and the added arrow
 	Color shadow = UIManager.getColor("Separator.shadow");
 	Color highlight = UIManager.getColor("Separator.highlight");
@@ -121,9 +121,13 @@ public class JDropDownButton extends JButton implements MouseListener, ActionLis
 	//reset the color and stroke not to disturb the next drawings
 	g2d.setColor(previousColor);
 	g2d.setStroke(previousStroke);
-	
+		
 	// pass a JMenuItem because we are painting a menu icon and a few look and feels require that
-	arrowIcon.paintIcon(new JMenuItem(), g, getWidth() - (listZoneWidth + arrowIcon.getIconWidth())/2, (getHeight()-arrowIcon.getIconHeight())/2);
+	try {
+	    arrowIcon.paintIcon(new JMenuItem(), g, getWidth() - (listZoneWidth + arrowIcon.getIconWidth())/2, (getHeight()-arrowIcon.getIconHeight())/2);
+	} catch (Exception e) {
+	    // fail under Linux 
+	}
     }
 
     @Override
@@ -164,11 +168,11 @@ public class JDropDownButton extends JButton implements MouseListener, ActionLis
      */
     public void mouseReleased(MouseEvent event) {
 	if (isEnabled()) {
-            int x = event.getX();
+	    int x = event.getX();
             Component source = (Component)event.getSource();
             int width = source.getWidth();
             if (x > width - listZoneWidth) {
-        	innerPopup.show(source, 0, getHeight());
+            	innerPopup.show(source, 0, getHeight());
             } else {
                 ActionEvent e = new ActionEvent(this, 0, this.getActionCommand());
                 currentAction.actionPerformed(e);
