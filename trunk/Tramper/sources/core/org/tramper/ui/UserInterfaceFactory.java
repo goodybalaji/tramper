@@ -33,6 +33,8 @@ public class UserInterfaceFactory {
 	try {
 	    Class<?> auxiliaryLaFClass = Class.forName("org.fingon.FingonLookAndFeel");
 	    auxiliaryLaF = (LookAndFeel)auxiliaryLaFClass.newInstance();
+	    // for Quaqua look and feel
+	    auxiliaryLaF.getDefaults().remove("ComboBoxUI");
 	    UIManager.addAuxiliaryLookAndFeel(auxiliaryLaF);
 	} catch (ClassNotFoundException e1) {
 	    logger.info("no Fingon auxiliary look and feel class in classpath");
@@ -59,49 +61,19 @@ public class UserInterfaceFactory {
 		}
 	    }
 	}
+	
 	// add nicer look and feels
-	LookAndFeelInfo quaquaLaF = new UIManager.LookAndFeelInfo("Quaqua", "ch.randelshofer.quaqua.QuaquaLookAndFeel");
-	lookAndFeels.add(quaquaLaF);
-	/*LookAndFeelInfo substanceDustLaF = new UIManager.LookAndFeelInfo("Dust", "org.jvnet.substance.skin.SubstanceDustLookAndFeel");
-	lookAndFeels.add(substanceDustLaF);
-	LookAndFeelInfo substanceBusinessLaF = new UIManager.LookAndFeelInfo("Business Black Steel", "org.jvnet.substance.skin.SubstanceBusinessBlackSteelLookAndFeel");
-	lookAndFeels.add(substanceBusinessLaF);
-	LookAndFeelInfo substanceTwilightLaF = new UIManager.LookAndFeelInfo("Twilight", "org.jvnet.substance.skin.SubstanceTwilightLookAndFeel");
-	lookAndFeels.add(substanceTwilightLaF);
-	LookAndFeelInfo substanceRavenLaF = new UIManager.LookAndFeelInfo("Raven", "org.jvnet.substance.skin.SubstanceRavenLookAndFeel");
-	lookAndFeels.add(substanceRavenLaF);
-	LookAndFeelInfo substanceRavenGraphiteLaF = new UIManager.LookAndFeelInfo("Raven Graphite", "org.jvnet.substance.skin.SubstanceRavenGraphiteLookAndFeel");
-	lookAndFeels.add(substanceRavenGraphiteLaF);
-	LookAndFeelInfo substanceRavenGraphiteGlassLaF = new UIManager.LookAndFeelInfo("Raven Graphite Glass", "org.jvnet.substance.skin.SubstanceRavenGraphiteGlassLookAndFeel");
-	lookAndFeels.add(substanceRavenGraphiteGlassLaF);
-	LookAndFeelInfo substanceOfficeBlue2007LaF = new UIManager.LookAndFeelInfo("Office Silver 2007", "org.jvnet.substance.skin.SubstanceOfficeSilver2007LookAndFeel");
-	lookAndFeels.add(substanceOfficeBlue2007LaF);
-	LookAndFeelInfo substanceMistAquaLaF = new UIManager.LookAndFeelInfo("Mist Aqua", "org.jvnet.substance.skin.SubstanceMistAquaLookAndFeel");
-	lookAndFeels.add(substanceMistAquaLaF);
-	LookAndFeelInfo substanceMistSilverLaF = new UIManager.LookAndFeelInfo("Mist Silver", "org.jvnet.substance.skin.SubstanceMistSilverLookAndFeel");
-	lookAndFeels.add(substanceMistSilverLaF);
-	LookAndFeelInfo substanceMagmaLaF = new UIManager.LookAndFeelInfo("Magma", "org.jvnet.substance.skin.SubstanceMagmaLookAndFeel");
-	lookAndFeels.add(substanceMagmaLaF);
-	LookAndFeelInfo substanceEmeraldDuskLaF = new UIManager.LookAndFeelInfo("Emerald dusk", "org.jvnet.substance.skin.SubstanceEmeraldDuskLookAndFeel");
-	lookAndFeels.add(substanceEmeraldDuskLaF);
-	LookAndFeelInfo substanceGeminiLaF = new UIManager.LookAndFeelInfo("Gemini", "org.jvnet.substance.api.skin.SubstanceGeminiLookAndFeel");
-	lookAndFeels.add(substanceGeminiLaF);
-	LookAndFeelInfo substanceGraphiteAquaLaF = new UIManager.LookAndFeelInfo("Graphite Aqua", "org.jvnet.substance.api.skin.SubstanceGraphiteAquaLookAndFeel");
-	lookAndFeels.add(substanceGraphiteAquaLaF);
-	LookAndFeelInfo substanceMagellanAquaLaF = new UIManager.LookAndFeelInfo("Magellan", "org.jvnet.substance.api.skin.SubstanceMagellanLookAndFeel");
-	lookAndFeels.add(substanceMagellanAquaLaF);
-	LookAndFeelInfo substanceChallengerLaF = new UIManager.LookAndFeelInfo("Challenger Deep", "org.jvnet.substance.skin.SubstanceChallengerDeepLookAndFeel");
-	lookAndFeels.add(substanceChallengerLaF);
-	LookAndFeelInfo substanceCremeLaF = new UIManager.LookAndFeelInfo("Creme", "org.jvnet.substance.skin.SubstanceCremeLookAndFeel");
-	lookAndFeels.add(substanceCremeLaF);
-	LookAndFeelInfo substanceSaharaLaF = new UIManager.LookAndFeelInfo("Sahara", "org.jvnet.substance.skin.SubstanceSaharaLookAndFeel");
-	lookAndFeels.add(substanceSaharaLaF);
-	LookAndFeelInfo substanceModerateLaF = new UIManager.LookAndFeelInfo("Moderate", "org.jvnet.substance.skin.SubstanceModerateLookAndFeel");
-	lookAndFeels.add(substanceModerateLaF);
-	LookAndFeelInfo substanceNebulaLaF = new UIManager.LookAndFeelInfo("Nebula", "org.jvnet.substance.skin.SubstanceNebulaLookAndFeel");
-	lookAndFeels.add(substanceNebulaLaF);
-	LookAndFeelInfo substanceAutumnLaF = new UIManager.LookAndFeelInfo("Autumn", "org.jvnet.substance.skin.SubstanceAutumnLookAndFeel");
-	lookAndFeels.add(substanceAutumnLaF);*/
+	try {
+	    Class.forName("ch.randelshofer.quaqua.QuaquaLookAndFeel");
+	    LookAndFeelInfo quaquaLaF = new UIManager.LookAndFeelInfo("Quaqua", "ch.randelshofer.quaqua.QuaquaLookAndFeel");
+	    lookAndFeels.add(quaquaLaF);
+	} catch (ClassNotFoundException e) {}
+
+	try {
+	    Class.forName("org.pushingpixels.substance.api.skin.SubstanceMistAquaLookAndFeel");
+	    LookAndFeelInfo substanceLaF = new UIManager.LookAndFeelInfo("Substance", "org.pushingpixels.substance.api.skin.SubstanceMistAquaLookAndFeel");
+	    lookAndFeels.add(substanceLaF);
+	} catch (ClassNotFoundException e) {}
 	
 	// install the new look and feels
 	UIManager.setInstalledLookAndFeels(lookAndFeels.toArray(new UIManager.LookAndFeelInfo[lookAndFeels.size()]));
