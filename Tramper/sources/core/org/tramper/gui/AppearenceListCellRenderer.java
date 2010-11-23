@@ -49,13 +49,15 @@ public class AppearenceListCellRenderer extends JLabel implements ListCellRender
             url = getClass().getResource("images/linux.png");
         } else if (lafName.equals("KDE/Liquid")) {
             url = getClass().getResource("images/kde.png");
-        } else if (lafi.getClassName().startsWith("org.jvnet.substance")) {
-            url = getClass().getResource("images/substance.png");
         } else {
             url = getClass().getResource("images/java.png");
         }
-        Icon icon = new EnhancedIcon(url);
-        setIcon(icon);
+        if (url != null) {
+            Icon icon = new EnhancedIcon(url);
+            setIcon(icon);
+        } else {
+            setIcon(null);
+        }
         if (isSelected) {
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());
