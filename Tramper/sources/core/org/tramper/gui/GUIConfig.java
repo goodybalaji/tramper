@@ -385,7 +385,7 @@ public class GUIConfig implements Runnable {
             outStream = new FileOutputStream(propFile);
             prop.store(outStream, "Tramper configuration");
         } catch (IOException e) {
-            logger.error("unable to save the GUI config");
+            logger.error("unable to save the GUI config", e);
         } finally {
             try {
         	outStream.close();
